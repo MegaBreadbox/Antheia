@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -51,6 +52,8 @@ android {
 }
 
 dependencies {
+    ksp(libs.ksp.dagger)
+    implementation(libs.google.dagger)
     implementation(libs.kotlin.serialization)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
