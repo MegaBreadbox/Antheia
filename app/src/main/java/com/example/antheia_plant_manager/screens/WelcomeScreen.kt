@@ -9,12 +9,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import javax.inject.Inject
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(
+    viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>()
+) {
     Column(){
-        val welcome = "Welcome"
+        val welcome = "Welcome\nto\nAntheia"
         var processWelcome by remember { mutableStateOf("") }
         LaunchedEffect(key1 = processWelcome) {
             if(welcome.length != processWelcome.length) {

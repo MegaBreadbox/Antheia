@@ -26,15 +26,7 @@ fun NavMenu(
             startDestination = StartDestination,
             modifier = modifier.padding(innerPadding)
         ) {
-            composable<StartDestination>(
-                enterTransition = {
-                    fadeIn()
-                }
-            ){
-                WelcomeScreen()
-            }
+            startDestination()
         }
     }
 }
-@Serializable
-object StartDestination

@@ -15,9 +15,11 @@ kotlinSerializationPlugin = "1.9.22"
 uiTextGoogleFonts = "1.6.8"
 ksp = "1.9.22-1.0.16"
 daggerHilt = "2.48"
+hiltNavigationCompose = "1.2.0"
 
 [libraries]
-ksp-dagger = { module = "com.google.dagger:hilt-android-compiler", version.ref = "daggerHilt"}
+androidx-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose"}
+ksp-dagger = { module = "com.google.dagger:hilt-compiler", version.ref = "daggerHilt"}
 google-dagger = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt"}
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization"}
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +44,7 @@ androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinSerializationPlugin"}
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt"}
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
 
 
