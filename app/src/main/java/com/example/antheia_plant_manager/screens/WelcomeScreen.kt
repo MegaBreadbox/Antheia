@@ -15,8 +15,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.antheia_plant_manager.R
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -34,10 +37,9 @@ fun WelcomeScreen(
         verticalArrangement = Arrangement.Top,
         modifier = modifier
             .fillMaxSize()
-
     ){
-        val welcome = "Welcome\nto\nAntheia"
-        val uiState = viewModel.uiState.collectAsState()
+        val welcome = stringResource(R.string.welcome_to_antheia)
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
         LaunchedEffect(key1 = uiState.value.processWelcomeText) {
             if(welcome.length != uiState.value.processWelcomeText.length) {
                 delay(100L)

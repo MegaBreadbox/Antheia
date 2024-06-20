@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Antheia-plant-manager</string>
+    <string name="welcome_to_antheia">Welcome\nto\nAntheia</string>
 </resources>

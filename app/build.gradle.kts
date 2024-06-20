@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.crashlytics)
 }
 
 android {
@@ -57,6 +59,12 @@ dependencies {
     ksp(libs.ksp.dagger)
     implementation(libs.google.dagger)
     implementation(libs.androidx.hilt)
+
+    //firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashyltics)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.authentication)
 
     //Serialization
     implementation(libs.kotlin.serialization)
