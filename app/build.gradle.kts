@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.androidx.hilt)
 
     //firebase
+    implementation(libs.firebase.ui.auth)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashyltics)
     implementation(libs.firebase.analytics)

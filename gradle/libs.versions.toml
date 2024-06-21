@@ -17,10 +17,12 @@ ksp = "1.9.22-1.0.16"
 daggerHilt = "2.49"
 hiltNavigationCompose = "1.2.0"
 googleServices = "4.4.2"
-firebaseBom = "33.1.0"
-crashlytics = "3.0.1"
+firebaseBom = "33.1.1"
+crashlytics = "3.0.2"
+firebaseUiAuth = "7.2.0"
 
 [libraries]
+firebase-ui-auth = { module = "com.firebaseui:firebase-ui-auth", version.ref = "firebaseUiAuth"}
 firebase-crashyltics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-authentication = { module = "com.google.firebase:firebase-auth" }

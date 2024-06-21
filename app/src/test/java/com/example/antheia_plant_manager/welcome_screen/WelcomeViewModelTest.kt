@@ -1,6 +1,6 @@
 package com.example.antheia_plant_manager.welcome_screen
 
-import com.example.antheia_plant_manager.screens.WelcomeViewModel
+import com.example.antheia_plant_manager.screens.sign_in.WelcomeViewModel
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
