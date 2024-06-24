@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_field_shape_radius">30dp</dimen>
+    <dimen name="medium_padding">8dp</dimen>
+    <dimen name="big_padding">12dp</dimen>
+    <dimen name="large_padding">32dp</dimen>"
+</resources>
