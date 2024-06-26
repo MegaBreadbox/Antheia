@@ -43,10 +43,13 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
+import com.example.antheia_plant_manager.util.measureStyle
 import kotlinx.coroutines.delay
 
 @Composable
@@ -54,8 +57,9 @@ fun WelcomeScreen(
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>()
 ) {
-    Box(
-        contentAlignment = Alignment.TopCenter,
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceAround,
         modifier = modifier
             .fillMaxSize()
     ){
@@ -71,7 +75,11 @@ fun WelcomeScreen(
             text = uiState.value.processWelcomeText,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.displayLarge,
-            modifier = modifier.padding(top = dimensionResource(id = R.dimen.large_padding))
+            modifier = modifier
+                .padding(top = dimensionResource(id = R.dimen.large_padding))
+                .height(
+                    welcome.measureStyle(style = MaterialTheme.typography.displayLarge)
+                )
         )
         TextInputFormCompact(
             emailText = viewModel.emailText,
