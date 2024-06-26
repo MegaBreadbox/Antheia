@@ -1,5 +1,8 @@
 package com.example.antheia_plant_manager.screens.sign_in
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.antheia_plant_manager.model.service.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,15 +18,36 @@ class WelcomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(WelcomeUiState())
     val uiState = _uiState.asStateFlow()
 
+    var emailText by mutableStateOf("")
+        private set
+
+    var passwordText by mutableStateOf("")
+        private set
+
     fun updateWelcomeText(input: Char) {
         _uiState.update {
             it.copy(processWelcomeText = it.processWelcomeText + input)
         }
     }
+    fun updateIsPasswordVisible() {
+        _uiState.update {
+            it.copy(isPasswordVisible = !it.isPasswordVisible)
+        }
+    }
+
+    fun updateEmail(input: String) {
+        emailText = input
+    }
+
+    fun updatePassword(input: String) {
+        passwordText = input
+    }
 
 
 }
 
+
 data class WelcomeUiState(
-    val processWelcomeText: String = ""
+    val processWelcomeText: String = "",
+    val isPasswordVisible: Boolean = false
 )
