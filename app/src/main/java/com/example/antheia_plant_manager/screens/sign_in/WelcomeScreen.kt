@@ -13,7 +13,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.outlined.Email
@@ -38,6 +42,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.TransformedText
@@ -55,32 +60,25 @@ import kotlinx.coroutines.delay
 @Composable
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>()
+    viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>(),
 ) {
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val scrollState = rememberScrollState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceAround,
+        verticalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
+
     ){
-        val welcome = stringResource(R.string.welcome_to_antheia)
-        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-        LaunchedEffect(key1 = uiState.value.processWelcomeText) {
-            if(welcome.length != uiState.value.processWelcomeText.length) {
-                delay(100L)
-                viewModel.updateWelcomeText(welcome[uiState.value.processWelcomeText.length])
-            }
-        }
-        Text(
-            text = uiState.value.processWelcomeText,
-            textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.displayLarge,
-            modifier = modifier
-                .padding(top = dimensionResource(id = R.dimen.large_padding))
-                .height(
-                    welcome.measureStyle(style = MaterialTheme.typography.displayLarge)
-                )
+        welcomeTextCompact(
+            processWelcomeText = uiState.value.processWelcomeText,
+            updateWelcomeText = { viewModel.updateWelcomeText(it) }
         )
+
+        Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
+
         TextInputFormCompact(
             emailText = viewModel.emailText,
             emailValueChange = { viewModel.updateEmail(it) },
@@ -90,6 +88,31 @@ fun WelcomeScreen(
             updateIsPasswordVisible = { viewModel.updateIsPasswordVisible() },
         )
     }
+}
+
+@Composable fun welcomeTextCompact(
+    processWelcomeText: String,
+    updateWelcomeText: (Char) -> Unit,
+    welcomeText: String = stringResource(R.string.welcome_to_antheia),
+    modifier: Modifier = Modifier
+) {
+    LaunchedEffect(key1 = processWelcomeText) {
+        if(welcomeText.length != processWelcomeText.length) {
+            delay(100L)
+            updateWelcomeText(welcomeText[processWelcomeText.length])
+        }
+    }
+    Text(
+        text = processWelcomeText,
+        textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.displayLarge,
+        modifier = modifier
+            .padding(top = dimensionResource(id = R.dimen.large_padding))
+            .height(
+                welcomeText.measureStyle(style = MaterialTheme.typography.displayLarge)
+            )
+    )
+
 }
 
 @Composable fun TextInputFormCompact(
@@ -115,12 +138,12 @@ fun WelcomeScreen(
                 containerColor = MaterialTheme.colorScheme.surfaceContainer
             )
         ) {
+
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = modifier.padding(dimensionResource(id = R.dimen.large_padding))
             ) {
-
                 TextField(
                     value = emailText,
                     onValueChange =  { emailValueChange(it) } ,
@@ -130,6 +153,9 @@ fun WelcomeScreen(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
 
+                    ),
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next
                     ),
                     singleLine = true,
                     modifier = modifier
@@ -176,6 +202,9 @@ fun WelcomeScreen(
                         unfocusedIndicatorColor = Color.Transparent,
                     ),
                     singleLine = true,
+                    keyboardActions = KeyboardActions(
+                        onDone = { TODO() }
+                    ),
                     modifier = modifier
                         .width(dimensionResource(id = R.dimen.textfield_size_compact))
                 )
