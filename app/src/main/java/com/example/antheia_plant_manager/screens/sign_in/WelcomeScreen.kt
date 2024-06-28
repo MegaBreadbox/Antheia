@@ -35,9 +35,11 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -56,6 +58,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.util.measureStyle
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun WelcomeScreen(
@@ -63,6 +66,7 @@ fun WelcomeScreen(
     viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val keyboardController = LocalSoftwareKeyboardController.current
     val scrollState = rememberScrollState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -86,6 +90,10 @@ fun WelcomeScreen(
             passwordValueChange = { viewModel.updatePassword(it) },
             isPasswordVisible = uiState.value.isPasswordVisible,
             updateIsPasswordVisible = { viewModel.updateIsPasswordVisible() },
+            signIn = {
+                viewModel.signIn()
+                keyboardController?.hide()
+            }
         )
     }
 }
@@ -122,6 +130,7 @@ fun WelcomeScreen(
     emailValueChange: (String) -> Unit,
     passwordValueChange: (String) -> Unit,
     updateIsPasswordVisible: () -> Unit,
+    signIn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -203,7 +212,9 @@ fun WelcomeScreen(
                     ),
                     singleLine = true,
                     keyboardActions = KeyboardActions(
-                        onDone = { TODO() }
+                        onDone = {
+                            signIn()
+                        }
                     ),
                     modifier = modifier
                         .width(dimensionResource(id = R.dimen.textfield_size_compact))
@@ -211,7 +222,7 @@ fun WelcomeScreen(
                 Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
 
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = signIn,
                     modifier = modifier.width(dimensionResource(id = R.dimen.textfield_size_compact))
                 ) {
                     Text(
