@@ -14,7 +14,7 @@ kotlinSerialization = "1.6.3"
 kotlinSerializationPlugin = "1.9.22"
 uiTextGoogleFonts = "1.6.8"
 ksp = "1.9.22-1.0.16"
-daggerHilt = "2.49"
+daggerHilt = "2.51.1"
 hiltNavigationCompose = "1.2.0"
 googleServices = "4.4.2"
 firebaseBom = "33.1.2"
@@ -29,6 +29,7 @@ firebase-crashyltics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-authentication = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "daggerHilt" }
 androidx-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 ksp-dagger-hilt = { module = "com.google.dagger:hilt-compiler", version.ref = "daggerHilt" }
 ksp-dagger = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerHilt"}

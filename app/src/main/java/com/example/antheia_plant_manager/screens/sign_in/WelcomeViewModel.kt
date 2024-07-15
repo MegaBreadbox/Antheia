@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
@@ -80,9 +81,25 @@ class WelcomeViewModel @Inject constructor(
         return googleSignIn.get().getCredentialRequest()
     }
 
-    fun googleSignIn(idToken: String) {
+    fun googleSignIn(googleResponse: GetCredentialResponse) {
         viewModelScope.launch {
-            accountService.googleSignIn(idToken)
+            try {
+                if (googleResponse.credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                    accountService.googleSignIn(GoogleIdTokenCredential.createFrom(googleResponse.credential.data).idToken)
+                }
+            } catch (e: Exception) {
+                Log.d(
+                    "Google login exception",
+                    "$e"
+                )
+                _uiState.update {
+                    it.copy(
+                        errorText = ErrorText(
+                            signInErrorTextId = R.string.error_occured_while_sigining_in
+                        )
+                    )
+                }
+            }
         }
     }
 
