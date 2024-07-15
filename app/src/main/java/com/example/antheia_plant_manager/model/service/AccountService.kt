@@ -1,6 +1,7 @@
 package com.example.antheia_plant_manager.model.service
 
 interface AccountService {
+    suspend fun googleSignIn(idToken: String)
     suspend fun signIn(email: String, password: String)
     suspend fun signOutOfApp()
     suspend fun anonymousSignIn()

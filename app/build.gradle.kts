@@ -56,6 +56,7 @@ android {
 
 dependencies {
     //daggerHilt
+    ksp(libs.ksp.dagger.hilt)
     ksp(libs.ksp.dagger)
     implementation(libs.google.dagger)
     implementation(libs.androidx.hilt)
@@ -66,6 +67,11 @@ dependencies {
     implementation(libs.firebase.crashyltics)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.authentication)
+
+    //credentials
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.auth)
+    implementation(libs.googleid)
 
     //Serialization
     implementation(libs.kotlin.serialization)

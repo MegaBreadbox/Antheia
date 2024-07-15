@@ -1,5 +1,6 @@
 package com.example.antheia_plant_manager.screens.sign_in
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +40,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -46,17 +48,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.credentials.CredentialManager
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.util.measureStyle
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -68,6 +70,8 @@ fun WelcomeScreen(
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
     val scrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -87,13 +91,35 @@ fun WelcomeScreen(
             emailText = viewModel.emailText,
             emailValueChange = { viewModel.updateEmail(it) },
             passwordText = viewModel.passwordText,
+            errorText = uiState.value.errorText?.asString(),
             passwordValueChange = { viewModel.updatePassword(it) },
             isPasswordVisible = uiState.value.isPasswordVisible,
             updateIsPasswordVisible = { viewModel.updateIsPasswordVisible() },
             signIn = {
                 viewModel.signIn()
                 keyboardController?.hide()
-            }
+            },
+            anonymousSignIn = { viewModel.anonymousSignIn() },
+            googleSignIn = {
+                coroutineScope.launch {
+                    val getResponse = CredentialManager.create(context).getCredential(
+                    context = context,
+                    request = viewModel.getGoogleSignInRequest()
+                    )
+                    try {
+                        if (getResponse.credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                            viewModel.googleSignIn(
+                                GoogleIdTokenCredential.createFrom(getResponse.credential.data).idToken
+                            )
+                        }
+                    } catch (e: Exception) {
+                        Log.d(
+                            "Google login exception",
+                            "$e"
+                        )
+                    }
+                }
+            },
         )
     }
 }
@@ -127,10 +153,13 @@ fun WelcomeScreen(
     emailText: String,
     passwordText: String,
     isPasswordVisible: Boolean,
+    errorText: String?,
     emailValueChange: (String) -> Unit,
     passwordValueChange: (String) -> Unit,
     updateIsPasswordVisible: () -> Unit,
     signIn: () -> Unit,
+    anonymousSignIn: () -> Unit,
+    googleSignIn: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -155,14 +184,16 @@ fun WelcomeScreen(
             ) {
                 TextField(
                     value = emailText,
-                    onValueChange =  { emailValueChange(it) } ,
+                    onValueChange =  { email -> emailValueChange(email) } ,
                     placeholder = { Text(text = stringResource(R.string.email))},
                     shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
                     colors = TextFieldDefaults.colors(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
+                        errorIndicatorColor = Color.Transparent
 
                     ),
+                    isError = errorText != null,
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next
                     ),
@@ -209,8 +240,11 @@ fun WelcomeScreen(
                     colors = TextFieldDefaults.colors(
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedIndicatorColor = Color.Transparent,
+                        errorIndicatorColor = Color.Transparent
                     ),
                     singleLine = true,
+                    isError = errorText != null,
+                    supportingText = { Text(text = errorText ?: "") },
                     keyboardActions = KeyboardActions(
                         onDone = {
                             signIn()
@@ -235,7 +269,7 @@ fun WelcomeScreen(
                     contentDescription = stringResource(R.string.sign_in_with_google),
                     modifier = modifier
                         .clickable {
-                            TODO()
+                            googleSignIn()
                         }
                 )
             }
@@ -250,7 +284,7 @@ fun WelcomeScreen(
             Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.small_padding)))
 
             TextButton(
-                onClick = { /*TODO*/ }
+                onClick = anonymousSignIn
             ) {
                 Text("Continue without an account")
             }

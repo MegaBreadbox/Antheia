@@ -4,11 +4,16 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.credentials.GetCredentialRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.service.AccountService
+import com.example.antheia_plant_manager.model.service.GoogleSignIn
 import com.example.antheia_plant_manager.util.ErrorText
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WelcomeViewModel @Inject constructor(
-    private val accountService: AccountService
+    private val accountService: AccountService,
+    private val googleSignIn: Lazy<GoogleSignIn>
 ): ViewModel() {
     private val _uiState = MutableStateFlow(WelcomeUiState())
     val uiState = _uiState.asStateFlow()
@@ -63,10 +69,29 @@ class WelcomeViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         errorText = ErrorText(
-                            signInErrorTextId = 4,
+                            signInErrorTextId = R.string.wrong_user_details_error,
                         )
                     )
                 }
+            }
+        }
+    }
+    fun getGoogleSignInRequest(): GetCredentialRequest {
+        return googleSignIn.get().getCredentialRequest()
+    }
+
+    fun googleSignIn(idToken: String) {
+        viewModelScope.launch {
+            accountService.googleSignIn(idToken)
+        }
+    }
+
+    fun anonymousSignIn() {
+        viewModelScope.launch {
+            try {
+                accountService.anonymousSignIn()
+            } catch (e: Exception) {
+                Log.d("login exception", "$e")
             }
         }
     }
@@ -78,6 +103,5 @@ class WelcomeViewModel @Inject constructor(
 data class WelcomeUiState(
     val processWelcomeText: String = "",
     val isPasswordVisible: Boolean = false,
-    val isSignInErrorVisible: Boolean = false,
     val errorText: ErrorText? = null
 )

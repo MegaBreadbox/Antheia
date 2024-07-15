@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Antheia-plant-manager</string>
     <string name="welcome_to_antheia">Welcome\nto\nAntheia</string>
+    <string name="wrong_user_details_error">Password or email is incorrect</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="sign_in_with_google">Sign in with Google</string>

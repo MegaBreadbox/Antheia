@@ -1,15 +1,15 @@
 [versions]
-agp = "8.5.0"
+agp = "8.5.1"
 kotlin = "1.9.22"
 coreKtx = "1.13.1"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.8.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.3"
 activityCompose = "1.9.0"
 composeBom = "2024.06.00"
 navigationRuntimeKtx = "2.7.7"
-navigationCompose = "2.8.0-beta03"
+navigationCompose = "2.8.0-beta05"
 kotlinSerialization = "1.6.3"
 kotlinSerializationPlugin = "1.9.22"
 uiTextGoogleFonts = "1.6.8"
@@ -17,9 +17,11 @@ ksp = "1.9.22-1.0.16"
 daggerHilt = "2.49"
 hiltNavigationCompose = "1.2.0"
 googleServices = "4.4.2"
-firebaseBom = "33.1.1"
+firebaseBom = "33.1.2"
 crashlytics = "3.0.2"
 firebaseUiAuth = "7.2.0"
+credentials = "1.2.2"
+googleId = "1.1.1"
 
 [libraries]
 firebase-ui-auth = { module = "com.firebaseui:firebase-ui-auth", version.ref = "firebaseUiAuth"}
@@ -28,7 +30,8 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-authentication = { module = "com.google.firebase:firebase-auth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 androidx-hilt = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
-ksp-dagger = { module = "com.google.dagger:hilt-compiler", version.ref = "daggerHilt" }
+ksp-dagger-hilt = { module = "com.google.dagger:hilt-compiler", version.ref = "daggerHilt" }
+ksp-dagger = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerHilt"}
 google-dagger = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -48,6 +51,9 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
+androidx-credentials-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentials" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleId" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
