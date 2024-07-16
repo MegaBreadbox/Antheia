@@ -15,7 +15,7 @@ object GoogleSignInModule {
     @Provides
     @Singleton
     fun provideGoogleSigInMock(): GoogleSignIn {
-        return GoogleSignInMock()
+        return
     }
 
 }

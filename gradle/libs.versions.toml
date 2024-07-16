@@ -22,6 +22,7 @@ crashlytics = "3.0.2"
 firebaseUiAuth = "7.2.0"
 credentials = "1.2.2"
 googleId = "1.1.1"
+coroutinesTest = "1.9.0-RC"
 
 [libraries]
 firebase-ui-auth = { module = "com.firebaseui:firebase-ui-auth", version.ref = "firebaseUiAuth"}
@@ -36,6 +37,7 @@ ksp-dagger = { module = "com.google.dagger:dagger-compiler", version.ref = "dagg
 google-dagger = { module = "com.google.dagger:hilt-android", version.ref = "daggerHilt" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinSerialization" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest"}
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

@@ -13,6 +13,7 @@ import com.example.antheia_plant_manager.model.service.AccountService
 import com.example.antheia_plant_manager.model.service.GoogleSignIn
 import com.example.antheia_plant_manager.util.ErrorText
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -71,6 +72,15 @@ class WelcomeViewModel @Inject constructor(
                     it.copy(
                         errorText = ErrorText(
                             signInErrorTextId = R.string.wrong_user_details_error,
+                        )
+                    )
+                }
+            } catch (e: FirebaseAuthException) {
+                Log.d("login exception","$e")
+                _uiState.update {
+                    it.copy(
+                        errorText = ErrorText(
+                            signInErrorTextId = R.string.error_occurred_while_signing_in
                         )
                     )
                 }
