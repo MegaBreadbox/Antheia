@@ -19,7 +19,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.antheia_plant_manager.junit_runner.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -87,10 +87,12 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.ui.text.google.fonts)
-    kspAndroidTest(libs.ksp.dagger.hilt)
+    kspTest(libs.ksp.dagger.hilt)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
-    testImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.ksp.dagger.hilt)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

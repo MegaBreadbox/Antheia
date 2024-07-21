@@ -56,6 +56,16 @@ class WelcomeViewModel @Inject constructor(
         passwordText = input
     }
 
+    private fun updateErrorText(errorStringId: Int ) {
+        _uiState.update {
+            it.copy(
+                errorText = ErrorText(
+                    signInErrorTextId = errorStringId
+                )
+            )
+        }
+    }
+
     fun signIn() {
         viewModelScope.launch {
             try {
@@ -63,26 +73,12 @@ class WelcomeViewModel @Inject constructor(
                     email = emailText,
                     password = passwordText
                 )
-            } catch (e: FirebaseAuthInvalidCredentialsException) {
-                Log.d(
-                    "login exception",
-                    "$e"
-                )
-                _uiState.update {
-                    it.copy(
-                        errorText = ErrorText(
-                            signInErrorTextId = R.string.wrong_user_details_error,
-                        )
-                    )
-                }
-            } catch (e: FirebaseAuthException) {
-                Log.d("login exception","$e")
-                _uiState.update {
-                    it.copy(
-                        errorText = ErrorText(
-                            signInErrorTextId = R.string.error_occurred_while_signing_in
-                        )
-                    )
+            } catch(e: Exception) {
+                when (e) {
+                    is FirebaseAuthInvalidCredentialsException -> updateErrorText(R.string.wrong_user_details_error)
+                    is FirebaseAuthException -> updateErrorText(R.string.error_occurred_while_signing_in)
+                    is IllegalArgumentException -> updateErrorText(R.string.empty_credentials_error)
+                    is NullPointerException -> updateErrorText(R.string.empty_credentials_error)
                 }
             }
         }
@@ -105,7 +101,7 @@ class WelcomeViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         errorText = ErrorText(
-                            signInErrorTextId = R.string.error_occured_while_sigining_in
+                            signInErrorTextId = R.string.error_occurred_while_signing_in
                         )
                     )
                 }
