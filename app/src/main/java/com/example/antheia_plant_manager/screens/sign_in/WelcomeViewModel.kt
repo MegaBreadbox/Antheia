@@ -56,7 +56,7 @@ class WelcomeViewModel @Inject constructor(
         passwordText = input
     }
 
-    private fun updateErrorText(errorStringId: Int ) {
+    fun updateErrorText(errorStringId: Int ) {
         _uiState.update {
             it.copy(
                 errorText = ErrorText(
@@ -94,17 +94,7 @@ class WelcomeViewModel @Inject constructor(
                     accountService.googleSignIn(GoogleIdTokenCredential.createFrom(googleResponse.credential.data).idToken)
                 }
             } catch (e: Exception) {
-                Log.d(
-                    "Google login exception",
-                    "$e"
-                )
-                _uiState.update {
-                    it.copy(
-                        errorText = ErrorText(
-                            signInErrorTextId = R.string.error_occurred_while_signing_in
-                        )
-                    )
-                }
+                updateErrorText(R.string.error_occurred_while_signing_in)
             }
         }
     }
@@ -114,7 +104,7 @@ class WelcomeViewModel @Inject constructor(
             try {
                 accountService.anonymousSignIn()
             } catch (e: Exception) {
-                Log.d("login exception", "$e")
+                updateErrorText(R.string.error_occurred_while_signing_in)
             }
         }
     }

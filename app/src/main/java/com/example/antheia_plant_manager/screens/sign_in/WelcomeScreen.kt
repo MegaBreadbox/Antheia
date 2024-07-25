@@ -41,6 +41,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.credentials.CredentialManager
+import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
@@ -88,11 +89,15 @@ fun WelcomeScreen(
             anonymousSignIn = { viewModel.anonymousSignIn() },
             googleSignIn = {
                 coroutineScope.launch {
-                    val getResponse = CredentialManager.create(context).getCredential(
-                    context = context,
-                    request = viewModel.getGoogleSignInRequest()
-                    )
-                    viewModel.googleSignIn(getResponse)
+                    try {
+                        val getResponse = CredentialManager.create(context).getCredential(
+                            context = context,
+                            request = viewModel.getGoogleSignInRequest()
+                        )
+                        viewModel.googleSignIn(getResponse)
+                    } catch (e: GetCredentialCancellationException) {
+                        viewModel.updateErrorText(R.string.google_sign_in_cancelled)
+                    }
                 }
             },
         )
@@ -102,8 +107,8 @@ fun WelcomeScreen(
 @Composable fun WelcomeTextCompact(
     processWelcomeText: String,
     updateWelcomeText: (Char) -> Unit,
+    modifier: Modifier = Modifier,
     welcomeText: String = stringResource(R.string.welcome_to_antheia),
-    modifier: Modifier = Modifier
 ) {
     LaunchedEffect(key1 = processWelcomeText) {
         if(welcomeText.length != processWelcomeText.length) {
@@ -253,7 +258,7 @@ fun WelcomeScreen(
             TextButton(
                 onClick = { /*TODO*/ }
             ) {
-                Text("Create an account")
+                Text(stringResource(R.string.create_an_account))
             }
 
             Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.small_padding)))

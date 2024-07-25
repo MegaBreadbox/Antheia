@@ -61,6 +61,12 @@ class WelcomeViewModelTest {
         assert(viewModel.uiState.value.errorText == null)
     }
 
+    @Test
+    fun welcomeViewModel_updateErrorText_Success() {
+        viewModel.updateErrorText(12)
+        assertEquals(12, viewModel.uiState.value.errorText?.signInErrorTextId)
+    }
+
 
 
 }

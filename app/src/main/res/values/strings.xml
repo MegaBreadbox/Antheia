@@ -11,4 +11,6 @@
     <string name="confirm_password">Confirm password</string>
     <string name="error_occurred_while_signing_in">Error occurred while signing in, please try again</string>
     <string name="empty_credentials_error">Please enter your email and password</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="google_sign_in_cancelled">Google sign in cancelled</string>
 </resources>
