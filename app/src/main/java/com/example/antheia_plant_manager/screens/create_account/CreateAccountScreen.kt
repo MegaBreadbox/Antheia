@@ -33,11 +33,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.antheia_plant_manager.R
+import com.example.antheia_plant_manager.model.service.AccountService
+import com.example.antheia_plant_manager.model.service.mock.AccountServiceMock
 import com.example.antheia_plant_manager.screens.sign_in.WelcomeTextCompact
 import com.example.compose.AntheiaplantmanagerTheme
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -65,16 +68,16 @@ fun CreateAccountScreen(
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
 
         CreateAccountForm(
-            emailText = "",
-            passwordText = "",
-            confirmPasswordText = "",
-            isPasswordVisible = false,
-            errorText = null,
-            emailValueChange = { },
-            passwordValueChange = { },
-            confirmPasswordValueChange = { },
-            updateIsPasswordVisible = { },
-            createAccount = { }
+            emailText = viewModel.emailText,
+            passwordText = viewModel.passwordText,
+            confirmPasswordText = viewModel.confirmPasswordText,
+            isPasswordVisible = uiState.isPasswordVisible,
+            errorText = uiState.errorText?.asString(),
+            emailValueChange = { viewModel.updateEmailText(it) },
+            passwordValueChange = { viewModel.updatePasswordText(it) },
+            confirmPasswordValueChange = { viewModel.updateConfirmPasswordText(it) },
+            updateIsPasswordVisible = { viewModel.updateIsPasswordVisible() },
+            createAccount = { viewModel.createAccount() }
 
         )
     }
@@ -127,6 +130,7 @@ fun CreateAccountForm(
                     ),
                     isError = errorText != null,
                     keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
                     ),
                     singleLine = true,
@@ -177,6 +181,7 @@ fun CreateAccountForm(
                     singleLine = true,
                     isError = errorText != null,
                     keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Next
                     ),
                     modifier = modifier
@@ -199,6 +204,9 @@ fun CreateAccountForm(
                     singleLine = true,
                     isError = errorText != null,
                     supportingText = { Text(text = errorText ?: "") },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
+                    ),
                     keyboardActions = KeyboardActions(
                         onDone = {
                             createAccount()
@@ -229,7 +237,7 @@ fun CreateAccountForm(
 fun CreateAccountScreenPreview() {
     AntheiaplantmanagerTheme {
         CreateAccountScreen(
-            viewModel = CreateAccountViewModel()
+            viewModel = CreateAccountViewModel(AccountServiceMock())
         )
     }
 }

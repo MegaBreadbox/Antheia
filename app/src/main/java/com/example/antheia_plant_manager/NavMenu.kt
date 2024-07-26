@@ -1,14 +1,13 @@
 package com.example.antheia_plant_manager
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.antheia_plant_manager.nav_routes.Login
+import com.example.antheia_plant_manager.nav_routes.createAccount
+import com.example.antheia_plant_manager.nav_routes.loginScreen
 
 @Composable
 fun NavMenu(
@@ -17,9 +16,10 @@ fun NavMenu(
 ) {
     NavHost(
         navController = navController,
-        startDestination = StartDestination,
+        startDestination = Login,
         modifier = modifier
     ) {
-        startDestination()
+        loginScreen(navController)
+        createAccount()
     }
 }

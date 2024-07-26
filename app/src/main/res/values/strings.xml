@@ -13,4 +13,8 @@
     <string name="empty_credentials_error">Please enter your email and password</string>
     <string name="create_an_account">Create an account</string>
     <string name="google_sign_in_cancelled">Google sign in cancelled</string>
+    <string name="password_requirements_error">Password must be at least 8 characters \ncontain at least one uppercase letter \none lowercase letter \none number \none special character</string>
+    <string name="passwords_do_not_match_error">Passwords do not match</string>
+    <string name="create_account_empty_field_error">Please fill out all fields</string>
+    <string name="create_Account_invalid_email_error">Please enter a valid email</string>
 </resources>

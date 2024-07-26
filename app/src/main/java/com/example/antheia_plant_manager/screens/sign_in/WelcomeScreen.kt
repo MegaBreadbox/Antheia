@@ -37,6 +37,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -51,6 +52,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun WelcomeScreen(
+    navigateCreateAccount: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>(),
 ) {
@@ -100,6 +102,7 @@ fun WelcomeScreen(
                     }
                 }
             },
+            navigateCreateAccount = navigateCreateAccount
         )
     }
 }
@@ -140,6 +143,7 @@ fun WelcomeScreen(
     signIn: () -> Unit,
     anonymousSignIn: () -> Unit,
     googleSignIn: () -> Unit,
+    navigateCreateAccount: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -175,6 +179,7 @@ fun WelcomeScreen(
                     ),
                     isError = errorText != null,
                     keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
                     ),
                     singleLine = true,
@@ -225,6 +230,9 @@ fun WelcomeScreen(
                     singleLine = true,
                     isError = errorText != null,
                     supportingText = { Text(text = errorText ?: "") },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
+                    ),
                     keyboardActions = KeyboardActions(
                         onDone = {
                             signIn()
@@ -256,7 +264,7 @@ fun WelcomeScreen(
         }
         Row() {
             TextButton(
-                onClick = { /*TODO*/ }
+                onClick = navigateCreateAccount
             ) {
                 Text(stringResource(R.string.create_an_account))
             }
