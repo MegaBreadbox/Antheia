@@ -1,4 +1,4 @@
-package com.example.antheia_plant_manager.welcome_screen.mocks
+package com.example.antheia_plant_manager.mocks
 
 import androidx.credentials.GetCredentialRequest
 import com.example.antheia_plant_manager.model.service.GoogleSignIn

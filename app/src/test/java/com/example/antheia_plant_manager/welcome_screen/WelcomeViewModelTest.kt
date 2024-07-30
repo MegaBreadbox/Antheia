@@ -2,9 +2,9 @@ package com.example.antheia_plant_manager.welcome_screen
 
 import com.example.antheia_plant_manager.model.service.GoogleSignIn
 import com.example.antheia_plant_manager.screens.sign_in.WelcomeViewModel
-import com.example.antheia_plant_manager.welcome_screen.mocks.AccountServiceMock
-import com.example.antheia_plant_manager.welcome_screen.mocks.GoogleSignInMock
-import com.example.antheia_plant_manager.welcome_screen.test_rules.MainDispatcherRule
+import com.example.antheia_plant_manager.mocks.AccountServiceMock
+import com.example.antheia_plant_manager.mocks.GoogleSignInMock
+import com.example.antheia_plant_manager.test_rules.MainDispatcherRule
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule

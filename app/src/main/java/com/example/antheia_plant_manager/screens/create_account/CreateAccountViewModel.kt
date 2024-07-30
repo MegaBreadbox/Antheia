@@ -85,7 +85,7 @@ class CreateAccountViewModel @Inject constructor(
                         println("$e ${e.message}")
                         when (e) {
                             is IllegalArgumentException -> updateErrorText(R.string.create_account_empty_field_error)
-                            is FirebaseAuthInvalidCredentialsException -> updateErrorText(R.string.create_Account_invalid_email_error)
+                            is FirebaseAuthInvalidCredentialsException -> updateErrorText(R.string.create_account_invalid_email_error)
                         }
                     }
                 }

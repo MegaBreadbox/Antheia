@@ -1,4 +1,4 @@
-package com.example.antheia_plant_manager.welcome_screen.test_rules
+package com.example.antheia_plant_manager.test_rules
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

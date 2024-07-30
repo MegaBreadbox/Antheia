@@ -52,7 +52,9 @@ class WelcomeInstrumentedTest {
 
         composeTestRule.setContent {
             AntheiaplantmanagerTheme {
-                WelcomeScreen()
+                WelcomeScreen(
+                    navigateCreateAccount = { }
+                )
             }
         }
     }
