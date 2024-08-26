@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Plant(
     @PrimaryKey(autoGenerate = true)
-    val plantId: Int,
+    val plantId: Int = 0,
     val name: String,
     val location: String,
     val waterReminder: String, //formatted reminderFormat:LastWaterDateLocal
