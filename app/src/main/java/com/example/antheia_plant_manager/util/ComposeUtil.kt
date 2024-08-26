@@ -1,6 +1,9 @@
 package com.example.antheia_plant_manager.util
 
 import android.content.Context
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -28,4 +31,13 @@ fun String.measureStyle(
         fontFamilyResolver = LocalFontFamilyResolver.current
     )
     return (textMeasurement.lineCount * style.lineHeight.value).toInt().dp
+}
+
+@Composable
+fun cardColor(index: Int): CardColors {
+    return if(index % 2 == 0 ) {
+        CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+    } else {
+        CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+    }
 }

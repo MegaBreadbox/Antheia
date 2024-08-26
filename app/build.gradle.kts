@@ -55,11 +55,18 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.work.runtime.ktx)
     //daggerHilt
     ksp(libs.ksp.dagger.hilt)
     ksp(libs.ksp.dagger)
     implementation(libs.google.dagger)
     implementation(libs.androidx.hilt)
+
+    //room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.ksp.room)
+
 
     //firebase
     implementation(libs.firebase.ui.auth)
