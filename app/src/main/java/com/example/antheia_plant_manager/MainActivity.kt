@@ -30,20 +30,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        style = MaterialTheme.typography.titleLarge,
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AntheiaplantmanagerTheme {
-        Greeting("Android")
-    }
-}

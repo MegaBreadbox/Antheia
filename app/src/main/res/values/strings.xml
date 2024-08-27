@@ -17,4 +17,13 @@
     <string name="passwords_do_not_match_error">Passwords do not match</string>
     <string name="create_account_empty_field_error">Please fill out all fields</string>
     <string name="create_account_invalid_email_error">Please enter a valid email</string>
+    <string name="plant_name">Plant name</string>
+    <string name="location">Location</string>
+    <string name="watering_frequency">Watering frequency</string>
+    <string name="advanced_settings">Advanced settings</string>
+    <string name="repotting_frequency">Repotting frequency</string>
+    <string name="fertilizing_frequency">Fertilizing frequency</string>
+    <string name="water_frequency_dropdown">Water frequency dropdown</string>
+    <string name="repotting_frequency_dropdown">Repotting frequency dropdown</string>
+    <string name="fertilizing_frequency_dropdown">Fertilizing frequency dropdown</string>
 </resources>

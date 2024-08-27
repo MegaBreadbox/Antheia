@@ -6,4 +6,6 @@
     <dimen name="big_padding">12dp</dimen>
     <dimen name="large_padding">32dp</dimen>"
     <dimen name="textfield_size_compact">280dp</dimen>
+    <dimen name="textfield_size_mini">140dp</dimen>
+    <dimen name="button_wide">280dp</dimen>
 </resources>
