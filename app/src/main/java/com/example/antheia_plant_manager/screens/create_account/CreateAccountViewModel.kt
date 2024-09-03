@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.service.AccountService
-import com.example.antheia_plant_manager.util.ErrorText
+import com.example.antheia_plant_manager.util.ComposeText
 import com.example.antheia_plant_manager.util.validatePassword
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,8 +63,8 @@ class CreateAccountViewModel @Inject constructor(
     private fun updateErrorText(resourceId: Int) {
         _uiState.update {
             it.copy(
-                errorText = ErrorText(
-                    signInErrorTextId = resourceId
+                errorText = ComposeText(
+                    textId = resourceId
                 )
             )
         }
@@ -96,7 +96,7 @@ class CreateAccountViewModel @Inject constructor(
 
 data class CreateAccountUiState(
     val welcomeText: String = "",
-    val errorText: ErrorText? = null,
+    val errorText: ComposeText? = null,
     val isPasswordVisible: Boolean = false,
 
 )

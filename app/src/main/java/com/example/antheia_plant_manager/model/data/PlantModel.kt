@@ -9,7 +9,7 @@ data class Plant(
     val plantId: Int = 0,
     val name: String,
     val location: String,
-    val waterReminder: String, //formatted reminderFormat:LastWaterDateLocal
+    val waterReminder: String,  //format, frequency+date
     val repottingReminder: String,
     val fertilizerReminder: String,
 )

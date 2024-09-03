@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.antheia_plant_manager"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -56,6 +56,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.androidx.material3.window.size)
     //daggerHilt
     ksp(libs.ksp.dagger.hilt)
     ksp(libs.ksp.dagger)

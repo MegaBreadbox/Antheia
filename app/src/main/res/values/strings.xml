@@ -26,4 +26,18 @@
     <string name="water_frequency_dropdown">Water frequency dropdown</string>
     <string name="repotting_frequency_dropdown">Repotting frequency dropdown</string>
     <string name="fertilizing_frequency_dropdown">Fertilizing frequency dropdown</string>
+    <string name="select_watering_frequency">Select watering frequency</string>
+    <string name="every_day">Every day</string>
+    <string name="every_2_days">Every 2 days</string>
+    <string name="every_3_days">Every 3 days</string>
+    <string name="every_week">Every week</string>
+    <string name="every_2_weeks">Every 2 weeks</string>
+    <string name="every_3_weeks">Every 3 weeks</string>
+    <string name="every_month">Every month</string>
+    <string name="every_6_months">Every 6 months</string>
+    <string name="every_year">Every year</string>
+    <string name="every_2_years">Every 2 years</string>
+    <string name="every_4_years">Every 4 years</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="confirm">Confirm</string>
 </resources>

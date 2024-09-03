@@ -1,5 +1,6 @@
 package com.example.antheia_plant_manager
 
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -11,6 +12,7 @@ import com.example.antheia_plant_manager.nav_routes.loginScreen
 
 @Composable
 fun NavMenu(
+    windowSize: WindowSizeClass,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
 ) {

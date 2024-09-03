@@ -10,7 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.service.AccountService
 import com.example.antheia_plant_manager.model.service.GoogleSignIn
-import com.example.antheia_plant_manager.util.ErrorText
+import com.example.antheia_plant_manager.util.ComposeText
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -58,8 +58,8 @@ class WelcomeViewModel @Inject constructor(
     fun updateErrorText(errorStringId: Int ) {
         _uiState.update {
             it.copy(
-                errorText = ErrorText(
-                    signInErrorTextId = errorStringId
+                errorText = ComposeText(
+                    textId = errorStringId
                 )
             )
         }
@@ -115,5 +115,5 @@ class WelcomeViewModel @Inject constructor(
 data class WelcomeUiState(
     val processWelcomeText: String = "",
     val isPasswordVisible: Boolean = false,
-    val errorText: ErrorText? = null
+    val errorText: ComposeText? = null
 )
