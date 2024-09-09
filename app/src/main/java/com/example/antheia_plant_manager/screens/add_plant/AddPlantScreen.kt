@@ -1,19 +1,14 @@
 package com.example.antheia_plant_manager.screens.add_plant
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,13 +19,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Switch
@@ -41,13 +40,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
+import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
+import com.example.antheia_plant_manager.screens.add_plant.util.AddPlantConstant
+import com.example.antheia_plant_manager.screens.add_plant.util.ReminderFrequency
 import com.example.antheia_plant_manager.util.ComposeText
 import com.example.antheia_plant_manager.util.OutlinedDisabledColorToActive
 import com.example.antheia_plant_manager.util.OutlinedTextFieldClickModifier
@@ -56,24 +60,27 @@ import com.example.compose.AntheiaplantmanagerTheme
 @Composable
 fun AddPlantScreen(
     windowSize: WindowWidthSizeClass,
+    navigateBack: () -> Unit
 ) {
     when(windowSize) {
         WindowWidthSizeClass.Compact -> {
-            PlantFormCompact()
+            PlantFormCompact(navigateBack)
         }
         WindowWidthSizeClass.Medium -> {
-            PlantFormMedium()
+            PlantFormMedium(navigateBack)
         }
     }
 }
 
 @Composable
 fun PlantFormCompact(
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AddPlantViewModel = hiltViewModel<AddPlantViewModel>(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val scroll = rememberScrollState()
+    val focusManager = LocalFocusManager.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -85,14 +92,28 @@ fun PlantFormCompact(
             value = viewModel.plantName,
             onValueChange = { viewModel.updatePlantName(it) },
             shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
-            placeholder = { Text(stringResource(R.string.plant_name)) }
+            placeholder = { Text(stringResource(R.string.plant_name)) },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next
+            ),
+            singleLine = true,
+            modifier = modifier.width(dimensionResource(id = R.dimen.textfield_size_compact))
+
         )
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
         OutlinedTextField(
             value = viewModel.locationName,
             onValueChange = { viewModel.updateLocation(it) },
             shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
-            placeholder = { Text(stringResource(R.string.location)) }
+            placeholder = { Text(stringResource(R.string.location)) },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done
+                ),
+            keyboardActions = KeyboardActions(onDone = {
+                focusManager.clearFocus()
+            }),
+            singleLine = true,
+            modifier = modifier.width(dimensionResource(id = R.dimen.textfield_size_compact))
         )
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
         Row(
@@ -218,23 +239,29 @@ fun PlantFormCompact(
             }
         }
         Button(
-            onClick = { /*TODO*/ },
+            enabled = viewModel.validatePlant(),
+            onClick = {
+                viewModel.savePlant()
+                navigateBack()
+            },
             modifier = modifier
                 .width(dimensionResource(id = R.dimen.button_wide))
                 .padding(top = dimensionResource(id = R.dimen.large_padding))
         ) {
-            Text("Save")
+            Text(stringResource(R.string.save))
         }
     }
 }
 
 @Composable
 fun PlantFormMedium(
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AddPlantViewModel = hiltViewModel<AddPlantViewModel>(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val scroll = rememberScrollState()
+    val focusManager = LocalFocusManager.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -246,14 +273,28 @@ fun PlantFormMedium(
             value = viewModel.plantName,
             onValueChange = { viewModel.updatePlantName(it) },
             shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
-            placeholder = { Text(stringResource(R.string.plant_name)) }
+            placeholder = { Text(stringResource(R.string.plant_name)) },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Next
+            ),
+            singleLine = true,
+            modifier = modifier.width(dimensionResource(id = R.dimen.textfield_size_compact))
+
         )
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
         OutlinedTextField(
             value = viewModel.locationName,
             onValueChange = { viewModel.updateLocation(it) },
             shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
-            placeholder = { Text(stringResource(R.string.location)) }
+            placeholder = { Text(stringResource(R.string.location)) },
+            keyboardOptions = KeyboardOptions.Default.copy(
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(onDone = {
+                focusManager.clearFocus()
+            }),
+            singleLine = true,
+            modifier = modifier.width(dimensionResource(id = R.dimen.textfield_size_compact))
         )
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
         Row(
@@ -377,12 +418,16 @@ fun PlantFormMedium(
             }
         }
         Button(
-            onClick = { /*TODO*/ },
+            enabled = viewModel.validatePlant(),
+            onClick = {
+                viewModel.savePlant()
+                navigateBack()
+            },
             modifier = modifier
                 .width(dimensionResource(id = R.dimen.button_wide))
                 .padding(top = dimensionResource(id = R.dimen.big_padding))
         ) {
-            Text("Save")
+            Text(stringResource(R.string.save))
         }
     }
 }
@@ -465,11 +510,33 @@ fun FrequencyDialog(
 }
 
 @Composable
-@Preview
+fun CloseIcon(
+    onCloseClick:() -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(dimensionResource(id = R.dimen.large_padding))
+    ) {
+        IconButton(onClick = onCloseClick) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = stringResource(R.string.exit_form)
+            )
+        }
+    }
+}
+
+@Composable
+@Preview(showSystemUi = true)
 fun AddPlantScreenCompactPreview() {
     AntheiaplantmanagerTheme {
+        val addPlantViewModel = AddPlantViewModel(plantDatabase = PlantRepositoryImplMock())
         PlantFormCompact(
-            viewModel = AddPlantViewModel()
+            viewModel = addPlantViewModel,
+            navigateBack = {}
         )
     }
 }
@@ -477,8 +544,10 @@ fun AddPlantScreenCompactPreview() {
 @Preview
 fun AddPlantScreenMediumPreview() {
     AntheiaplantmanagerTheme {
+        val addPlantViewModel = AddPlantViewModel(PlantRepositoryImplMock())
         PlantFormMedium(
-            viewModel = AddPlantViewModel()
+            viewModel = addPlantViewModel,
+            navigateBack = {}
         )
     }
 }

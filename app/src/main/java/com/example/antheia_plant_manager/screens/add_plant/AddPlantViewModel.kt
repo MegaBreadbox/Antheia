@@ -7,6 +7,14 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
+import com.example.antheia_plant_manager.model.data.Plant
+import com.example.antheia_plant_manager.model.data.PlantRepository
+import com.example.antheia_plant_manager.model.data.impl.PlantDatabase
+import com.example.antheia_plant_manager.model.data.impl.PlantRepositoryImpl
+import com.example.antheia_plant_manager.screens.add_plant.util.PlantEntry
+import com.example.antheia_plant_manager.screens.add_plant.util.ReminderFrequency
+import com.example.antheia_plant_manager.screens.add_plant.util.UiState
+import com.example.antheia_plant_manager.screens.add_plant.util.toPlant
 import com.example.antheia_plant_manager.util.ComposeText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -20,10 +28,11 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class AddPlantViewModel @Inject constructor(): ViewModel() {
+class AddPlantViewModel @Inject constructor(
+    private val plantDatabase: PlantRepository
+): ViewModel() {
 
     private val _currentPlant = MutableStateFlow(PlantEntry())
-    val currentPlant = _currentPlant.asStateFlow()
 
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
@@ -54,6 +63,7 @@ class AddPlantViewModel @Inject constructor(): ViewModel() {
     }
 
     fun updateAdvancedSettings() {
+        resetPlantValuesAdvancedSettings()
         _uiState.update {
             it.copy(isAdvancedSettingsEnabled = !it.isAdvancedSettingsEnabled)
         }
@@ -152,26 +162,33 @@ class AddPlantViewModel @Inject constructor(): ViewModel() {
             }
         }
     }
-}
+    private fun resetPlantValuesAdvancedSettings() {
+        if (!_uiState.value.isAdvancedSettingsEnabled) {
+            _currentPlant.update {
+                it.copy(
+                    repottingReminder = "",
+                    fertilizerReminder = ""
+                )
+            }
+        }
+    }
 
-data class PlantEntry(
-    val plantId: Int = 0,
-    val name: String = "",
-    val location: String = "",
-    val waterReminder: String = "", //formated, frequency+date
-    val repottingReminder: String = "",
-    val fertilizerReminder: String = "",
-)
+    private fun validatePlantAdvancedSettings(plant: PlantEntry): Boolean {
+        return if(_uiState.value.isAdvancedSettingsEnabled) {
+            plant.repottingReminder.isNotEmpty() && plant.fertilizerReminder.isNotEmpty()
+        } else true
+    }
 
-data class UiState(
-    val isWaterFrequencyDialogActive: Boolean = false,
-    val isRepottingFrequencyDialogActive: Boolean = false,
-    val isFertilizerFrequencyDialogActive: Boolean = false,
-    val selectedReminder: String = "",
-    val dateMap: Map<ComposeText, String> = mapOf(),
-    val isAdvancedSettingsEnabled: Boolean = false
-)
+    fun validatePlant(): Boolean {
+        return _currentPlant.value.name.isNotEmpty() &&
+            _currentPlant.value.location.isNotEmpty() &&
+            _currentPlant.value.waterReminder.isNotEmpty() &&
+            validatePlantAdvancedSettings(_currentPlant.value)
+    }
 
-enum class ReminderFrequency{
-    WATERREMINDER, REPOTTINGREMINDER, FERTILIZERREMINDER
+    fun savePlant() {
+        viewModelScope.launch {
+            plantDatabase.addPlant(_currentPlant.value.toPlant())
+        }
+    }
 }

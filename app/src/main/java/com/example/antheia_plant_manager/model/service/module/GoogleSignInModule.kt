@@ -3,7 +3,6 @@ package com.example.antheia_plant_manager.model.service.module
 import android.content.Context
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
-import com.example.antheia_plant_manager.WEB_CLIENT_ID
 import com.example.antheia_plant_manager.model.service.GoogleSignIn
 import com.example.antheia_plant_manager.model.service.impl.GoogleSignInImplementation
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption

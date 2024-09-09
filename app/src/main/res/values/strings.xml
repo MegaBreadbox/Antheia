@@ -40,4 +40,6 @@
     <string name="every_4_years">Every 4 years</string>
     <string name="dismiss">Dismiss</string>
     <string name="confirm">Confirm</string>
+    <string name="save">Save</string>
+    <string name="exit_form">Exit form</string>
 </resources>

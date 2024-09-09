@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -23,6 +25,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        val localFile = project.rootProject.file("local.properties")
+        val properties = Properties()
+        properties.load(localFile.inputStream())
+        val webClientId = properties.getProperty("WEB_CLIENT_ID")?: ""
+
+        buildConfigField("String", "WEB_CLIENT_ID", webClientId)
     }
 
     buildTypes {
@@ -43,6 +51,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.9"

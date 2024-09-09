@@ -3,7 +3,6 @@ package com.example.antheia_plant_manager.model.service.impl
 import androidx.credentials.Credential
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
-import com.example.antheia_plant_manager.WEB_CLIENT_ID
 import com.example.antheia_plant_manager.model.service.AccountService
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
