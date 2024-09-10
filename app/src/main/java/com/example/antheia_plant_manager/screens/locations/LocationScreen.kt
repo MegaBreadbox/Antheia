@@ -8,17 +8,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.antheia_plant_manager.R
+import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
 import com.example.antheia_plant_manager.util.cardColor
 import com.example.compose.AntheiaplantmanagerTheme
 
@@ -28,7 +34,10 @@ fun LocationScreen() {
 }
 
 @Composable
-fun LocationListCompact() {
+fun LocationListCompact(
+    viewModel: LocationViewModel = hiltViewModel<LocationViewModel>()
+) {
+    val locationList by viewModel.locationsList.collectAsState()
     LazyColumn(
         contentPadding = PaddingValues(
             top = 16.dp,
@@ -36,8 +45,11 @@ fun LocationListCompact() {
         ),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        items(3) {
-            LocationCard(index = it)
+        itemsIndexed(items = locationList) { index, location ->
+            LocationCard(
+                index = index,
+                locationName = location
+            )
         }
     }
 }
@@ -46,6 +58,7 @@ fun LocationListCompact() {
 @Composable
 fun LocationCard(
     index: Int,
+    locationName: String,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -62,7 +75,7 @@ fun LocationCard(
                 .fillMaxSize()
         ) {
             Text(
-                text = "Backyard",
+                text = locationName,
                 maxLines = 1,
                 textAlign = TextAlign.Left,
                 style = MaterialTheme.typography.displayLarge,
@@ -75,6 +88,6 @@ fun LocationCard(
 @Preview(showBackground = true)
 fun PlantsScreenPreview() {
     AntheiaplantmanagerTheme(darkTheme = true) {
-        LocationScreen()
+        LocationListCompact(viewModel = LocationViewModel(PlantRepositoryImplMock()))
     }
 }

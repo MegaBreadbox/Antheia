@@ -10,7 +10,8 @@ fun PlantEntry.toPlant(): Plant {
         location = this.location,
         waterReminder = this.waterReminder,
         repottingReminder = this.repottingReminder,
-        fertilizerReminder = this.fertilizerReminder
+        fertilizerReminder = this.fertilizerReminder,
+        dateAdded = this.dateAdded
     )
 }
 
@@ -21,6 +22,7 @@ data class PlantEntry(
     val waterReminder: String = "", //formated, frequency+date
     val repottingReminder: String = "",
     val fertilizerReminder: String = "",
+    val dateAdded: String = "",
 )
 
 data class UiState(

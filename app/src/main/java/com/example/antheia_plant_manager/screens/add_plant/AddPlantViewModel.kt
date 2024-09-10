@@ -188,6 +188,9 @@ class AddPlantViewModel @Inject constructor(
 
     fun savePlant() {
         viewModelScope.launch {
+            currentDate.collectLatest {
+                _currentPlant.update {plant-> plant.copy(dateAdded = it.toString()) }
+            }
             plantDatabase.addPlant(_currentPlant.value.toPlant())
         }
     }

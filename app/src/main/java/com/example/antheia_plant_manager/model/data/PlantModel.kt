@@ -12,4 +12,5 @@ data class Plant(
     val waterReminder: String,  //format, frequency+date
     val repottingReminder: String,
     val fertilizerReminder: String,
+    val dateAdded: String
 )
