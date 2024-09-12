@@ -1,21 +1,15 @@
-package com.example.antheia_plant_manager.screens.locations
+package com.example.antheia_plant_manager.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.antheia_plant_manager.model.data.Plant
 import com.example.antheia_plant_manager.model.data.PlantRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LocationViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     plantDatabase: PlantRepository
 ): ViewModel() {
 

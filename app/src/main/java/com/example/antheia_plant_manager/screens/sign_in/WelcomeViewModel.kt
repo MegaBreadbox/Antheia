@@ -65,13 +65,14 @@ class WelcomeViewModel @Inject constructor(
         }
     }
 
-    fun signIn() {
+    fun signIn(navigate: () -> Unit) {
         viewModelScope.launch {
             try {
                 accountService.signIn(
                     email = emailText,
                     password = passwordText
                 )
+                navigate()
             } catch(e: Exception) {
                 when (e) {
                     is FirebaseAuthInvalidCredentialsException -> updateErrorText(R.string.wrong_user_details_error)
@@ -86,11 +87,12 @@ class WelcomeViewModel @Inject constructor(
         return googleSignIn.get().getCredentialRequest()
     }
 
-    fun googleSignIn(googleResponse: GetCredentialResponse) {
+    fun googleSignIn(googleResponse: GetCredentialResponse, navigate:() -> Unit) {
         viewModelScope.launch {
             try {
                 if (googleResponse.credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     accountService.googleSignIn(GoogleIdTokenCredential.createFrom(googleResponse.credential.data).idToken)
+                    navigate()
                 }
             } catch (e: Exception) {
                 updateErrorText(R.string.error_occurred_while_signing_in)
@@ -98,10 +100,11 @@ class WelcomeViewModel @Inject constructor(
         }
     }
 
-    fun anonymousSignIn() {
+    fun anonymousSignIn(navigate: () -> Unit) {
         viewModelScope.launch {
             try {
                 accountService.anonymousSignIn()
+                navigate()
             } catch (e: Exception) {
                 updateErrorText(R.string.error_occurred_while_signing_in)
             }

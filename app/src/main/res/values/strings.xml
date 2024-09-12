@@ -42,4 +42,6 @@
     <string name="confirm">Confirm</string>
     <string name="save">Save</string>
     <string name="exit_form">Exit form</string>
+    <string name="home">Home</string>
+    <string name="notifications">notifications</string>
 </resources>

@@ -11,7 +11,7 @@ import com.example.antheia_plant_manager.screens.create_account.CreateAccountScr
 import kotlinx.serialization.Serializable
 
 @Serializable
-object CreateAccount
+object CreateAccount: NavigationObject
 
 fun NavGraphBuilder.createAccount() {
     composable<CreateAccount>(

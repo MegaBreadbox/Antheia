@@ -53,6 +53,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun WelcomeScreen(
     navigateCreateAccount: () -> Unit,
+    navigateHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>(),
 ) {
@@ -85,10 +86,13 @@ fun WelcomeScreen(
             isPasswordVisible = uiState.value.isPasswordVisible,
             updateIsPasswordVisible = { viewModel.updateIsPasswordVisible() },
             signIn = {
-                viewModel.signIn()
+                viewModel.signIn(navigateHome)
                 keyboardController?.hide()
             },
-            anonymousSignIn = { viewModel.anonymousSignIn() },
+            anonymousSignIn = {
+                viewModel.anonymousSignIn(navigateHome)
+                navigateHome()
+            },
             googleSignIn = {
                 coroutineScope.launch {
                     try {
@@ -96,7 +100,7 @@ fun WelcomeScreen(
                             context = context,
                             request = viewModel.getGoogleSignInRequest()
                         )
-                        viewModel.googleSignIn(getResponse)
+                        viewModel.googleSignIn(getResponse, navigateHome)
                     } catch (e: GetCredentialCancellationException) {
                         viewModel.updateErrorText(R.string.google_sign_in_cancelled)
                     }
