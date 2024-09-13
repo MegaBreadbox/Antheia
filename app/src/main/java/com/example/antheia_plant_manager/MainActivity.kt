@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AntheiaplantmanagerTheme {
                 val windowSize = calculateWindowSizeClass(this)
-                    NavMenu(windowSize)
+                    NavMenu(windowSize.widthSizeClass)
             }
         }
     }

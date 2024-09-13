@@ -30,6 +30,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -260,6 +262,7 @@ fun WelcomeScreen(
                     painter = painterResource(id = R.drawable.android_neutral_rd_si),
                     contentDescription = stringResource(R.string.sign_in_with_google),
                     modifier = modifier
+                        .clip(RoundedCornerShape(dimensionResource(id = R.dimen.google_sign_in_button_shape)))
                         .clickable {
                             googleSignIn()
                         }

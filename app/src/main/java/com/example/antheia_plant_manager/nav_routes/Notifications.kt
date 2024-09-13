@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.antheia_plant_manager.screens.notifications.NotificationsScreen
 import com.example.antheia_plant_manager.util.AppBottomBar
+import com.example.antheia_plant_manager.util.AppScaffold
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,16 +16,11 @@ fun NavGraphBuilder.notifications(
     bottomAppBarNavigate: (NavigationObject) -> Unit
 ) {
     composable<Notifications>() {
-        Scaffold(
-            bottomBar = {
-                AppBottomBar(
-                    currentDestination = Notifications,
-                    navigate = { bottomAppBarNavigate(it) }
-                )
-            }
-        ) { padding ->
-            NotificationsScreen(modifier = Modifier.padding(padding))
-
+        AppScaffold(
+            currentDestination = Notifications,
+            bottomAppBarNavigate = bottomAppBarNavigate,
+        ) {
+            NotificationsScreen()
         }
     }
 }

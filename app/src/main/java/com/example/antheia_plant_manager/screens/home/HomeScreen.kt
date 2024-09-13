@@ -16,8 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,19 +42,23 @@ fun LocationListCompact(
     viewModel: HomeViewModel = hiltViewModel<HomeViewModel>()
 ) {
     val locationList by viewModel.locationsList.collectAsState()
-    LazyColumn(
-        contentPadding = PaddingValues(
-            top = 16.dp,
-            bottom = 16.dp
-        ),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        itemsIndexed(items = locationList) { index, location ->
-            LocationCard(
-                index = index,
-                locationName = location
-            )
+    if(locationList.isNotEmpty()) {
+        LazyColumn(
+            contentPadding = PaddingValues(
+                top = dimensionResource(id = R.dimen.dialog_padding),
+                bottom = dimensionResource(id = R.dimen.dialog_padding),
+            ),
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.dialog_padding))
+        ) {
+            itemsIndexed(items = locationList) { index, location ->
+                LocationCard(
+                    index = index,
+                    locationName = location
+                )
+            }
         }
+    } else {
+        EmptyPlantList()
     }
 }
 
@@ -67,8 +74,8 @@ fun LocationCard(
         elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.small_padding)),
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .height(200.dp)
+            .padding(horizontal = dimensionResource(id = R.dimen.dialog_padding))
+            .height(dimensionResource(id = R.dimen.location_card_height))
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -82,6 +89,24 @@ fun LocationCard(
                 style = MaterialTheme.typography.displayLarge,
             )
         }
+    }
+}
+
+@Composable
+fun EmptyPlantList(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.no_plants_found_would_you_like_to_add_some),
+            textAlign = TextAlign.Center,
+            modifier = modifier
+                .alpha(0.5F)
+        )
     }
 }
 
