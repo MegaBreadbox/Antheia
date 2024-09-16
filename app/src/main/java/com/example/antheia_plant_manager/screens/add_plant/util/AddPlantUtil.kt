@@ -11,12 +11,14 @@ fun PlantEntry.toPlant(): Plant {
         waterReminder = this.waterReminder,
         repottingReminder = this.repottingReminder,
         fertilizerReminder = this.fertilizerReminder,
-        dateAdded = this.dateAdded
+        dateAdded = this.dateAdded,
+        plantUserId = this.plantUserId,
     )
 }
 
 data class PlantEntry(
     val plantId: Int = 0,
+    val plantUserId: String = "",
     val name: String = "",
     val location: String = "",
     val waterReminder: String = "", //formated, frequency+date

@@ -10,7 +10,7 @@ interface PlantRepository {
 
     suspend fun updatePlant(plant: Plant)
 
-    fun getPlantLocations(): Flow<List<String>>
+    fun getPlantLocations(userId: String): Flow<List<String>>
 
-    fun getPlants(location: String): Flow<List<Plant>>
+    fun getPlants(userId: String, location: String): Flow<List<Plant>>
 }

@@ -11,6 +11,7 @@ import com.example.antheia_plant_manager.model.data.Plant
 import com.example.antheia_plant_manager.model.data.PlantRepository
 import com.example.antheia_plant_manager.model.data.impl.PlantDatabase
 import com.example.antheia_plant_manager.model.data.impl.PlantRepositoryImpl
+import com.example.antheia_plant_manager.model.service.AccountService
 import com.example.antheia_plant_manager.screens.add_plant.util.PlantEntry
 import com.example.antheia_plant_manager.screens.add_plant.util.ReminderFrequency
 import com.example.antheia_plant_manager.screens.add_plant.util.UiState
@@ -29,7 +30,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddPlantViewModel @Inject constructor(
-    private val plantDatabase: PlantRepository
+    private val plantDatabase: PlantRepository,
+    private val accountService: AccountService,
 ): ViewModel() {
 
     private val _currentPlant = MutableStateFlow(PlantEntry())
@@ -189,7 +191,12 @@ class AddPlantViewModel @Inject constructor(
     fun savePlant() {
         viewModelScope.launch {
             currentDate.collectLatest {
-                _currentPlant.update {plant-> plant.copy(dateAdded = it.toString()) }
+                _currentPlant.update { plant->
+                    plant.copy(
+                        dateAdded = it.toString(),
+                        plantUserId = accountService.currentUserId
+                    )
+                }
             }
             plantDatabase.addPlant(_currentPlant.value.toPlant())
         }

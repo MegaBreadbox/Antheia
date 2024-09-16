@@ -19,12 +19,12 @@ class PlantRepositoryImpl @Inject constructor (private val plantDao: PlantDao): 
         plantDao.updatePlant(plant)
     }
 
-    override fun getPlantLocations(): Flow<List<String>> {
-        return plantDao.getPlantLocations()
+    override fun getPlantLocations(userId: String): Flow<List<String>> {
+        return plantDao.getPlantLocations(userId)
     }
 
-    override fun getPlants(location: String): Flow<List<Plant>> {
-        return plantDao.getPlants(location)
+    override fun getPlants(userId: String, location: String): Flow<List<Plant>> {
+        return plantDao.getPlants(userId, location)
     }
 
 }

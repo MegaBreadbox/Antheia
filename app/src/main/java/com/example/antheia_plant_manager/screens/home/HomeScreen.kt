@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
+import com.example.antheia_plant_manager.model.service.mock.AccountServiceMock
 import com.example.antheia_plant_manager.util.cardColor
 import com.example.compose.AntheiaplantmanagerTheme
 
@@ -114,6 +115,9 @@ fun EmptyPlantList(
 @Preview(showBackground = true)
 fun PlantsScreenPreview() {
     AntheiaplantmanagerTheme(darkTheme = true) {
-        LocationListCompact(viewModel = HomeViewModel(PlantRepositoryImplMock()))
+        LocationListCompact(viewModel = HomeViewModel(
+            plantDatabase = PlantRepositoryImplMock(),
+            accountService = AccountServiceMock()
+        ))
     }
 }

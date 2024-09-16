@@ -13,6 +13,10 @@ import com.google.firebase.auth.oAuthCredential
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 class AccountServiceImpl @Inject constructor(): AccountService {
+
+    override val currentUserId: String
+        get() = Firebase.auth.currentUser?.uid.orEmpty()
+
     override suspend fun googleSignIn(idToken: String) {
         Firebase.auth.signInWithCredential(
             GoogleAuthProvider.getCredential(idToken, null)

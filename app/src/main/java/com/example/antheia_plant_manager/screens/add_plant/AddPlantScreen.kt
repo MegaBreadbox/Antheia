@@ -50,6 +50,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
+import com.example.antheia_plant_manager.model.service.mock.AccountServiceMock
 import com.example.antheia_plant_manager.screens.add_plant.util.AddPlantConstant
 import com.example.antheia_plant_manager.screens.add_plant.util.ReminderFrequency
 import com.example.antheia_plant_manager.util.ComposeText
@@ -533,7 +534,10 @@ fun CloseIcon(
 @Preview(showSystemUi = true)
 fun AddPlantScreenCompactPreview() {
     AntheiaplantmanagerTheme {
-        val addPlantViewModel = AddPlantViewModel(plantDatabase = PlantRepositoryImplMock())
+        val addPlantViewModel = AddPlantViewModel(
+            plantDatabase = PlantRepositoryImplMock(),
+            accountService = AccountServiceMock()
+        )
         PlantFormCompact(
             viewModel = addPlantViewModel,
             navigateBack = {}
@@ -544,7 +548,10 @@ fun AddPlantScreenCompactPreview() {
 @Preview
 fun AddPlantScreenMediumPreview() {
     AntheiaplantmanagerTheme {
-        val addPlantViewModel = AddPlantViewModel(PlantRepositoryImplMock())
+        val addPlantViewModel = AddPlantViewModel(
+            plantDatabase = PlantRepositoryImplMock(),
+            accountService = AccountServiceMock()
+        )
         PlantFormMedium(
             viewModel = addPlantViewModel,
             navigateBack = {}

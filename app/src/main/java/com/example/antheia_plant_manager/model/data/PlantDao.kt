@@ -20,10 +20,14 @@ interface PlantDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updatePlant(plant: Plant)
 
-    @Query("SELECT DISTINCT(location) from plant ORDER BY location ASC")
-    fun getPlantLocations(): Flow<List<String>>
+    @Query("SELECT DISTINCT(location) from plant " +
+            "WHERE plantUserId = :userId " +
+            "ORDER BY location ASC")
+    fun getPlantLocations(userId: String): Flow<List<String>>
 
-    @Query("SELECT * from plant WHERE location = :location ORDER BY name ASC")
-    fun getPlants(location: String): Flow<List<Plant>>
+    @Query("SELECT * from plant WHERE " +
+            "plantUserId = :userId AND " +
+            "location = :location ORDER BY name ASC")
+    fun getPlants(userId: String, location: String): Flow<List<Plant>>
 
 }

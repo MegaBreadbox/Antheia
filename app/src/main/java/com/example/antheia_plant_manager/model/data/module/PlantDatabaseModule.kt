@@ -22,6 +22,7 @@ object PlantDatabaseModule {
     ): PlantDatabase {
         return Room
             .databaseBuilder(context, PlantDatabase::class.java, "plant_database")
+            .fallbackToDestructiveMigration()
             .build()
     }
 

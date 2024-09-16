@@ -18,11 +18,11 @@ class PlantRepositoryImplMock: PlantRepository {
     override suspend fun updatePlant(plant: Plant) {
     }
 
-    override fun getPlantLocations(): Flow<List<String>> {
+    override fun getPlantLocations(userId: String): Flow<List<String>> {
         return flowOf(listOf("Location 1", "Location 2"))
     }
 
-    override fun getPlants(location: String): Flow<List<Plant>> {
+    override fun getPlants(userId: String, location: String): Flow<List<Plant>> {
         return flowOf(
             listOf(
                 PlantEntry().toPlant(),
