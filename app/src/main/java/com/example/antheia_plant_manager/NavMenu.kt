@@ -12,11 +12,14 @@ import com.example.antheia_plant_manager.nav_routes.AddPlant
 import com.example.antheia_plant_manager.nav_routes.CreateAccount
 import com.example.antheia_plant_manager.nav_routes.Home
 import com.example.antheia_plant_manager.nav_routes.Login
+import com.example.antheia_plant_manager.nav_routes.NavigationObject
 import com.example.antheia_plant_manager.nav_routes.addPlant
 import com.example.antheia_plant_manager.nav_routes.createAccount
 import com.example.antheia_plant_manager.nav_routes.home
 import com.example.antheia_plant_manager.nav_routes.loginScreen
 import com.example.antheia_plant_manager.nav_routes.notifications
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -27,12 +30,17 @@ fun NavMenu(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Login,
+        startDestination = checkLogin(),
         modifier = modifier
     ) {
+
         loginScreen(
             navigateCreateAccount = { navController.navigate(CreateAccount) },
-            navigateHome = { navController.navigate(App) }
+            navigateHome = {
+                navController.navigate(App) {
+                    popUpToRoute
+                }
+            }
         )
         createAccount()
         navigation<App>(startDestination = Home) {
@@ -49,5 +57,13 @@ fun NavMenu(
     }
 }
 
+private fun checkLogin(): NavigationObject {
+    return if(Firebase.auth.currentUser == null) {
+        Login
+    } else {
+        App
+    }
+}
+
 @Serializable
-object App
+object App: NavigationObject

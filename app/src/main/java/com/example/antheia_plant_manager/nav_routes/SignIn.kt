@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.antheia_plant_manager.nav_routes.util.AnimationConstants
 import com.example.antheia_plant_manager.screens.sign_in.WelcomeScreen
 import kotlinx.serialization.Serializable
 
@@ -20,18 +21,10 @@ fun NavGraphBuilder.loginScreen(
 ) {
     composable<Login>(
         enterTransition = {
-            fadeIn(
-                animationSpec = tween(
-                    durationMillis = 2000,
-                )
-            )
+            AnimationConstants.fadeInAnimation()
         },
         exitTransition = {
-            fadeOut(
-                animationSpec = tween(
-                    durationMillis = 100,
-                )
-            )
+            AnimationConstants.fadeOutAnimation()
         }
     ) {
         WelcomeScreen(

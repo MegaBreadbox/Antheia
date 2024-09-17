@@ -7,6 +7,7 @@ import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.antheia_plant_manager.nav_routes.util.AnimationConstants
 import com.example.antheia_plant_manager.screens.create_account.CreateAccountScreen
 import kotlinx.serialization.Serializable
 
@@ -16,18 +17,10 @@ object CreateAccount: NavigationObject
 fun NavGraphBuilder.createAccount() {
     composable<CreateAccount>(
         enterTransition = {
-            fadeIn(
-                animationSpec = tween(
-                    durationMillis = 1000,
-                )
-            )
+            AnimationConstants.fadeInAnimation()
         },
         exitTransition = {
-            fadeOut(
-                animationSpec = tween(
-                    durationMillis = 100,
-                )
-            )
+            AnimationConstants.fadeOutAnimation()
         }
     ) {
         CreateAccountScreen()
