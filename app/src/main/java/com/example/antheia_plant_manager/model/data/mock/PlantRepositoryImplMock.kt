@@ -30,4 +30,8 @@ class PlantRepositoryImplMock: PlantRepository {
             )
         )
     }
+
+    override fun getPlantLocationSuggestions(query: String): Flow<List<String>> {
+        return flowOf(listOf("Location 1", "Location 2"))
+    }
 }

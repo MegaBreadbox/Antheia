@@ -18,11 +18,16 @@ import com.example.antheia_plant_manager.screens.add_plant.util.UiState
 import com.example.antheia_plant_manager.screens.add_plant.util.toPlant
 import com.example.antheia_plant_manager.util.ComposeText
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -39,7 +44,6 @@ class AddPlantViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
 
-
     private val currentDate: Flow<LocalDate> = flow {
         emit(LocalDate.now())
     }
@@ -49,6 +53,16 @@ class AddPlantViewModel @Inject constructor(
 
     var locationName by mutableStateOf("")
         private set
+
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val suggestions =
+        _currentPlant
+            .filter { it.location.isNotEmpty() }
+            .flatMapLatest { currentPlant ->
+            plantDatabase.getPlantLocationSuggestions(currentPlant.location)
+        }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     fun updatePlantName(name: String) {
         plantName = name
@@ -60,7 +74,9 @@ class AddPlantViewModel @Inject constructor(
     fun updateLocation(location: String) {
         locationName = location
         _currentPlant.update {
-            it.copy(location = location)
+            it.copy(
+                location = location
+            )
         }
     }
 
@@ -175,17 +191,10 @@ class AddPlantViewModel @Inject constructor(
         }
     }
 
-    private fun validatePlantAdvancedSettings(plant: PlantEntry): Boolean {
-        return if(_uiState.value.isAdvancedSettingsEnabled) {
-            plant.repottingReminder.isNotEmpty() && plant.fertilizerReminder.isNotEmpty()
-        } else true
-    }
-
     fun validatePlant(): Boolean {
         return _currentPlant.value.name.isNotEmpty() &&
             _currentPlant.value.location.isNotEmpty() &&
-            _currentPlant.value.waterReminder.isNotEmpty() &&
-            validatePlantAdvancedSettings(_currentPlant.value)
+            _currentPlant.value.waterReminder.isNotEmpty()
     }
 
     fun savePlant() {

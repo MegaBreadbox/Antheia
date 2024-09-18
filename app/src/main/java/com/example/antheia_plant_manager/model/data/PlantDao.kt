@@ -30,4 +30,9 @@ interface PlantDao {
             "location = :location ORDER BY name ASC")
     fun getPlants(userId: String, location: String): Flow<List<Plant>>
 
+    @Query("SELECT location from plant WHERE " +
+            "location LIKE '%' || :location || '%'" +
+            "LIMIT 3")
+    fun getPlantLocationSuggestions(location: String): Flow<List<String>>
+
 }

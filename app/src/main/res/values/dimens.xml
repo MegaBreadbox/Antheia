@@ -15,5 +15,5 @@
     <dimen name="icon_size">40dp</dimen>
     <dimen name="icon_button_touch_target">60dp</dimen>
     <dimen name="google_sign_in_button_shape">16dp</dimen>
-    <dimen name="location_card_height">200dp</dimen>"
+    <dimen name="location_card_height">200dp</dimen>
 </resources>
