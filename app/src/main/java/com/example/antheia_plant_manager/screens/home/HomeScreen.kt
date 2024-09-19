@@ -1,5 +1,6 @@
 package com.example.antheia_plant_manager.screens.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,9 +20,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -33,14 +36,18 @@ import com.example.compose.AntheiaplantmanagerTheme
 
 @Composable
 fun HomeScreen(
+    navigatePlantList: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LocationListCompact()
+    LocationListCompact(
+        navigatePlantList
+    )
 }
 
 @Composable
 fun LocationListCompact(
-    viewModel: HomeViewModel = hiltViewModel<HomeViewModel>()
+    navigatePlantList: (String) -> Unit,
+    viewModel: HomeViewModel = hiltViewModel<HomeViewModel>(),
 ) {
     val locationList by viewModel.locationsList.collectAsState()
     if(locationList.isNotEmpty()) {
@@ -54,7 +61,8 @@ fun LocationListCompact(
             itemsIndexed(items = locationList) { index, location ->
                 LocationCard(
                     index = index,
-                    locationName = location
+                    locationName = location,
+                    navigatePlantList = navigatePlantList
                 )
             }
         }
@@ -68,6 +76,7 @@ fun LocationListCompact(
 fun LocationCard(
     index: Int,
     locationName: String,
+    navigatePlantList: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -77,6 +86,8 @@ fun LocationCard(
             .fillMaxWidth()
             .padding(horizontal = dimensionResource(id = R.dimen.dialog_padding))
             .height(dimensionResource(id = R.dimen.location_card_height))
+            .clickable { navigatePlantList(locationName) }
+            .clip(CardDefaults.shape)
     ) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -85,6 +96,7 @@ fun LocationCard(
         ) {
             Text(
                 text = locationName,
+                overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
                 textAlign = TextAlign.Left,
                 style = MaterialTheme.typography.displayLarge,
@@ -115,9 +127,12 @@ fun EmptyPlantList(
 @Preview(showBackground = true)
 fun PlantsScreenPreview() {
     AntheiaplantmanagerTheme(darkTheme = true) {
-        LocationListCompact(viewModel = HomeViewModel(
-            plantDatabase = PlantRepositoryImplMock(),
-            accountService = AccountServiceMock()
-        ))
+        LocationListCompact(
+            viewModel = HomeViewModel(
+                plantDatabase = PlantRepositoryImplMock(),
+                accountService = AccountServiceMock()
+            ),
+            navigatePlantList = { }
+        )
     }
 }

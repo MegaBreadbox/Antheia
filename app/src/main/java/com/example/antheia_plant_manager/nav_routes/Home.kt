@@ -26,6 +26,7 @@ object Home: NavigationObject
 
 fun NavGraphBuilder.home(
     navigateAddPlant: () -> Unit,
+    navigatePlantList: (String) -> Unit,
     bottomAppBarNavigate: (NavigationObject) -> Unit,
 ) {
     composable<Home>(
@@ -53,7 +54,9 @@ fun NavGraphBuilder.home(
                 }
             }
         ) {
-            HomeScreen()
+            HomeScreen(
+                navigatePlantList = navigatePlantList
+            )
         }
     }
 }

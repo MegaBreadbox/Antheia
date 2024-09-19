@@ -13,11 +13,13 @@ import com.example.antheia_plant_manager.nav_routes.CreateAccount
 import com.example.antheia_plant_manager.nav_routes.Home
 import com.example.antheia_plant_manager.nav_routes.Login
 import com.example.antheia_plant_manager.nav_routes.NavigationObject
+import com.example.antheia_plant_manager.nav_routes.PlantList
 import com.example.antheia_plant_manager.nav_routes.addPlant
 import com.example.antheia_plant_manager.nav_routes.createAccount
 import com.example.antheia_plant_manager.nav_routes.home
 import com.example.antheia_plant_manager.nav_routes.loginScreen
 import com.example.antheia_plant_manager.nav_routes.notifications
+import com.example.antheia_plant_manager.nav_routes.plantList
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlinx.serialization.Serializable
@@ -46,12 +48,16 @@ fun NavMenu(
         navigation<App>(startDestination = Home) {
             home(
                 bottomAppBarNavigate = { navController.navigate(it) },
-                navigateAddPlant = { navController.navigate(AddPlant) }
+                navigateAddPlant = { navController.navigate(AddPlant) },
+                navigatePlantList = { navController.navigate(PlantList(it)) }
             )
             notifications(bottomAppBarNavigate = { navController.navigate(it) })
             addPlant(
                 windowSize = windowSize,
                 navigateBack = { navController.popBackStack() }
+            )
+            plantList(
+                navigatePlantDetails = { }
             )
         }
     }
