@@ -46,4 +46,11 @@
     <string name="notifications">notifications</string>
     <string name="no_plants_found_would_you_like_to_add_some">No plants found.\n Would you like to add some?</string>
     <string name="add_plant">Add plant</string>
+    <string name="no_reminder_set">No reminder set</string>
+    <string name="no_water_needed">No water needed</string>
+    <string name="water_needed">Water needed</string>
+    <string name="no_repotting_needed">No repotting needed</string>
+    <string name="repotting_needed">Repotting needed</string>
+    <string name="no_fertilizer_needed">No fertilizer needed</string>
+    <string name="fertilizer_needed">Fertilizer needed</string>
 </resources>

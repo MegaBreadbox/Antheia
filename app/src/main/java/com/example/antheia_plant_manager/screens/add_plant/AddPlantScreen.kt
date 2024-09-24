@@ -288,8 +288,7 @@ fun PlantFormCompact(
         Button(
             enabled = viewModel.validatePlant(),
             onClick = {
-                viewModel.savePlant()
-                navigateBack()
+                viewModel.savePlant(navigateBack)
             },
             modifier = modifier
                 .width(dimensionResource(id = R.dimen.button_wide))
@@ -493,8 +492,7 @@ fun PlantFormMedium(
         Button(
             enabled = viewModel.validatePlant(),
             onClick = {
-                viewModel.savePlant()
-                navigateBack()
+                viewModel.savePlant(navigateBack)
             },
             modifier = modifier
                 .width(dimensionResource(id = R.dimen.button_wide))

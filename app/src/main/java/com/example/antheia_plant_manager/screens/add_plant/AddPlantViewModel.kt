@@ -17,8 +17,11 @@ import com.example.antheia_plant_manager.screens.add_plant.util.ReminderFrequenc
 import com.example.antheia_plant_manager.screens.add_plant.util.UiState
 import com.example.antheia_plant_manager.screens.add_plant.util.toPlant
 import com.example.antheia_plant_manager.util.ComposeText
+import com.example.antheia_plant_manager.util.DATE_CHECK_DELAY
+import com.example.antheia_plant_manager.util.SUBSCRIBE_DELAY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -45,7 +48,10 @@ class AddPlantViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     private val currentDate: Flow<LocalDate> = flow {
-        emit(LocalDate.now())
+        while(true) {
+            emit(LocalDate.now())
+            delay(DATE_CHECK_DELAY)
+        }
     }
 
     var plantName by mutableStateOf("")
@@ -62,7 +68,7 @@ class AddPlantViewModel @Inject constructor(
             .flatMapLatest { currentPlant ->
             plantDatabase.getPlantLocationSuggestions(currentPlant.location)
         }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY), emptyList())
 
     fun updatePlantName(name: String) {
         plantName = name
@@ -197,7 +203,7 @@ class AddPlantViewModel @Inject constructor(
             _currentPlant.value.waterReminder.isNotEmpty()
     }
 
-    fun savePlant() {
+    fun savePlant(navigation: () -> Unit) {
         viewModelScope.launch {
             currentDate.collectLatest {
                 _currentPlant.update { plant->
@@ -206,8 +212,9 @@ class AddPlantViewModel @Inject constructor(
                         plantUserId = accountService.currentUserId
                     )
                 }
+                plantDatabase.addPlant(_currentPlant.value.toPlant())
+                navigation()
             }
-            plantDatabase.addPlant(_currentPlant.value.toPlant())
         }
     }
 }

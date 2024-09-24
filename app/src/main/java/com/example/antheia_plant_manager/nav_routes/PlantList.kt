@@ -12,10 +12,10 @@ data class PlantList(val location: String): NavigationObject
 fun NavGraphBuilder.plantList(
     navigatePlantDetails: () -> Unit,
 ) {
-    composable<PlantList> { backStackEntry ->
-        val plantList: PlantList = backStackEntry.toRoute()
+    composable<PlantList> {
+
         PlantListScreen(
-            location = plantList.location
+            navigatePlantDetails = { }
         )
     }
 
