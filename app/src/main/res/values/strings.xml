@@ -53,4 +53,14 @@
     <string name="repotting_needed">Repotting needed</string>
     <string name="no_fertilizer_needed">No fertilizer needed</string>
     <string name="fertilizer_needed">Fertilizer needed</string>
+    <string name="summary">Summary</string>
+    <string name="notes">Notes</string>
+    <string name="water">Water</string>
+    <string name="repot">Repot</string>
+    <string name="fertilize">Fertilize</string>
+    <string name="next_watering_date">Next watering date</string>
+    <string name="next_repotting_date">Next repotting date</string>
+    <string name="next_fertilizing_date">Next fertilizing date</string>
+    <string name="date_added">Date added</string>
+    <string name="settings">Settings</string>
 </resources>

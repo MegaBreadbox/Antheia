@@ -7,9 +7,7 @@ import com.example.antheia_plant_manager.model.service.AccountService
 import com.example.antheia_plant_manager.util.SUBSCRIBE_DELAY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,16 +1,12 @@
 package com.example.antheia_plant_manager.screens.add_plant
 
-import android.os.Build
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
-import com.example.antheia_plant_manager.model.data.Plant
 import com.example.antheia_plant_manager.model.data.PlantRepository
-import com.example.antheia_plant_manager.model.data.impl.PlantDatabase
-import com.example.antheia_plant_manager.model.data.impl.PlantRepositoryImpl
 import com.example.antheia_plant_manager.model.service.AccountService
 import com.example.antheia_plant_manager.screens.add_plant.util.PlantEntry
 import com.example.antheia_plant_manager.screens.add_plant.util.ReminderFrequency

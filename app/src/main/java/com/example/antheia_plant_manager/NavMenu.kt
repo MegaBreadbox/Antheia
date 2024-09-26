@@ -13,12 +13,14 @@ import com.example.antheia_plant_manager.nav_routes.CreateAccount
 import com.example.antheia_plant_manager.nav_routes.Home
 import com.example.antheia_plant_manager.nav_routes.Login
 import com.example.antheia_plant_manager.nav_routes.NavigationObject
+import com.example.antheia_plant_manager.nav_routes.PlantDetails
 import com.example.antheia_plant_manager.nav_routes.PlantList
 import com.example.antheia_plant_manager.nav_routes.addPlant
 import com.example.antheia_plant_manager.nav_routes.createAccount
 import com.example.antheia_plant_manager.nav_routes.home
 import com.example.antheia_plant_manager.nav_routes.loginScreen
 import com.example.antheia_plant_manager.nav_routes.notifications
+import com.example.antheia_plant_manager.nav_routes.plantDetails
 import com.example.antheia_plant_manager.nav_routes.plantList
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -57,7 +59,10 @@ fun NavMenu(
                 navigateBack = { navController.popBackStack() }
             )
             plantList(
-                navigatePlantDetails = { }
+                navigatePlantDetails = { navController.navigate(PlantDetails(it)) }
+            )
+            plantDetails(
+
             )
         }
     }

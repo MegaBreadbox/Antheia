@@ -4,6 +4,8 @@ import com.example.antheia_plant_manager.model.service.AccountService
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 
 class AccountServiceMock: AccountService {
+    override val currentUserId: String = "user123"
+
     override suspend fun googleSignIn(idToken: String) {
     }
 

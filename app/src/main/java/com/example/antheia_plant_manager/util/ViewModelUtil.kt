@@ -9,8 +9,22 @@ const val DATE_CHECK_DELAY = 60000L
 
 fun String.toLocalDate(): LocalDate {
     return LocalDate.parse(
-        this.split("+")[1]
+        this.substringAfter("+"),
     )
+}
+
+fun String.daysSinceLastReminder(): Int {
+    return this.toLocalDate().let {
+        LocalDate.now().until(it).days
+    }
+}
+
+fun String.getReminderFrequency(): String {
+    return this.substringBefore("+")
+}
+
+fun String.getLastReminderDate(): String {
+    return this.substringAfter("+")
 }
 
 sealed class Reminder {

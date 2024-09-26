@@ -35,4 +35,8 @@ interface PlantDao {
             "LIMIT 3")
     fun getPlantLocationSuggestions(location: String): Flow<List<String>>
 
+    @Query("SELECT * from plant WHERE plantUserId = :userId" +
+            " AND plantId = :plantId")
+    fun getPlant(userId: String, plantId: Int): Flow<Plant>
+
 }

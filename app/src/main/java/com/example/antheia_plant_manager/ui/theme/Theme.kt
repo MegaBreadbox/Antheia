@@ -3,6 +3,7 @@ import android.app.Activity
 import android.os.Build
 import android.window.SplashScreen
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
@@ -17,6 +18,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import com.example.ui.theme.AppTypography
+
+@Immutable
+data class ExtendedColorScheme(
+    val water: ColorFamily,
+    val soil: ColorFamily,
+    val fertilizer: ColorFamily,
+)
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -246,6 +254,133 @@ private val highContrastDarkColorScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDarkHighContrast,
 )
 
+val extendedLight = ExtendedColorScheme(
+    water = ColorFamily(
+        waterLight,
+        onWaterLight,
+        waterContainerLight,
+        onWaterContainerLight,
+    ),
+    soil = ColorFamily(
+        soilLight,
+        onSoilLight,
+        soilContainerLight,
+        onSoilContainerLight,
+    ),
+    fertilizer = ColorFamily(
+        fertilizerLight,
+        onFertilizerLight,
+        fertilizerContainerLight,
+        onFertilizerContainerLight,
+    )
+)
+
+
+val extendedDark = ExtendedColorScheme(
+    water = ColorFamily(
+        waterDark,
+        onWaterDark,
+        waterContainerDark,
+        onWaterContainerDark,
+    ),
+    soil = ColorFamily(
+        soilDark,
+        onSoilDark,
+        soilContainerDark,
+        onSoilContainerDark,
+    ),
+    fertilizer = ColorFamily(
+        fertilizerDark,
+        onFertilizerDark,
+        fertilizerContainerDark,
+        onFertilizerContainerDark,
+    ),
+)
+
+val extendedLightMediumContrast = ExtendedColorScheme(
+    water = ColorFamily(
+        waterLightMediumContrast,
+        onWaterLightMediumContrast,
+        waterContainerLightMediumContrast,
+        onWaterContainerLightMediumContrast,
+    ),
+    soil = ColorFamily(
+        soilLightMediumContrast,
+        onSoilLightMediumContrast,
+        soilContainerLightMediumContrast,
+        onSoilContainerLightMediumContrast,
+    ),
+    fertilizer = ColorFamily(
+        fertilizerLightMediumContrast,
+        onFertilizerLightMediumContrast,
+        fertilizerContainerLightMediumContrast,
+        onFertilizerContainerLightMediumContrast,
+    ),
+)
+
+val extendedLightHighContrast = ExtendedColorScheme(
+    water = ColorFamily(
+        waterLightHighContrast,
+        onWaterLightHighContrast,
+        waterContainerLightHighContrast,
+        onWaterContainerLightHighContrast,
+    ),
+    soil = ColorFamily(
+        soilLightHighContrast,
+        onSoilLightHighContrast,
+        soilContainerLightHighContrast,
+        onSoilContainerLightHighContrast,
+    ),
+    fertilizer = ColorFamily(
+        fertilizerLightHighContrast,
+        onFertilizerLightHighContrast,
+        fertilizerContainerLightHighContrast,
+        onFertilizerContainerLightHighContrast,
+    ),
+)
+
+val extendedDarkMediumContrast = ExtendedColorScheme(
+    water = ColorFamily(
+        waterDarkMediumContrast,
+        onWaterDarkMediumContrast,
+        waterContainerDarkMediumContrast,
+        onWaterContainerDarkMediumContrast,
+    ),
+    soil = ColorFamily(
+        soilDarkMediumContrast,
+        onSoilDarkMediumContrast,
+        soilContainerDarkMediumContrast,
+        onSoilContainerDarkMediumContrast,
+    ),
+    fertilizer = ColorFamily(
+        fertilizerDarkMediumContrast,
+        onFertilizerDarkMediumContrast,
+        fertilizerContainerDarkMediumContrast,
+        onFertilizerContainerDarkMediumContrast,
+    ),
+)
+
+val extendedDarkHighContrast = ExtendedColorScheme(
+    water = ColorFamily(
+        waterDarkHighContrast,
+        onWaterDarkHighContrast,
+        waterContainerDarkHighContrast,
+        onWaterContainerDarkHighContrast,
+    ),
+    soil = ColorFamily(
+        soilDarkHighContrast,
+        onSoilDarkHighContrast,
+        soilContainerDarkHighContrast,
+        onSoilContainerDarkHighContrast,
+    ),
+    fertilizer = ColorFamily(
+        fertilizerDarkHighContrast,
+        onFertilizerDarkHighContrast,
+        fertilizerContainerDarkHighContrast,
+        onFertilizerContainerDarkHighContrast,
+    ),
+)
+
 @Immutable
 data class ColorFamily(
     val color: Color,
@@ -280,5 +415,13 @@ fun AntheiaplantmanagerTheme(
     typography = AppTypography,
     content = content
   )
+}
+@Composable
+fun MaterialTheme.extendedColorScheme(): ExtendedColorScheme {
+    return if(isSystemInDarkTheme()) {
+        extendedDark
+    } else {
+        extendedLight
+    }
 }
 

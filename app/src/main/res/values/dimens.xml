@@ -9,6 +9,7 @@
     <dimen name="medium_padding">8dp</dimen>
     <dimen name="big_padding">12dp</dimen>
     <dimen name="large_padding">32dp</dimen>"
+    <dimen name="huge_padding">64dp</dimen>"
     <dimen name="textfield_size_compact">280dp</dimen>
     <dimen name="textfield_size_mini">140dp</dimen>
     <dimen name="button_wide">280dp</dimen>
@@ -17,5 +18,7 @@
     <dimen name="google_sign_in_button_shape">16dp</dimen>
     <dimen name="location_card_height">200dp</dimen>
     <dimen name="header_card_top_corner_radius">0dp</dimen>
-    <dimen name="header_card_bottom_corner_radius">100dp</dimen>"
+    <dimen name="header_card_bottom_corner_radius">100dp</dimen>
+    <dimen name="plant_avatar_size">200dp</dimen>
+    <dimen name="task_button_size">100dp</dimen>"
 </resources>

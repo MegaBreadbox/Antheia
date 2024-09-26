@@ -1,23 +1,19 @@
 package com.example.antheia_plant_manager.screens.add_plant
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -31,17 +27,15 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -54,8 +48,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -74,7 +66,6 @@ import com.example.antheia_plant_manager.util.ComposeText
 import com.example.antheia_plant_manager.util.OutlinedDisabledColorToActive
 import com.example.antheia_plant_manager.util.OutlinedTextFieldClickModifier
 import com.example.compose.AntheiaplantmanagerTheme
-import kotlin.math.exp
 
 @Composable
 fun AddPlantScreen(
@@ -169,6 +160,7 @@ fun PlantFormCompact(
             modifier = modifier.fillMaxWidth()
         ) {
             Text(
+                color = MaterialTheme.colorScheme.onBackground,
                 text = stringResource(R.string.watering_frequency),
                 modifier = modifier.weight(1f)
             )
@@ -204,7 +196,10 @@ fun PlantFormCompact(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(R.string.advanced_settings))
+            Text(
+                text = stringResource(R.string.advanced_settings),
+                color = MaterialTheme.colorScheme.onBackground
+            )
             Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.medium_padding)))
             Switch(
                 checked = uiState.value.isAdvancedSettingsEnabled,
@@ -231,6 +226,7 @@ fun PlantFormCompact(
                 ) {
                     Text(
                         text = stringResource(R.string.repotting_frequency),
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = modifier
                             .weight(1f)
                     )
@@ -260,6 +256,7 @@ fun PlantFormCompact(
                 ) {
                     Text(
                         text = stringResource(R.string.fertilizing_frequency),
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = modifier.weight(1f)
                     )
                     Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.medium_padding)))
@@ -376,6 +373,7 @@ fun PlantFormMedium(
         ) {
             Text(
                 text = stringResource(R.string.watering_frequency),
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = modifier
             )
             Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.medium_padding)))
@@ -410,7 +408,10 @@ fun PlantFormMedium(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(R.string.advanced_settings))
+            Text(
+                text = stringResource(R.string.advanced_settings),
+                color = MaterialTheme.colorScheme.onBackground,
+            )
             Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.medium_padding)))
             Switch(
                 checked = uiState.value.isAdvancedSettingsEnabled,
@@ -437,6 +438,7 @@ fun PlantFormMedium(
                 ) {
                     Text(
                         text = stringResource(R.string.repotting_frequency),
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = modifier
                     )
                     Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.medium_padding)))
@@ -464,6 +466,7 @@ fun PlantFormMedium(
                 ) {
                     Text(
                         text = stringResource(R.string.fertilizing_frequency),
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = modifier
                     )
                     Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.medium_padding)))

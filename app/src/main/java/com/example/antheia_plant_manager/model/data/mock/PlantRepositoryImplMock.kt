@@ -34,4 +34,8 @@ class PlantRepositoryImplMock: PlantRepository {
     override fun getPlantLocationSuggestions(query: String): Flow<List<String>> {
         return flowOf(listOf("Location 1", "Location 2"))
     }
+
+    override fun getPlant(userId: String, plantId: Int): Flow<Plant> {
+        return flowOf(PlantEntry().toPlant())
+    }
 }

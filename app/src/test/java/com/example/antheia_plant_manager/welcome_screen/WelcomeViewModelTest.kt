@@ -51,13 +51,13 @@ class WelcomeViewModelTest {
     fun welcomeViewModel_signIn_Success() = runTest {
         viewModel.updateEmail("a@gmail.com")
         viewModel.updatePassword("123456")
-        viewModel.signIn()
+        viewModel.signIn { }
         assert(viewModel.uiState.value.errorText == null)
     }
 
     @Test
     fun welcomeViewModel_anonymousSignIn_Success() = runTest {
-        viewModel.anonymousSignIn()
+        viewModel.anonymousSignIn() { }
         assert(viewModel.uiState.value.errorText == null)
     }
 
