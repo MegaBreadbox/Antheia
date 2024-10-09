@@ -17,4 +17,6 @@ interface PlantRepository {
     fun getPlantLocationSuggestions(query: String): Flow<List<String>>
 
     fun getPlant(userId: String, plantId: Int): Flow<Plant>
+
+    fun getAllPlants(userId: String): Flow<List<Plant>>
 }

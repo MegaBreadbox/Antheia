@@ -6,7 +6,6 @@ import com.example.antheia_plant_manager.screens.add_plant.util.PlantEntry
 import com.example.antheia_plant_manager.screens.add_plant.util.toPlant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import javax.inject.Inject
 
 class PlantRepositoryImplMock: PlantRepository {
     override suspend fun addPlant(plant: Plant) {
@@ -37,5 +36,14 @@ class PlantRepositoryImplMock: PlantRepository {
 
     override fun getPlant(userId: String, plantId: Int): Flow<Plant> {
         return flowOf(PlantEntry().toPlant())
+    }
+
+    override fun getAllPlants(userId: String): Flow<List<Plant>> {
+        return flowOf(
+            listOf(
+                PlantEntry().toPlant(),
+                PlantEntry().toPlant()
+            )
+        )
     }
 }

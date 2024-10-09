@@ -61,7 +61,7 @@ fun cardColor(index: Int): CardColors {
 }
 
 @Composable
-fun OutlinedDisabledColorToActive(): TextFieldColors {
+fun outlinedDisabledColorToActive(): TextFieldColors {
     return OutlinedTextFieldDefaults.colors(
         disabledPrefixColor = OutlinedTextFieldDefaults.colors().unfocusedPrefixColor,
         disabledLabelColor = OutlinedTextFieldDefaults.colors().unfocusedLabelColor,
@@ -78,7 +78,7 @@ fun OutlinedDisabledColorToActive(): TextFieldColors {
 }
 
 @Composable
-fun OutlinedTextFieldClickModifier(
+fun outlinedTextFieldClickModifier(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }

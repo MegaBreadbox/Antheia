@@ -69,8 +69,10 @@ dependencies {
     //daggerHilt
     ksp(libs.ksp.dagger.hilt)
     ksp(libs.ksp.dagger)
+    ksp(libs.androidx.hilt.compiler)
     implementation(libs.google.dagger)
     implementation(libs.androidx.hilt)
+    implementation(libs.androidx.hilt.hilt.work)
 
     //room
     implementation(libs.room.runtime)

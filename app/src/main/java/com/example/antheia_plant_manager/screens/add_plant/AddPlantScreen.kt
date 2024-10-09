@@ -60,11 +60,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
 import com.example.antheia_plant_manager.model.service.mock.AccountServiceMock
+import com.example.antheia_plant_manager.model.worker.mock.ReminderRepositoryImplMock
 import com.example.antheia_plant_manager.screens.add_plant.util.AddPlantConstant
 import com.example.antheia_plant_manager.screens.add_plant.util.ReminderFrequency
 import com.example.antheia_plant_manager.util.ComposeText
-import com.example.antheia_plant_manager.util.OutlinedDisabledColorToActive
-import com.example.antheia_plant_manager.util.OutlinedTextFieldClickModifier
+import com.example.antheia_plant_manager.util.outlinedDisabledColorToActive
+import com.example.antheia_plant_manager.util.outlinedTextFieldClickModifier
 import com.example.compose.AntheiaplantmanagerTheme
 
 @Composable
@@ -170,7 +171,7 @@ fun PlantFormCompact(
                 onValueChange = {},
                 enabled = false,
                 readOnly = true,
-                colors = OutlinedDisabledColorToActive(),
+                colors = outlinedDisabledColorToActive(),
                 shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
                 trailingIcon = {
                     Icon(
@@ -178,7 +179,7 @@ fun PlantFormCompact(
                         contentDescription = stringResource(R.string.water_frequency_dropdown)
                     )
                 },
-                modifier = OutlinedTextFieldClickModifier(onClick = { viewModel.updateWaterFrequencyDialog() })
+                modifier = outlinedTextFieldClickModifier(onClick = { viewModel.updateWaterFrequencyDialog() })
             )
         }
         if(viewModel.isDialogCurrentlyActive()) {
@@ -236,7 +237,7 @@ fun PlantFormCompact(
                         onValueChange = {},
                         enabled = false,
                         readOnly = true,
-                        colors = OutlinedDisabledColorToActive(),
+                        colors = outlinedDisabledColorToActive(),
                         shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
                         trailingIcon = {
                             Icon(
@@ -244,7 +245,7 @@ fun PlantFormCompact(
                                 contentDescription = stringResource(R.string.repotting_frequency_dropdown)
                             )
                         },
-                        modifier = OutlinedTextFieldClickModifier(onClick = { viewModel.updateRepottingFrequencyDialog() })
+                        modifier = outlinedTextFieldClickModifier(onClick = { viewModel.updateRepottingFrequencyDialog() })
                     )
                 }
 
@@ -264,7 +265,7 @@ fun PlantFormCompact(
                         value = viewModel.reminderFrequency(ReminderFrequency.FERTILIZERREMINDER),
                         onValueChange = {},
                         enabled = false,
-                        colors = OutlinedDisabledColorToActive(),
+                        colors = outlinedDisabledColorToActive(),
                         readOnly = true,
                         shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
                         trailingIcon = {
@@ -273,7 +274,7 @@ fun PlantFormCompact(
                                 contentDescription = stringResource(R.string.fertilizing_frequency_dropdown)
                             )
                         },
-                        modifier = OutlinedTextFieldClickModifier(onClick = { viewModel.updateFertilizerFrequencyDialog() })
+                        modifier = outlinedTextFieldClickModifier(onClick = { viewModel.updateFertilizerFrequencyDialog() })
                     )
                 }
                 Spacer(
@@ -382,7 +383,7 @@ fun PlantFormMedium(
                 onValueChange = {},
                 enabled = false,
                 readOnly = true,
-                colors = OutlinedDisabledColorToActive(),
+                colors = outlinedDisabledColorToActive(),
                 shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
                 trailingIcon = {
                     Icon(
@@ -390,7 +391,7 @@ fun PlantFormMedium(
                         contentDescription = stringResource(R.string.water_frequency_dropdown)
                     )
                 },
-                modifier = OutlinedTextFieldClickModifier(onClick = { viewModel.updateWaterFrequencyDialog() })
+                modifier = outlinedTextFieldClickModifier(onClick = { viewModel.updateWaterFrequencyDialog() })
             )
         }
         if(viewModel.isDialogCurrentlyActive()) {
@@ -447,7 +448,7 @@ fun PlantFormMedium(
                         onValueChange = {},
                         enabled = false,
                         readOnly = true,
-                        colors = OutlinedDisabledColorToActive(),
+                        colors = outlinedDisabledColorToActive(),
                         shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
                         trailingIcon = {
                             Icon(
@@ -455,7 +456,7 @@ fun PlantFormMedium(
                                 contentDescription = stringResource(R.string.repotting_frequency_dropdown)
                             )
                         },
-                        modifier = OutlinedTextFieldClickModifier(onClick = { viewModel.updateRepottingFrequencyDialog() })
+                        modifier = outlinedTextFieldClickModifier(onClick = { viewModel.updateRepottingFrequencyDialog() })
                     )
                 }
                 Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
@@ -474,7 +475,7 @@ fun PlantFormMedium(
                         value = viewModel.reminderFrequency(ReminderFrequency.FERTILIZERREMINDER),
                         onValueChange = {},
                         enabled = false,
-                        colors = OutlinedDisabledColorToActive(),
+                        colors = outlinedDisabledColorToActive(),
                         readOnly = true,
                         shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
                         trailingIcon = {
@@ -483,7 +484,7 @@ fun PlantFormMedium(
                                 contentDescription = stringResource(R.string.fertilizing_frequency_dropdown)
                             )
                         },
-                        modifier = OutlinedTextFieldClickModifier(onClick = { viewModel.updateFertilizerFrequencyDialog() })
+                        modifier = outlinedTextFieldClickModifier(onClick = { viewModel.updateFertilizerFrequencyDialog() })
                     )
                 }
                 Spacer(
@@ -632,7 +633,8 @@ fun AddPlantScreenCompactPreview() {
     AntheiaplantmanagerTheme {
         val addPlantViewModel = AddPlantViewModel(
             plantDatabase = PlantRepositoryImplMock(),
-            accountService = AccountServiceMock()
+            accountService = AccountServiceMock(),
+            reminderWorker = ReminderRepositoryImplMock()
         )
         PlantFormCompact(
             viewModel = addPlantViewModel,
@@ -646,7 +648,8 @@ fun AddPlantScreenMediumPreview() {
     AntheiaplantmanagerTheme {
         val addPlantViewModel = AddPlantViewModel(
             plantDatabase = PlantRepositoryImplMock(),
-            accountService = AccountServiceMock()
+            accountService = AccountServiceMock(),
+            reminderWorker = ReminderRepositoryImplMock()
         )
         PlantFormMedium(
             viewModel = addPlantViewModel,

@@ -2,11 +2,15 @@ package com.example.antheia_plant_manager.util
 
 import com.example.antheia_plant_manager.model.data.Plant
 import java.time.LocalDate
+import kotlin.math.absoluteValue
 
 const val SUBSCRIBE_DELAY = 5000L
 
 const val DATE_CHECK_DELAY = 60000L
 
+/**parses a string to a LocalDate object
+ * the string should be in the format of "frequency+yyyy-MM-dd"
+ */
 fun String.toLocalDate(): LocalDate {
     return LocalDate.parse(
         this.substringAfter("+"),
@@ -15,7 +19,7 @@ fun String.toLocalDate(): LocalDate {
 
 fun String.daysSinceLastReminder(): Int {
     return this.toLocalDate().let {
-        LocalDate.now().until(it).days
+        LocalDate.now().until(it).days.absoluteValue
     }
 }
 

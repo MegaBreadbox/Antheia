@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.PlantRepository
 import com.example.antheia_plant_manager.model.service.AccountService
+import com.example.antheia_plant_manager.model.worker.ReminderRepository
 import com.example.antheia_plant_manager.screens.add_plant.util.PlantEntry
 import com.example.antheia_plant_manager.screens.add_plant.util.ReminderFrequency
 import com.example.antheia_plant_manager.screens.add_plant.util.UiState
@@ -36,6 +37,7 @@ import javax.inject.Inject
 class AddPlantViewModel @Inject constructor(
     private val plantDatabase: PlantRepository,
     private val accountService: AccountService,
+    private val reminderWorker: ReminderRepository
 ): ViewModel() {
 
     private val _currentPlant = MutableStateFlow(PlantEntry())
@@ -209,8 +211,10 @@ class AddPlantViewModel @Inject constructor(
                     )
                 }
                 plantDatabase.addPlant(_currentPlant.value.toPlant())
+                reminderWorker.sendNotification()
                 navigation()
             }
         }
     }
+
 }

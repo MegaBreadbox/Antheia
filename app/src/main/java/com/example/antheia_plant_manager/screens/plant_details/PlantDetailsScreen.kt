@@ -38,8 +38,8 @@ fun PlantDetailsScreen() {
 
 @Composable
 fun PlantDetailsCompact(
+    modifier: Modifier = Modifier,
     viewModel: PlantDetailsViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
 ) {
     val plantInfo by viewModel.plant.collectAsStateWithLifecycle()
     val plantAlerts by viewModel.plantAlert.collectAsStateWithLifecycle()

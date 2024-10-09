@@ -35,4 +35,8 @@ class PlantRepositoryImpl @Inject constructor (private val plantDao: PlantDao): 
         return plantDao.getPlant(userId, plantId)
     }
 
+    override fun getAllPlants(userId: String): Flow<List<Plant>> {
+        return plantDao.getAllPlants(userId)
+    }
+
 }

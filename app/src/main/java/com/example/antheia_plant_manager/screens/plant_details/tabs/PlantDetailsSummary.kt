@@ -36,6 +36,7 @@ import com.example.antheia_plant_manager.screens.plant_details.util.repotButtonC
 import com.example.antheia_plant_manager.screens.plant_details.util.waterButtonColors
 import com.example.antheia_plant_manager.util.PlantAlert
 import com.example.antheia_plant_manager.util.Reminder
+import com.example.antheia_plant_manager.util.daysSinceLastReminder
 import com.example.antheia_plant_manager.util.getLastReminderDate
 import com.example.compose.extendedColorScheme
 
@@ -193,7 +194,15 @@ fun PlantDetailEntry(
             )
             when (plantAlert) {
                 Reminder.AfterReminder -> Text(
-                    text = "Late by ${plantAlertDate.getLastReminderDate()}",
+                    text =
+                    if(plantAlertDate.daysSinceLastReminder() > 90) {
+                        stringResource(R.string.late_by_90_days)
+                    } else {
+                        stringResource(
+                            R.string.late_by_days,
+                            plantAlertDate.daysSinceLastReminder()
+                        )
+                    },
                     color = MaterialTheme.colorScheme.error
                 )
 
@@ -203,12 +212,12 @@ fun PlantDetailEntry(
                 )
 
                 Reminder.DuringReminder -> Text(
-                    text = "Today",
+                    text = stringResource(R.string.today),
                     color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Reminder.NotEnabled -> Text(
-                    text = "No reminder set",
+                    text = stringResource(R.string.no_reminder_set),
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = modifier
                         .alpha(DISABLED_ALPHA)
