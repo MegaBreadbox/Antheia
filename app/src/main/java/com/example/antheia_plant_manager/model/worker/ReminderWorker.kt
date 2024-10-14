@@ -15,6 +15,8 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
@@ -28,41 +30,39 @@ class ReminderWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result {
         val notificationList = mutableListOf<String>()
-        Log.d(
-            "ReminderWorker",
-            "working"
-        )
 
-        return withContext(Dispatchers.Default) {
-            try {
+        return withContext(Dispatchers.IO) {
+            return@withContext try {
                 plantDatabase.getAllPlants(accountService.currentUserId)
-                    .collectLatest { plantList ->
-                        plantList.forEach { plant ->
-                            when {
-                                determineReminder(
-                                    plant.waterReminder,
-                                    LocalDate.now()
-                                ) == Reminder.DuringReminder ->
-                                    notificationList.add(plant.name)
-
-                                determineReminder(
-                                    plant.repottingReminder,
-                                    LocalDate.now()
-                                ) == Reminder.DuringReminder ->
-                                    notificationList.add(plant.name)
-
-                                determineReminder(
-                                    plant.fertilizerReminder,
-                                    LocalDate.now()
-                                ) == Reminder.DuringReminder ->
-                                    notificationList.add(plant.name)
+                    .forEach { plant ->
+                        when {
+                            determineReminder(
+                                plant.waterReminder,
+                                LocalDate.now()
+                            ) == Reminder.DuringReminder -> {
+                                notificationList.add(plant.name)
                             }
+
+                            determineReminder(
+                                plant.repottingReminder,
+                                LocalDate.now()
+                            ) == Reminder.DuringReminder ->
+                                notificationList.add(plant.name)
+
+                            determineReminder(
+                                plant.fertilizerReminder,
+                                LocalDate.now()
+                            ) == Reminder.DuringReminder ->
+                                notificationList.add(plant.name)
                         }
                     }
-                return@withContext when {
+                when {
                     notificationList.size == 1 -> {
                         reminderNotification(
-                            notificationList[0],
+                            applicationContext.getString(
+                                R.string.requires_attention,
+                                notificationList[0]
+                            ),
                             context = applicationContext
                         )
                         Result.success()
@@ -70,17 +70,18 @@ class ReminderWorker @AssistedInject constructor(
 
                     notificationList.size > 1 -> {
                         reminderNotification(
-                            applicationContext.getString(R.string.multiple_plants),
+                            applicationContext.getString(R.string.multiple_plants_require_attention),
                             context = applicationContext
                         )
                         Result.success()
                     }
 
-                    else -> Result.success()
+                    else -> {
+                        Result.success()
+                    }
                 }
             } catch(e: Exception) {
-
-             return@withContext Result.failure()
+                Result.failure()
             }
         }
     }

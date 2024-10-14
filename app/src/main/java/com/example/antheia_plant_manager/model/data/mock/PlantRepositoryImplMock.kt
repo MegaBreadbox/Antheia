@@ -38,12 +38,10 @@ class PlantRepositoryImplMock: PlantRepository {
         return flowOf(PlantEntry().toPlant())
     }
 
-    override fun getAllPlants(userId: String): Flow<List<Plant>> {
-        return flowOf(
-            listOf(
+    override suspend fun getAllPlants(userId: String): List<Plant> {
+        return listOf(
                 PlantEntry().toPlant(),
                 PlantEntry().toPlant()
             )
-        )
     }
 }

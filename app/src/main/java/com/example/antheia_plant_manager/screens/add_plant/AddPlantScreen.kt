@@ -1,5 +1,9 @@
 package com.example.antheia_plant_manager.screens.add_plant
 
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -95,6 +99,9 @@ fun PlantFormCompact(
     val scroll = rememberScrollState()
     val focusManager = LocalFocusManager.current
     var selectedSuggestion by remember { mutableStateOf(false) }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { viewModel.savePlant(navigateBack) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -286,7 +293,11 @@ fun PlantFormCompact(
         Button(
             enabled = viewModel.validatePlant(),
             onClick = {
-                viewModel.savePlant(navigateBack)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    launcher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    viewModel.savePlant(navigateBack)
+                }
             },
             modifier = modifier
                 .width(dimensionResource(id = R.dimen.button_wide))
@@ -309,6 +320,9 @@ fun PlantFormMedium(
     val scroll = rememberScrollState()
     val focusManager = LocalFocusManager.current
     var selectedSuggestion by remember { mutableStateOf(false) }
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { viewModel.savePlant(navigateBack) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -496,7 +510,11 @@ fun PlantFormMedium(
         Button(
             enabled = viewModel.validatePlant(),
             onClick = {
-                viewModel.savePlant(navigateBack)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    launcher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                } else {
+                    viewModel.savePlant(navigateBack)
+                }
             },
             modifier = modifier
                 .width(dimensionResource(id = R.dimen.button_wide))

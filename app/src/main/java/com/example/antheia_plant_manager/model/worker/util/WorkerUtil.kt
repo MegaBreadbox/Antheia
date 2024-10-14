@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.util.ComposeText
 
-fun reminderNotification(plantName: String, context: Context) {
+fun reminderNotification(message: String, context: Context) {
     val importance = NotificationManager.IMPORTANCE_LOW
     val channel = NotificationChannel(
         NOTIFICATION_CHANNEL_ID,
@@ -28,7 +28,7 @@ fun reminderNotification(plantName: String, context: Context) {
 
     val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
         .setSmallIcon(R.drawable.ic_launcher_foreground)
-        .setContentText( context.getString(R.string.requires_attention, plantName))
+        .setContentText(message)
 
 
     if (ActivityCompat.checkSelfPermission(

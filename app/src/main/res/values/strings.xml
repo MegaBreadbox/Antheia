@@ -66,6 +66,6 @@
     <string name="late_by_90_days">Late by 90+ days</string>
     <string name="late_by_days">Late by %1$s days</string>
     <string name="today">Today</string>
+    <string name="multiple_plants_require_attention">Multiple plants require attention</string>
     <string name="requires_attention">%1$s requires attention</string>
-    <string name="multiple_plants">Multiple plants</string>
 </resources>
