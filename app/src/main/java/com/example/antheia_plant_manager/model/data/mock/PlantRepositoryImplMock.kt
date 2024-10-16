@@ -44,4 +44,13 @@ class PlantRepositoryImplMock: PlantRepository {
                 PlantEntry().toPlant()
             )
     }
+
+    override fun getAllPlantsFlow(userId: String): Flow<List<Plant>> {
+        return flowOf(
+            listOf(
+                PlantEntry().toPlant(),
+                PlantEntry().toPlant()
+            )
+        )
+    }
 }

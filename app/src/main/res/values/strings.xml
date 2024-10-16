@@ -44,6 +44,7 @@
     <string name="exit_form">Exit form</string>
     <string name="home">Home</string>
     <string name="notifications">notifications</string>
+    <string name="notifications_header">Notifications</string>
     <string name="no_plants_found_would_you_like_to_add_some">No plants found.\n Would you like to add some?</string>
     <string name="add_plant">Add plant</string>
     <string name="no_reminder_set">No reminder set</string>

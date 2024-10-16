@@ -35,10 +35,14 @@ import com.example.antheia_plant_manager.util.cardColor
 
 @Composable
 fun PlantListScreen(
-    navigatePlantDetails: (Int) -> Unit
+    navigatePlantDetails: (Int) -> Unit,
+    viewModel: PlantListViewModel = hiltViewModel()
 ) {
+    val plantAlerts by viewModel.plantAlerts.collectAsStateWithLifecycle()
     PlantListCompact(
-        navigatePlantDetails = navigatePlantDetails
+        navigatePlantDetails = navigatePlantDetails,
+        plantAlerts = plantAlerts,
+        header = viewModel.location
     )
 }
 
@@ -46,10 +50,10 @@ fun PlantListScreen(
 @Composable
 fun PlantListCompact(
     navigatePlantDetails: (Int) -> Unit,
+    plantAlerts: List<PlantAlert>,
+    header: String,
     modifier: Modifier = Modifier,
-    viewModel: PlantListViewModel = hiltViewModel()
 ) {
-    val plantAlerts by viewModel.plantAlerts.collectAsStateWithLifecycle()
     val listModifier = Modifier
         .padding(
             horizontal = dimensionResource(id = R.dimen.large_padding),
@@ -57,7 +61,7 @@ fun PlantListCompact(
         )
     LazyColumn() {
         item {
-            Header(screenTitle = viewModel.location)
+            Header(screenTitle = header)
             Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
         }
 

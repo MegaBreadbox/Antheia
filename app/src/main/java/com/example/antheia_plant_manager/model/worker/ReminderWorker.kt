@@ -31,6 +31,8 @@ class ReminderWorker @AssistedInject constructor(
     override suspend fun doWork(): Result {
         val notificationList = mutableListOf<String>()
 
+        if(!accountService.isSignedIn()) return Result.failure()
+
         return withContext(Dispatchers.IO) {
             return@withContext try {
                 plantDatabase.getAllPlants(accountService.currentUserId)

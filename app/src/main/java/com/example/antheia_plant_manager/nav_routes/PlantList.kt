@@ -14,7 +14,7 @@ fun NavGraphBuilder.plantList(
     composable<PlantList> {
 
         PlantListScreen(
-            navigatePlantDetails = { navigatePlantDetails(it) }
+            navigatePlantDetails = navigatePlantDetails
         )
     }
 

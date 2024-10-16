@@ -48,6 +48,33 @@ fun determineReminder(reminderDate: String, currentDate: LocalDate): Reminder {
     }
 }
 
+/**
+ * Given a plant object this function returns true if the
+ * reminder date is past due or the current day
+ */
+fun Plant.requiresAttention(): Boolean {
+    val plantAlert = this.toPlantAlert(
+        waterAlert = determineReminder(this.waterReminder, LocalDate.now()),
+        repottingAlert = determineReminder(this.repottingReminder, LocalDate.now()),
+        fertilizerAlert = determineReminder(this.fertilizerReminder, LocalDate.now())
+    )
+    return when {
+        plantAlert.waterAlert == Reminder.DuringReminder ||
+                plantAlert.waterAlert == Reminder.AfterReminder -> {
+                    true
+        }
+        plantAlert.repottingAlert == Reminder.DuringReminder ||
+                plantAlert.repottingAlert == Reminder.AfterReminder -> {
+                    true
+        }
+        plantAlert.fertilizerAlert == Reminder.DuringReminder ||
+                plantAlert.fertilizerAlert == Reminder.AfterReminder -> {
+                    true
+        }
+        else -> false
+    }
+}
+
 fun Plant.toPlantAlert(waterAlert: Reminder, repottingAlert: Reminder, fertilizerAlert: Reminder): PlantAlert {
     return PlantAlert(
         plantId = this.plantId,
@@ -56,6 +83,17 @@ fun Plant.toPlantAlert(waterAlert: Reminder, repottingAlert: Reminder, fertilize
         repottingAlert = repottingAlert,
         fertilizerAlert = fertilizerAlert
     )
+}
+
+fun Plant.toPlantAlert(): PlantAlert {
+    return PlantAlert(
+        plantId = this.plantId,
+        plantName = this.name,
+        waterAlert = determineReminder(this.waterReminder, LocalDate.now()),
+        repottingAlert = determineReminder(this.repottingReminder, LocalDate.now()),
+        fertilizerAlert = determineReminder(this.fertilizerReminder, LocalDate.now())
+    )
+
 }
 
 data class PlantAlert(

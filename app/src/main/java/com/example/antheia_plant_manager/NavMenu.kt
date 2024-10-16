@@ -52,7 +52,10 @@ fun NavMenu(
                 navigateAddPlant = { navController.navigate(AddPlant) },
                 navigatePlantList = { navController.navigate(PlantList(it)) }
             )
-            notifications(bottomAppBarNavigate = { navController.navigate(it) })
+            notifications(
+                bottomAppBarNavigate = { navController.navigate(it) },
+                navigatePlantDetails = { navController.navigate(PlantDetails(it)) }
+            )
             addPlant(
                 windowSize = windowSize,
                 navigateBack = { navController.popBackStack() }
