@@ -18,7 +18,7 @@ class ReminderRepositoryImpl @Inject constructor(private val workManager: WorkMa
         workManager.enqueueUniquePeriodicWork(
             "plant_reminder",
             ExistingPeriodicWorkPolicy.KEEP,
-            PeriodicWorkRequestBuilder<ReminderWorker>(24, TimeUnit.HOURS)
+            PeriodicWorkRequestBuilder<ReminderWorker>(1, TimeUnit.DAYS)
                 .build()
         )
 
