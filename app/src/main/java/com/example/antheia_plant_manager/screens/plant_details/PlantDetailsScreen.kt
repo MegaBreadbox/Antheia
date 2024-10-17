@@ -1,14 +1,18 @@
 package com.example.antheia_plant_manager.screens.plant_details
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -16,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
@@ -29,7 +34,9 @@ import com.example.antheia_plant_manager.screens.plant_details.tabs.PlantDetails
 import com.example.antheia_plant_manager.screens.plant_details.tabs.PlantDetailsSummary
 import com.example.antheia_plant_manager.screens.plant_details.tabs.PlantDetailsSettings
 import com.example.antheia_plant_manager.screens.plant_details.util.TabList
+import com.example.antheia_plant_manager.screens.plant_details.util.getTaskButtonColor
 import com.example.antheia_plant_manager.util.Header
+import com.example.compose.extendedColorScheme
 
 @Composable
 fun PlantDetailsScreen() {
@@ -45,26 +52,36 @@ fun PlantDetailsCompact(
     val plantAlerts by viewModel.plantAlert.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val summaryScrollState = rememberScrollState()
-    Column() {
-        Header(screenTitle = plantInfo.name)
-        Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.medium_padding)))
-        PlantAvatar(
-            avatarSizeHorizontal = dimensionResource(id = R.dimen.plant_avatar_size),
-            avatarSizeVertical = dimensionResource(id = R.dimen.plant_avatar_size)
-        )
-        Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.small_padding)))
-        PlantTabBar(selectedTabIndex = uiState.selectedTab) {
-            viewModel.updateSelectedTab(it)
-        }
-        when(uiState.selectedTab) {
-            TabList.SUMMARY.ordinal -> PlantDetailsSummary(
-                plantInfo = plantInfo,
-                plantAlerts = plantAlerts,
-                scrollState = summaryScrollState
+    Box {
+        Column() {
+            Header(screenTitle = plantInfo.name)
+            Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.medium_padding)))
+            PlantAvatar(
+                avatarSizeHorizontal = dimensionResource(id = R.dimen.plant_avatar_size),
+                avatarSizeVertical = dimensionResource(id = R.dimen.plant_avatar_size)
             )
-            TabList.UPDATE.ordinal -> PlantDetailsSettings()
-            TabList.NOTES.ordinal -> PlantDetailsNotes()
+            Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.small_padding)))
+            PlantTabBar(selectedTabIndex = uiState.selectedTab) {
+                viewModel.updateSelectedTab(it)
+            }
+            when (uiState.selectedTab) {
+                TabList.SUMMARY.ordinal -> PlantDetailsSummary(
+                    plantInfo = plantInfo,
+                    plantAlerts = plantAlerts,
+                    scrollState = summaryScrollState,
+                    onTaskButtonClicked = { viewModel.taskButtonClicked(it) }
+                )
+
+                TabList.UPDATE.ordinal -> PlantDetailsSettings()
+                TabList.NOTES.ordinal -> PlantDetailsNotes()
+            }
         }
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .alpha(uiState.buttonEffectAlpha)
+                .background(getTaskButtonColor(uiState.latestButtonClicked))
+        )
     }
 }
 

@@ -8,13 +8,16 @@ import com.example.antheia_plant_manager.model.data.Plant
 import com.example.antheia_plant_manager.model.data.PlantRepository
 import com.example.antheia_plant_manager.model.service.AccountService
 import com.example.antheia_plant_manager.nav_routes.PlantDetails
-import com.example.antheia_plant_manager.screens.add_plant.util.PlantEntry
-import com.example.antheia_plant_manager.screens.add_plant.util.toPlant
+import com.example.antheia_plant_manager.screens.plant_details.util.ButtonType
 import com.example.antheia_plant_manager.util.DATE_CHECK_DELAY
 import com.example.antheia_plant_manager.util.PlantAlert
+import com.example.antheia_plant_manager.util.PlantEntry
 import com.example.antheia_plant_manager.util.SUBSCRIBE_DELAY
 import com.example.antheia_plant_manager.util.determineReminder
+import com.example.antheia_plant_manager.util.toPlant
 import com.example.antheia_plant_manager.util.toPlantAlert
+import com.example.antheia_plant_manager.util.toPlantEntry
+import com.example.antheia_plant_manager.util.updateReminderDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -26,14 +29,15 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class PlantDetailsViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    plantDatabase: PlantRepository,
-    accountService: AccountService
+    private val savedStateHandle: SavedStateHandle,
+    private val plantDatabase: PlantRepository,
+    private val accountService: AccountService
 ): ViewModel() {
 
     private val currentDate: Flow<LocalDate> = flow {
@@ -85,9 +89,71 @@ class PlantDetailsViewModel @Inject constructor(
             initialValue = PlantAlert()
         )
 
+    //Summary Tab
+
+    fun taskButtonClicked(buttonType: ButtonType) {
+        updatePlant(buttonType)
+        updateLatestButtonClicked(buttonType)
+        updateButtonEffectAlpha()
+    }
+
+    private fun updateLatestButtonClicked(buttonType: ButtonType) {
+        _uiState.update {
+            it.copy(latestButtonClicked = buttonType)
+        }
+    }
+
+    private fun updateButtonEffectAlpha() {
+        _uiState.update {
+            it.copy(buttonEffectAlpha = 0.4F)
+        }
+        viewModelScope.launch {
+            while (_uiState.value.buttonEffectAlpha >= 0) {
+                delay(20)
+                _uiState.update {
+                    it.copy(buttonEffectAlpha = it.buttonEffectAlpha - 0.01F)
+                }
+            }
+        }
+    }
+
+    private fun updatePlant(buttonType: ButtonType) {
+        when(buttonType) {
+            ButtonType.WATER -> {
+                viewModelScope.launch {
+                    plantDatabase.updatePlant(
+                        plant.value.copy(
+                            waterReminder = plant.value.waterReminder.updateReminderDate()
+                        )
+                    )
+                }
+            }
+            ButtonType.REPOT -> {
+                viewModelScope.launch {
+                    plantDatabase.updatePlant(
+                        plant.value.copy(
+                            repottingReminder = plant.value.repottingReminder.updateReminderDate()
+                        )
+                    )
+                }
+            }
+            ButtonType.FERTILIZE -> {
+                viewModelScope.launch {
+                    plantDatabase.updatePlant(
+                        plant.value.copy(
+                            repottingReminder = plant.value.repottingReminder.updateReminderDate()
+                        )
+                    )
+                }
+            }
+        }
+    }
+
 
 }
 
 data class PlantDetailsUiState(
     val selectedTab: Int = 0,
+    val latestButtonClicked: ButtonType = ButtonType.WATER,
+    val buttonEffectAlpha: Float = 0F
 )

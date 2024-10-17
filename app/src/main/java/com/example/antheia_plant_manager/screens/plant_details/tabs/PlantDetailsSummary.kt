@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.Plant
+import com.example.antheia_plant_manager.screens.plant_details.util.ButtonType
 import com.example.antheia_plant_manager.screens.plant_details.util.DISABLED_ALPHA
 import com.example.antheia_plant_manager.screens.plant_details.util.fertilizeButtonColors
 import com.example.antheia_plant_manager.screens.plant_details.util.repotButtonColors
@@ -46,6 +47,7 @@ fun PlantDetailsSummary(
     plantInfo: Plant,
     plantAlerts: PlantAlert,
     scrollState: ScrollState,
+    onTaskButtonClicked: (ButtonType) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -57,7 +59,7 @@ fun PlantDetailsSummary(
     ) {
         Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.big_padding)))
         TaskButton(
-            onClick = { /*TODO*/ },
+            onClick = { onTaskButtonClicked(ButtonType.WATER) },
             buttonText = stringResource(R.string.water),
             buttonColors = ButtonDefaults.waterButtonColors(),
             borderColor = MaterialTheme.extendedColorScheme().water.onColorContainer
@@ -68,14 +70,14 @@ fun PlantDetailsSummary(
             modifier = modifier
         ) {
             TaskButton(
-                onClick = { /*TODO*/ },
+                onClick = { onTaskButtonClicked(ButtonType.REPOT) },
                 buttonText = stringResource(R.string.repot),
                 buttonColors = ButtonDefaults.repotButtonColors(),
                 borderColor = MaterialTheme.extendedColorScheme().soil.onColorContainer
             )
             Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.large_padding)))
             TaskButton(
-                onClick = { /*TODO*/ },
+                onClick = { onTaskButtonClicked(ButtonType.FERTILIZE) },
                 buttonText = stringResource(R.string.fertilize),
                 buttonColors = ButtonDefaults.fertilizeButtonColors(),
                 borderColor = MaterialTheme.extendedColorScheme().fertilizer.onColorContainer

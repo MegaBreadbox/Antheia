@@ -4,6 +4,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import com.example.antheia_plant_manager.R
 import com.example.compose.extendedColorScheme
 
@@ -11,6 +12,21 @@ enum class TabList(val title: Int) {
     SUMMARY(R.string.summary),
     UPDATE(R.string.settings),
     NOTES(R.string.notes)
+}
+
+enum class ButtonType() {
+    WATER,
+    REPOT,
+    FERTILIZE,
+}
+
+@Composable
+fun getTaskButtonColor(buttonType: ButtonType): Color {
+    return when (buttonType) {
+        ButtonType.WATER -> MaterialTheme.extendedColorScheme().water.onColorContainer
+        ButtonType.REPOT -> MaterialTheme.extendedColorScheme().soil.onColorContainer
+        ButtonType.FERTILIZE -> MaterialTheme.extendedColorScheme().fertilizer.onColorContainer
+    }
 }
 
 const val DISABLED_ALPHA = 0.38f

@@ -2,8 +2,8 @@ package com.example.antheia_plant_manager.model.data.mock
 
 import com.example.antheia_plant_manager.model.data.Plant
 import com.example.antheia_plant_manager.model.data.PlantRepository
-import com.example.antheia_plant_manager.screens.add_plant.util.PlantEntry
-import com.example.antheia_plant_manager.screens.add_plant.util.toPlant
+import com.example.antheia_plant_manager.util.PlantEntry
+import com.example.antheia_plant_manager.util.toPlant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
