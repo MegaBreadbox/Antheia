@@ -18,6 +18,8 @@ interface PlantRepository {
 
     fun getPlant(userId: String, plantId: Int): Flow<Plant>
 
+    suspend fun getPlantOneShot(userId: String, plantId: Int): Plant
+
     suspend fun getAllPlants(userId: String): List<Plant>
 
     fun getAllPlantsFlow(userId: String): Flow<List<Plant>>

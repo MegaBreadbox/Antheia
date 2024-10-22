@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -36,7 +35,7 @@ import com.example.antheia_plant_manager.screens.plant_details.tabs.PlantDetails
 import com.example.antheia_plant_manager.screens.plant_details.util.TabList
 import com.example.antheia_plant_manager.screens.plant_details.util.getTaskButtonColor
 import com.example.antheia_plant_manager.util.Header
-import com.example.compose.extendedColorScheme
+import com.example.antheia_plant_manager.util.getReminderFrequency
 
 @Composable
 fun PlantDetailsScreen() {
@@ -50,6 +49,7 @@ fun PlantDetailsCompact(
 ) {
     val plantInfo by viewModel.plant.collectAsStateWithLifecycle()
     val plantAlerts by viewModel.plantAlert.collectAsStateWithLifecycle()
+    val plantEntry by viewModel.plantEntry.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val summaryScrollState = rememberScrollState()
     Box {
@@ -72,7 +72,19 @@ fun PlantDetailsCompact(
                     onTaskButtonClicked = { viewModel.taskButtonClicked(it) }
                 )
 
-                TabList.UPDATE.ordinal -> PlantDetailsSettings()
+                TabList.UPDATE.ordinal -> PlantDetailsSettings(
+                    selectedReminder = uiState.currentSelectedReminder,
+                    inputMap = uiState.dateMap,
+                    currentPlant = plantEntry,
+                    onDropdownClick = { viewModel.updateSelectedReminder(it) },
+                    onRadioClick = { reminderString, reminderType ->
+                        viewModel.updateTempReminderOfPlant(reminderString, reminderType)
+                                   },
+                    onConfirmClick = { reminderString, reminderType ->
+                        viewModel.updateReminderOfPlant(reminderString, reminderType)
+                    },
+                    onDismissClick = { viewModel.clearSelectedReminder() }
+                )
                 TabList.NOTES.ordinal -> PlantDetailsNotes()
             }
         }

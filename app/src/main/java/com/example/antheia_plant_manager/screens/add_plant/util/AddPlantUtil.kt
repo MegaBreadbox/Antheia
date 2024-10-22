@@ -14,6 +14,3 @@ data class UiState(
     val isAdvancedSettingsEnabled: Boolean = false,
 )
 
-enum class ReminderFrequency{
-    WATERREMINDER, REPOTTINGREMINDER, FERTILIZERREMINDER
-}

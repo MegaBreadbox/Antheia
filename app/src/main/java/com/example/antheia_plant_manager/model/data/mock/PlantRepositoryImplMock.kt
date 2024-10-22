@@ -38,6 +38,10 @@ class PlantRepositoryImplMock: PlantRepository {
         return flowOf(PlantEntry().toPlant())
     }
 
+    override suspend fun getPlantOneShot(userId: String, plantId: Int): Plant {
+        return PlantEntry().toPlant()
+    }
+
     override suspend fun getAllPlants(userId: String): List<Plant> {
         return listOf(
                 PlantEntry().toPlant(),

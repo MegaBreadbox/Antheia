@@ -3,7 +3,6 @@ package com.example.antheia_plant_manager.screens.add_plant
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -66,8 +65,9 @@ import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
 import com.example.antheia_plant_manager.model.service.mock.AccountServiceMock
 import com.example.antheia_plant_manager.model.worker.mock.ReminderRepositoryImplMock
 import com.example.antheia_plant_manager.screens.add_plant.util.AddPlantConstant
-import com.example.antheia_plant_manager.screens.add_plant.util.ReminderFrequency
 import com.example.antheia_plant_manager.util.ComposeText
+import com.example.antheia_plant_manager.util.ReminderFrequency
+import com.example.antheia_plant_manager.util.getReminderFrequency
 import com.example.antheia_plant_manager.util.outlinedDisabledColorToActive
 import com.example.antheia_plant_manager.util.outlinedTextFieldClickModifier
 import com.example.compose.AntheiaplantmanagerTheme
@@ -557,12 +557,12 @@ fun FrequencyDialog(
                             .padding(dimensionResource(id = R.dimen.dialog_padding))
                             .clip(RoundedCornerShape(dimensionResource(id = R.dimen.dialog_shape)))
                             .selectable(
-                                selected = reminderFrequencyAndDate == selectedReminder,
+                                selected = reminderFrequencyAndDate.getReminderFrequency() == selectedReminder.getReminderFrequency(),
                                 onClick = { onRadioClick(reminderFrequencyAndDate) },
                             )
                     ) {
                         RadioButton(
-                            selected = reminderFrequencyAndDate == selectedReminder,
+                            selected = reminderFrequencyAndDate.getReminderFrequency() == selectedReminder.getReminderFrequency(),
                             onClick = { onRadioClick(reminderFrequencyAndDate) })
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,

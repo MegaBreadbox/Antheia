@@ -39,6 +39,10 @@ interface PlantDao {
             " AND plantId = :plantId")
     fun getPlant(userId: String, plantId: Int): Flow<Plant>
 
+    @Query("SELECT * from plant WHERE plantUserId = :userId" +
+            " AND plantId = :plantId")
+    suspend fun getPlantOneShot(userId: String, plantId: Int): Plant
+
     @Query("SELECT * from plant WHERE plantUserId = :userId")
     suspend fun getAllPlants(userId: String): List<Plant>
 

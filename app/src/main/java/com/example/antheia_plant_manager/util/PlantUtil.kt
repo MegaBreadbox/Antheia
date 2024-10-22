@@ -63,7 +63,7 @@ private fun String.addToReminder(frequency: Int, frequencyType: CalendarFrequenc
     return this.getReminderFrequency().plus("+$newReminder")
 }
 
-private fun String.getReminderFrequency(): String {
+fun String.getReminderFrequency(): String {
     return this.substringBefore("+")
 }
 
@@ -143,6 +143,14 @@ data class PlantAlert(
     val repottingAlert: Reminder = Reminder.NotEnabled,
     val fertilizerAlert: Reminder = Reminder.NotEnabled
 )
+
+fun PlantEntry.determineReminderText(reminder: ReminderFrequency): String {
+    return when(reminder) {
+        ReminderFrequency.WATERREMINDER -> this.waterReminder
+        ReminderFrequency.REPOTTINGREMINDER -> this.repottingReminder
+        ReminderFrequency.FERTILIZERREMINDER -> this.fertilizerReminder
+    }
+}
 
 fun PlantEntry.toPlant(): Plant {
     return Plant(
