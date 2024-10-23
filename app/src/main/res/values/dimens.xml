@@ -3,6 +3,7 @@
     <dimen name="text_field_shape_radius">30dp</dimen>
     <dimen name="dialog_shape">16dp</dimen>
     <dimen name="dialog_padding">16dp</dimen>
+    <dimen name="dialog_confirm_padding">24dp</dimen>
     <dimen name="dialog_height">500dp</dimen>
     <dimen name="dialog_divider_padding">16dp</dimen>
     <dimen name="small_padding">4dp</dimen>

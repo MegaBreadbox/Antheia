@@ -93,6 +93,13 @@ fun LocationCard(
             verticalArrangement = Arrangement.Center,
             modifier = modifier
                 .fillMaxSize()
+                .padding(start =
+                    if(locationName[0].isUpperCase()) {
+                       dimensionResource(id = R.dimen.dialog_padding)
+                    } else {
+                       dimensionResource(id = R.dimen.large_padding)
+                    }
+                )
         ) {
             Text(
                 text = locationName,

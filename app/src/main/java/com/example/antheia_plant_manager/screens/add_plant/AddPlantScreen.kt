@@ -566,7 +566,9 @@ fun FrequencyDialog(
                             onClick = { onRadioClick(reminderFrequencyAndDate) })
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = modifier.fillMaxWidth()
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .padding(end = dimensionResource(id = R.dimen.dialog_padding))
                         ) {
                             Text(text = it.key.asString())
                             Text(
@@ -575,6 +577,7 @@ fun FrequencyDialog(
                         }
                     }
                     HorizontalDivider(
+                        color = MaterialTheme.colorScheme.outline,
                         modifier = modifier
                             .padding(horizontal = dimensionResource(id = R.dimen.dialog_divider_padding))
                     )
@@ -584,7 +587,11 @@ fun FrequencyDialog(
                 horizontalArrangement = Arrangement.End,
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(dimensionResource(id = R.dimen.dialog_padding))
+                    .padding(
+                        top = dimensionResource(id = R.dimen.dialog_padding),
+                        bottom = dimensionResource(id = R.dimen.dialog_padding),
+                        end = dimensionResource(id = R.dimen.dialog_confirm_padding)
+                    )
             ) {
                 TextButton(onClick =  onDismissClick) {
                     Text(stringResource(R.string.dismiss))
