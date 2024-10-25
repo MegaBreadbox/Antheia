@@ -154,6 +154,7 @@ fun PlantEntry.determineReminderText(reminder: ReminderFrequency): String {
 
 fun PlantEntry.toPlant(): Plant {
     return Plant(
+        plantId = if(this.plantId == 0) 0 else this.plantId,
         name = this.name,
         location = this.location,
         waterReminder = this.waterReminder,

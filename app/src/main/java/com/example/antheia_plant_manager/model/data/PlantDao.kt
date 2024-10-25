@@ -32,6 +32,7 @@ interface PlantDao {
 
     @Query("SELECT DISTINCT location from plant WHERE " +
             "location LIKE '%' || :location || '%'" +
+            "AND location != :location " +
             "LIMIT 3")
     fun getPlantLocationSuggestions(location: String): Flow<List<String>>
 

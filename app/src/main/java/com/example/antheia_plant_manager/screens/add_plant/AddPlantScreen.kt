@@ -154,6 +154,7 @@ fun PlantFormCompact(
             ) {
                 LocationSuggestions(
                     locationSuggestions = locationSuggestions,
+                    currentLocation = viewModel.locationName,
                     onEntryClick = {
                         selectedSuggestion = true
                         viewModel.updateLocation(it)
@@ -373,6 +374,7 @@ fun PlantFormMedium(
             ) {
                 LocationSuggestions(
                     locationSuggestions = locationSuggestions,
+                    currentLocation = viewModel.locationName,
                     onEntryClick = {
                         selectedSuggestion = true
                         viewModel.updateLocation(it)
@@ -615,20 +617,23 @@ fun FrequencyDialog(
 fun LocationSuggestions(
     locationSuggestions: List<String>,
     onEntryClick: (String) -> Unit,
+    currentLocation: String,
     modifier: Modifier = Modifier
 ) {
     locationSuggestions.forEach {
-        DropdownMenuItem(
-            text = {
-                Text(
-                    text = it,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            },
-            onClick = { onEntryClick(it) },
-            modifier = modifier
-                .width(dimensionResource(id = R.dimen.textfield_size_compact))
-        )
+        if(it != currentLocation) {
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        text = it,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                },
+                onClick = { onEntryClick(it) },
+                modifier = modifier
+                    .width(dimensionResource(id = R.dimen.textfield_size_compact))
+            )
+        }
     }
 }
 

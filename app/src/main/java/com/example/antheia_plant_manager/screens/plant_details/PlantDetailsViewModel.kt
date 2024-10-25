@@ -8,6 +8,8 @@ import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.Plant
 import com.example.antheia_plant_manager.model.data.PlantRepository
 import com.example.antheia_plant_manager.model.service.AccountService
+import com.example.antheia_plant_manager.model.worker.ReminderRepository
+import com.example.antheia_plant_manager.model.worker.ReminderWorker
 import com.example.antheia_plant_manager.nav_routes.PlantDetails
 import com.example.antheia_plant_manager.screens.plant_details.util.ButtonType
 import com.example.antheia_plant_manager.util.ComposeText
@@ -22,13 +24,17 @@ import com.example.antheia_plant_manager.util.toPlantAlert
 import com.example.antheia_plant_manager.util.toPlantEntry
 import com.example.antheia_plant_manager.util.updateReminderDate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
@@ -41,7 +47,8 @@ import javax.inject.Inject
 class PlantDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val plantDatabase: PlantRepository,
-    private val accountService: AccountService
+    private val accountService: AccountService,
+    private val reminderWorker: ReminderRepository
 ): ViewModel() {
 
     private val currentDate: Flow<LocalDate> = flow {
@@ -167,6 +174,25 @@ class PlantDetailsViewModel @Inject constructor(
             initialValue = PlantEntry()
         )
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val suggestions =
+        _plantEntryTemp
+            .filter { it.location.isNotEmpty() }
+            .flatMapLatest { currentPlant ->
+                plantDatabase.getPlantLocationSuggestions(currentPlant.location)
+            }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY), emptyList())
+
+    fun updateLocation(newLocation: String) {
+        _plantEntry.update { it.copy(location = newLocation) }
+        _plantEntryTemp.update { it.copy(location = newLocation) }
+    }
+
+    fun updateName(newName: String) {
+        _plantEntry.update { it.copy(name = newName) }
+        _plantEntryTemp.update { it.copy(name = newName) }
+    }
+
     private fun initialPlantEntry() {
         viewModelScope.launch {
             val latestPlantEntry = plantDatabase.getPlantOneShot(accountService.currentUserId, plantId).toPlantEntry()
@@ -234,6 +260,23 @@ class PlantDetailsViewModel @Inject constructor(
                     ComposeText(R.string.every_4_years) to currentDate.plusYears(4).toString(),
                 )
             )
+        }
+    }
+    val plantHasBeenUpdated = plant.combine(_plantEntryTemp) { plant, plantEntry ->
+        plant != plantEntry.toPlant() &&
+                plantEntry.name.isNotEmpty() &&
+                plantEntry.location.isNotEmpty() &&
+                plantEntry.waterReminder.isNotEmpty()
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY),
+        initialValue = false
+    )
+
+    fun savePlant() {
+        viewModelScope.launch {
+            plantDatabase.updatePlant(_plantEntry.value.toPlant())
+            reminderWorker.sendNotification()
         }
     }
 

@@ -1,13 +1,23 @@
 package com.example.antheia_plant_manager.screens.plant_details
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.add
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -38,10 +48,12 @@ import com.example.antheia_plant_manager.util.Header
 import com.example.antheia_plant_manager.util.getReminderFrequency
 
 @Composable
-fun PlantDetailsScreen() {
+fun PlantDetailsScreen(
+) {
     PlantDetailsCompact()
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PlantDetailsCompact(
     modifier: Modifier = Modifier,
@@ -49,20 +61,30 @@ fun PlantDetailsCompact(
 ) {
     val plantInfo by viewModel.plant.collectAsStateWithLifecycle()
     val plantAlerts by viewModel.plantAlert.collectAsStateWithLifecycle()
+    val plantHasBeenUpdated by viewModel.plantHasBeenUpdated.collectAsStateWithLifecycle()
     val plantEntry by viewModel.plantEntry.collectAsStateWithLifecycle()
+    val locationSuggestions by viewModel.suggestions.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val summaryScrollState = rememberScrollState()
-    Box {
-        Column() {
-            Header(screenTitle = plantInfo.name)
-            Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.medium_padding)))
-            PlantAvatar(
-                avatarSizeHorizontal = dimensionResource(id = R.dimen.plant_avatar_size),
-                avatarSizeVertical = dimensionResource(id = R.dimen.plant_avatar_size)
-            )
-            Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.small_padding)))
-            PlantTabBar(selectedTabIndex = uiState.selectedTab) {
-                viewModel.updateSelectedTab(it)
+    Box(
+        modifier = modifier
+    ) {
+        Column(
+            modifier = modifier
+        ) {
+            AnimatedVisibility(visible = !WindowInsets.isImeVisible) {
+                Column() {
+                    Header(screenTitle = plantInfo.name)
+                    Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.medium_padding)))
+                    PlantAvatar(
+                        avatarSizeHorizontal = dimensionResource(id = R.dimen.plant_avatar_size),
+                        avatarSizeVertical = dimensionResource(id = R.dimen.plant_avatar_size)
+                    )
+                    Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.small_padding)))
+                    PlantTabBar(selectedTabIndex = uiState.selectedTab) {
+                        viewModel.updateSelectedTab(it)
+                    }
+                }
             }
             when (uiState.selectedTab) {
                 TabList.SUMMARY.ordinal -> PlantDetailsSummary(
@@ -76,6 +98,10 @@ fun PlantDetailsCompact(
                     selectedReminder = uiState.currentSelectedReminder,
                     inputMap = uiState.dateMap,
                     currentPlant = plantEntry,
+                    locationSuggestions = locationSuggestions,
+                    updateName = { viewModel.updateName(it) },
+                    updateLocation = { viewModel.updateLocation(it) },
+                    validatePlant = plantHasBeenUpdated,
                     onDropdownClick = { viewModel.updateSelectedReminder(it) },
                     onRadioClick = { reminderString, reminderType ->
                         viewModel.updateTempReminderOfPlant(reminderString, reminderType)
@@ -83,7 +109,8 @@ fun PlantDetailsCompact(
                     onConfirmClick = { reminderString, reminderType ->
                         viewModel.updateReminderOfPlant(reminderString, reminderType)
                     },
-                    onDismissClick = { viewModel.clearSelectedReminder() }
+                    onDismissClick = { viewModel.clearSelectedReminder() },
+                    onSaveClick = { viewModel.savePlant() }
                 )
                 TabList.NOTES.ordinal -> PlantDetailsNotes()
             }
