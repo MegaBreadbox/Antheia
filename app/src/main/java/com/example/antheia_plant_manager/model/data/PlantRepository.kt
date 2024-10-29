@@ -23,4 +23,6 @@ interface PlantRepository {
     suspend fun getAllPlants(userId: String): List<Plant>
 
     fun getAllPlantsFlow(userId: String): Flow<List<Plant>>
+
+    suspend fun getPlantNotes(userId: String, plantId: Int): String
 }

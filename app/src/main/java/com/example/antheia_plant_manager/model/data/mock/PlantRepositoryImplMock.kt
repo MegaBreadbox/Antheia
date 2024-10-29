@@ -57,4 +57,8 @@ class PlantRepositoryImplMock: PlantRepository {
             )
         )
     }
+
+    override suspend fun getPlantNotes(userId: String, plantId: Int): String {
+        return "Notes"
+    }
 }

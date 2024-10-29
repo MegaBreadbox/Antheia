@@ -47,4 +47,8 @@ class PlantRepositoryImpl @Inject constructor (private val plantDao: PlantDao): 
         return plantDao.getAllPlantsFlow(userId)
     }
 
+    override suspend fun getPlantNotes(userId: String, plantId: Int): String {
+        return plantDao.getPlantNotes(userId, plantId)
+    }
+
 }

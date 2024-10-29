@@ -69,4 +69,5 @@
     <string name="today">Today</string>
     <string name="multiple_plants_require_attention">Multiple plants require attention!</string>
     <string name="requires_attention">%1$s requires attention!</string>
+    <string name="enter_notes_here">Enter notes here...</string>
 </resources>

@@ -162,6 +162,7 @@ fun PlantEntry.toPlant(): Plant {
         fertilizerReminder = this.fertilizerReminder,
         dateAdded = this.dateAdded,
         plantUserId = this.plantUserId,
+        notes = this.notes
     )
 }
 
@@ -174,7 +175,8 @@ fun Plant.toPlantEntry(): PlantEntry {
         waterReminder = this.waterReminder,
         repottingReminder = this.repottingReminder,
         fertilizerReminder = this.fertilizerReminder,
-        dateAdded = this.dateAdded
+        dateAdded = this.dateAdded,
+        notes = this.notes
     )
 }
 
@@ -187,4 +189,5 @@ data class PlantEntry(
     val repottingReminder: String = "",
     val fertilizerReminder: String = "",
     val dateAdded: String = "",
+    val notes: String = ""
 )

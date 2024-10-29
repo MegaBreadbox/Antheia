@@ -1,5 +1,8 @@
 package com.example.antheia_plant_manager.screens.plant_details
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -24,6 +27,8 @@ import com.example.antheia_plant_manager.util.toPlantAlert
 import com.example.antheia_plant_manager.util.toPlantEntry
 import com.example.antheia_plant_manager.util.updateReminderDate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -48,7 +53,8 @@ class PlantDetailsViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val plantDatabase: PlantRepository,
     private val accountService: AccountService,
-    private val reminderWorker: ReminderRepository
+    private val reminderWorker: ReminderRepository,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ViewModel() {
 
     private val currentDate: Flow<LocalDate> = flow {
@@ -101,7 +107,7 @@ class PlantDetailsViewModel @Inject constructor(
             initialValue = PlantAlert()
         )
 
-    //Summary Tab
+    //Summary Tab **********************************************************************************
 
     fun taskButtonClicked(buttonType: ButtonType) {
         updatePlant(buttonType)
@@ -161,7 +167,7 @@ class PlantDetailsViewModel @Inject constructor(
         }
     }
 
-    //Settings Tab
+    //Settings Tab *********************************************************************************
 
 
     private val _plantEntryTemp = MutableStateFlow(PlantEntry())
@@ -277,6 +283,21 @@ class PlantDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             plantDatabase.updatePlant(_plantEntry.value.toPlant())
             reminderWorker.sendNotification()
+        }
+    }
+
+    //Notes Tab ************************************************************************************
+
+
+    fun updateNotesText(newText: String) {
+        _plantEntryTemp.update {
+            it.copy(notes = newText)
+        }
+        _plantEntry.update {
+            it.copy(notes = newText)
+        }
+        viewModelScope.launch(ioDispatcher) {
+            plantDatabase.updatePlant(_plantEntry.value.toPlant().copy(notes = newText))
         }
     }
 

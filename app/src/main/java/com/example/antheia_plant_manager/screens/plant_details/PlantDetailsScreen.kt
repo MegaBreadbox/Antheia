@@ -112,7 +112,10 @@ fun PlantDetailsCompact(
                     onDismissClick = { viewModel.clearSelectedReminder() },
                     onSaveClick = { viewModel.savePlant() }
                 )
-                TabList.NOTES.ordinal -> PlantDetailsNotes()
+                TabList.NOTES.ordinal -> PlantDetailsNotes(
+                    notesText = plantEntry.notes,
+                    onNotesChange = { viewModel.updateNotesText(it) }
+                )
             }
         }
         Box(
