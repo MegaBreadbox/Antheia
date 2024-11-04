@@ -7,13 +7,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.example.antheia_plant_manager.nav_routes.AccountSettings
 import com.example.antheia_plant_manager.nav_routes.AddPlant
 import com.example.antheia_plant_manager.nav_routes.CreateAccount
 import com.example.antheia_plant_manager.nav_routes.Home
 import com.example.antheia_plant_manager.nav_routes.Login
 import com.example.antheia_plant_manager.nav_routes.NavigationObject
+import com.example.antheia_plant_manager.nav_routes.Notifications
 import com.example.antheia_plant_manager.nav_routes.PlantDetails
 import com.example.antheia_plant_manager.nav_routes.PlantList
+import com.example.antheia_plant_manager.nav_routes.accountSettings
 import com.example.antheia_plant_manager.nav_routes.addPlant
 import com.example.antheia_plant_manager.nav_routes.createAccount
 import com.example.antheia_plant_manager.nav_routes.home
@@ -41,19 +44,33 @@ fun NavMenu(
             navigateCreateAccount = { navController.navigate(CreateAccount) },
             navigateHome = {
                 navController.navigate(App) {
-                    popUpToRoute
+                    popUpTo<Login> {
+                        inclusive = true
+                    }
                 }
             }
         )
         createAccount()
         navigation<App>(startDestination = Home) {
             home(
-                bottomAppBarNavigate = { navController.navigate(it) },
+                bottomAppBarNavigate = {
+                    navController.navigate(it) {
+                        popUpTo<Home> {
+                            inclusive = true
+                        }
+                    }
+                },
                 navigateAddPlant = { navController.navigate(AddPlant) },
                 navigatePlantList = { navController.navigate(PlantList(it)) }
             )
             notifications(
-                bottomAppBarNavigate = { navController.navigate(it) },
+                bottomAppBarNavigate = {
+                    navController.navigate(it) {
+                        popUpTo<Notifications> {
+                            inclusive = true
+                        }
+                    }
+                },
                 navigatePlantDetails = { navController.navigate(PlantDetails(it)) }
             )
             addPlant(
@@ -63,8 +80,15 @@ fun NavMenu(
             plantList(
                 navigatePlantDetails = { navController.navigate(PlantDetails(it)) }
             )
-            plantDetails(
-
+            plantDetails()
+            accountSettings(
+                bottomAppBarNavigate = {
+                    navController.navigate(it) {
+                        popUpTo<AccountSettings> {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
     }

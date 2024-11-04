@@ -9,10 +9,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -21,6 +24,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.example.antheia_plant_manager.R
+import com.example.antheia_plant_manager.nav_routes.AccountSettings
 import com.example.antheia_plant_manager.nav_routes.Home
 import com.example.antheia_plant_manager.nav_routes.NavigationObject
 import com.example.antheia_plant_manager.nav_routes.Notifications
@@ -71,6 +75,10 @@ fun AppBottomBar(
         ) {
             BottomBarEntry.entries.forEach { entry ->
                 TextButton(
+                    enabled = currentDestination != entry.navRoute,
+                    colors = androidx.compose.material3.ButtonDefaults.textButtonColors(
+                        disabledContentColor = MaterialTheme.colorScheme.primary
+                    ),
                     onClick = {
                         navigate(entry.navRoute)
                     },
@@ -116,6 +124,12 @@ enum class BottomBarEntry(
         iconVectorOutlined = Icons.Outlined.Home,
         contentDescription = R.string.home
     ),
+    ACCOUNT_SETTINGS(
+        navRoute = AccountSettings,
+        iconVectorFilled = Icons.Filled.Person,
+        iconVectorOutlined = Icons.Outlined.Person,
+        contentDescription = R.string.account_settings
+    )
 }
 
 
