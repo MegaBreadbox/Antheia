@@ -70,7 +70,7 @@ class CreateAccountViewModel @Inject constructor(
         }
     }
 
-    fun createAccount() {
+    fun createAccount(navigate: () -> Unit) {
         when {
             !passwordText.validatePassword() -> updateErrorText(R.string.password_requirements_error)
             passwordText != confirmPasswordText -> updateErrorText(R.string.passwords_do_not_match_error)
@@ -81,6 +81,7 @@ class CreateAccountViewModel @Inject constructor(
                             emailText,
                             passwordText
                         )
+                        navigate()
                     } catch (e: Exception) {
                         println("$e ${e.message}")
                         when (e) {

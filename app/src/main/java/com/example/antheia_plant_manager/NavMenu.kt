@@ -50,7 +50,15 @@ fun NavMenu(
                 }
             }
         )
-        createAccount()
+        createAccount(
+            navigateHome = {
+                navController.navigate(App) {
+                    popUpTo<CreateAccount> {
+                        inclusive = true
+                    }
+                }
+            }
+        )
         navigation<App>(startDestination = Home) {
             home(
                 bottomAppBarNavigate = {

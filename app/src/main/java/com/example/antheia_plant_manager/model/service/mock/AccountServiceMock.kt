@@ -31,6 +31,22 @@ class AccountServiceMock: AccountService {
         TODO("Not yet implemented")
     }
 
+    override suspend fun sendEmailVerification() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun sendPasswordReset() {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateEmail(newEmail: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updatePassword(newPassword: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun isSignedIn(): Boolean {
         TODO("Not yet implemented")
     }

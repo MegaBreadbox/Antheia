@@ -54,7 +54,7 @@ class PlantDetailsViewModel @Inject constructor(
     private val plantDatabase: PlantRepository,
     private val accountService: AccountService,
     private val reminderWorker: ReminderRepository,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
     private val currentDate: Flow<LocalDate> = flow {

@@ -70,5 +70,9 @@
     <string name="multiple_plants_require_attention">Multiple plants require attention!</string>
     <string name="requires_attention">%1$s requires attention!</string>
     <string name="enter_notes_here">Enter notes here...</string>
-    <string name="account_settings">Account settings</string>
+    <string name="account_settings">Account</string>
+    <string name="sign_out">Sign out</string>
+    <string name="delete_account">Delete account</string>
+    <string name="username">Username</string>
+    <string name="edit">Edit %1$s</string>
 </resources>

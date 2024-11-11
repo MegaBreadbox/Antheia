@@ -2,6 +2,7 @@ package com.example.antheia_plant_manager.nav_routes
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import androidx.navigation.navDeepLink
 import com.example.antheia_plant_manager.nav_routes.util.AnimationConstants
 import com.example.antheia_plant_manager.nav_routes.util.AppScaffold
 import com.example.antheia_plant_manager.screens.account_settings.AccountSettingsScreen
@@ -19,7 +20,10 @@ fun NavGraphBuilder.accountSettings(
         },
         exitTransition = {
             AnimationConstants.fadeOutAnimation()
-        }
+        },
+        deepLinks = listOf(
+            navDeepLink { uriPattern = "antheia://password_reset" }
+        )
     ) {
         AppScaffold(
             currentDestination = AccountSettings,

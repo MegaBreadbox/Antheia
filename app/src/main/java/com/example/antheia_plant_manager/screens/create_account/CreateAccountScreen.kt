@@ -1,7 +1,5 @@
 package com.example.antheia_plant_manager.screens.create_account
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -39,14 +37,13 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.antheia_plant_manager.R
-import com.example.antheia_plant_manager.model.service.AccountService
 import com.example.antheia_plant_manager.model.service.mock.AccountServiceMock
 import com.example.antheia_plant_manager.screens.sign_in.WelcomeTextCompact
 import com.example.compose.AntheiaplantmanagerTheme
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun CreateAccountScreen(
+    navigateHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CreateAccountViewModel = hiltViewModel<CreateAccountViewModel>()
 ) {
@@ -77,7 +74,9 @@ fun CreateAccountScreen(
             passwordValueChange = { viewModel.updatePasswordText(it) },
             confirmPasswordValueChange = { viewModel.updateConfirmPasswordText(it) },
             updateIsPasswordVisible = { viewModel.updateIsPasswordVisible() },
-            createAccount = { viewModel.createAccount() }
+            createAccount = {
+                viewModel.createAccount(navigateHome)
+            }
 
         )
     }
@@ -237,7 +236,8 @@ fun CreateAccountForm(
 fun CreateAccountScreenPreview() {
     AntheiaplantmanagerTheme {
         CreateAccountScreen(
-            viewModel = CreateAccountViewModel(AccountServiceMock())
+            viewModel = CreateAccountViewModel(AccountServiceMock()),
+            navigateHome = {}
         )
     }
 }
