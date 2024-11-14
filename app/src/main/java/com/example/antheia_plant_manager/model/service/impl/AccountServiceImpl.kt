@@ -55,12 +55,9 @@ class AccountServiceImpl @Inject constructor(): AccountService {
     }
 
     override suspend fun updateEmail(newEmail: String) {
-        TODO("Not yet implemented")
+        Firebase.auth.currentUser!!.verifyBeforeUpdateEmail(newEmail).await()
     }
 
-    override suspend fun updatePassword(newPassword: String) {
-        TODO("Not yet implemented")
-    }
 
     override fun isSignedIn(): Boolean {
         return Firebase.auth.currentUser != null

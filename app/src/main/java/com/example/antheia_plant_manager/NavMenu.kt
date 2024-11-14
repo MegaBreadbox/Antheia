@@ -90,6 +90,14 @@ fun NavMenu(
             )
             plantDetails()
             accountSettings(
+                navigateChangeDetail = { },
+                navigateSignIn = {
+                    navController.navigate(Login) {
+                        popUpTo<AccountSettings> {
+                            inclusive = true
+                        }
+                    }
+                },
                 bottomAppBarNavigate = {
                     navController.navigate(it) {
                         popUpTo<AccountSettings> {

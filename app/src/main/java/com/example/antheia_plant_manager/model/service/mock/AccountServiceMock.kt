@@ -43,10 +43,6 @@ class AccountServiceMock: AccountService {
         TODO("Not yet implemented")
     }
 
-    override suspend fun updatePassword(newPassword: String) {
-        TODO("Not yet implemented")
-    }
-
     override fun isSignedIn(): Boolean {
         TODO("Not yet implemented")
     }
