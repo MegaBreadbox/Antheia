@@ -22,14 +22,20 @@ class AccountSettingsViewModel @Inject constructor(
     val dialogState = _dialogState
 
     fun signOut(navigation: () -> Unit) {
-        viewModelScope.launch(coroutineDispatcher) {
+        viewModelScope.launch() {
+            _dialogState.update {
+                it.copy(isEnabled = false)
+            }
             accountService.signOutOfApp()
             navigation()
         }
     }
 
     fun deleteAccount(navigation: () -> Unit) {
-        viewModelScope.launch(coroutineDispatcher) {
+        viewModelScope.launch() {
+            _dialogState.update {
+                it.copy(isEnabled = false)
+            }
             accountService.deleteAccount()
             navigation()
         }

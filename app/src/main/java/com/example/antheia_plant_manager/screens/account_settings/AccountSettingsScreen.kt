@@ -91,14 +91,14 @@ fun AccountSettingsScreenCompact(
         if(user?.providerData?.get(1)?.providerId != "google.com") {
             AccountDetail(
                 accountDetailTitle = stringResource(R.string.username),
-                accountDetail = user?.displayName.toString(),
+                accountDetail = user?.displayName?: "",
                 onDetailClick = { onUserNameClick(AccountInfoType.Username(user?.displayName)) }
             )
             Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
             AccountDetail(
                 accountDetailTitle = stringResource(R.string.email),
                 accountDetail = user?.email.toString(),
-                onDetailClick = { onEmailClick(AccountInfoType.Email(user?.email)) }
+                onDetailClick = { onEmailClick(AccountInfoType.Email(user?.email?: "")) }
             )
             Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
             AccountDetailMiniature(

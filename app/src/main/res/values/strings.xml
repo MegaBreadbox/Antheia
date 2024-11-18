@@ -78,4 +78,6 @@
     <string name="account_detail_not_set">%1$s not set</string>
     <string name="delete_account_confirmation">Are you sure you want to delete your account?</string>
     <string name="sign_out_confirmation">Are you sure you want to sign out?</string>
+    <string name="confirm_text_form">Confirm %1$s</string>
+    <string name="change_account_detail_header">Change %1$s?</string>
 </resources>

@@ -128,6 +128,7 @@ fun WelcomeScreen(
     Text(
         text = processWelcomeText,
         textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.onSurface,
         style = MaterialTheme.typography.displayLarge,
         modifier = modifier
             .padding(top = dimensionResource(id = R.dimen.large_padding))
