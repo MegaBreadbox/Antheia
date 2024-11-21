@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.antheia_plant_manager.model.data.PlantRepository
-import com.example.antheia_plant_manager.model.service.AccountService
+import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.nav_routes.PlantList
 import com.example.antheia_plant_manager.util.DATE_CHECK_DELAY
 import com.example.antheia_plant_manager.util.PlantAlert

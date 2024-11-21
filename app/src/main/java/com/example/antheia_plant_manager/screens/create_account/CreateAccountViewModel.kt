@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
-import com.example.antheia_plant_manager.model.service.AccountService
+import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.util.ComposeText
 import com.example.antheia_plant_manager.util.validatePassword
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException

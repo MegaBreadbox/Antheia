@@ -1,23 +1,34 @@
-package com.example.antheia_plant_manager.model.service.impl
+package com.example.antheia_plant_manager.model.service.firebase_auth.impl
 
 import android.util.Log
-import androidx.credentials.Credential
-import androidx.credentials.CredentialManager
-import androidx.credentials.GetCredentialRequest
-import com.example.antheia_plant_manager.model.service.AccountService
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.google.firebase.Firebase
-import com.google.firebase.auth.ActionCodeSettings
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
-import com.google.firebase.auth.oAuthCredential
+import com.google.firebase.auth.userProfileChangeRequest
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 class AccountServiceImpl @Inject constructor(): AccountService {
 
     override val currentUserId: String
         get() = Firebase.auth.currentUser?.uid.orEmpty()
+
+    override fun currentUser(): Flow<FirebaseUser?> = callbackFlow {
+        val authTokenListener = FirebaseAuth.IdTokenListener { auth ->
+            Log.d("userFromListener", auth.currentUser?.displayName.toString())
+            trySend(auth.currentUser)
+        }
+        trySend(Firebase.auth.currentUser)
+        Firebase.auth.addIdTokenListener(authTokenListener)
+        awaitClose {
+            Firebase.auth.removeIdTokenListener(authTokenListener)
+        }
+    }
 
     override suspend fun googleSignIn(idToken: String) {
         Firebase.auth.signInWithCredential(
@@ -56,6 +67,14 @@ class AccountServiceImpl @Inject constructor(): AccountService {
 
     override suspend fun updateEmail(newEmail: String) {
         Firebase.auth.currentUser!!.verifyBeforeUpdateEmail(newEmail).await()
+    }
+
+    override suspend fun updateUsername(newUsername: String) {
+        Firebase.auth.currentUser!!.updateProfile(
+            userProfileChangeRequest {
+                displayName = newUsername
+            }
+        ).await()
     }
 
 

@@ -12,4 +12,5 @@ class ComposeText (
     fun asString(): String {
         return stringResource(textId, arguments)
     }
+
 }

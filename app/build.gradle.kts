@@ -8,16 +8,17 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.google.services)
     alias(libs.plugins.crashlytics)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
     namespace = "com.example.antheia_plant_manager"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.antheia_plant_manager"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -87,6 +88,7 @@ dependencies {
     implementation(libs.firebase.crashyltics)
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.authentication)
+    implementation(libs.firebase.firestore)
 
     //credentials
     implementation(libs.androidx.credentials)

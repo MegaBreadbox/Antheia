@@ -1,11 +1,16 @@
-package com.example.antheia_plant_manager.model.service.mock
+package com.example.antheia_plant_manager.model.service.firebase_auth.mock
 
-import com.example.antheia_plant_manager.model.service.AccountService
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
+import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.Flow
 
 class AccountServiceMock: AccountService {
     override val currentUserId: String
         get() = TODO("Not yet implemented")
+
+    override fun currentUser(): Flow<FirebaseUser?> {
+        TODO("Not yet implemented")
+    }
 
     override suspend fun googleSignIn(idToken: String) {
         TODO("Not yet implemented")
@@ -40,6 +45,10 @@ class AccountServiceMock: AccountService {
     }
 
     override suspend fun updateEmail(newEmail: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateUsername(newUsername: String) {
         TODO("Not yet implemented")
     }
 

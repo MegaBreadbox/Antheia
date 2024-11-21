@@ -26,11 +26,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
-import com.example.antheia_plant_manager.model.service.mock.AccountServiceMock
+import com.example.antheia_plant_manager.model.service.firebase_auth.mock.AccountServiceMock
 import com.example.antheia_plant_manager.util.cardColor
 import com.example.compose.AntheiaplantmanagerTheme
 

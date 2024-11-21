@@ -6,14 +6,14 @@ import androidx.navigation.navDeepLink
 import com.example.antheia_plant_manager.nav_routes.util.AnimationConstants
 import com.example.antheia_plant_manager.nav_routes.util.AppScaffold
 import com.example.antheia_plant_manager.screens.account_settings.AccountSettingsScreen
-import com.example.antheia_plant_manager.screens.account_settings.util.AccountInfoType
+import com.example.antheia_plant_manager.screens.account_settings.util.AccountDetail
 import kotlinx.serialization.Serializable
 
 @Serializable
 object AccountSettings: NavigationObject
 
 fun NavGraphBuilder.accountSettings(
-    navigateChangeDetail: (AccountInfoType) -> Unit,
+    navigateChangeDetail: (AccountDetail) -> Unit,
     navigateSignIn: () -> Unit,
     bottomAppBarNavigate: (NavigationObject) -> Unit
 ) {
@@ -33,7 +33,7 @@ fun NavGraphBuilder.accountSettings(
             bottomAppBarNavigate = bottomAppBarNavigate
         ) {
             AccountSettingsScreen(
-                navigateChangeDetail = { },
+                navigateChangeDetail = { navigateChangeDetail(it) },
                 navigateSignIn = navigateSignIn
             )
         }

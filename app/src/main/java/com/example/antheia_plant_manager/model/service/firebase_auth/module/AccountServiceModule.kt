@@ -1,7 +1,7 @@
-package com.example.antheia_plant_manager.model.service.module
+package com.example.antheia_plant_manager.model.service.firebase_auth.module
 
-import com.example.antheia_plant_manager.model.service.AccountService
-import com.example.antheia_plant_manager.model.service.impl.AccountServiceImpl
+import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
+import com.example.antheia_plant_manager.model.service.firebase_auth.impl.AccountServiceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

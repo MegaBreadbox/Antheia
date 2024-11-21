@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,8 +35,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
-import com.example.antheia_plant_manager.model.service.mock.AccountServiceMock
+import com.example.antheia_plant_manager.model.service.firebase_auth.mock.AccountServiceMock
 import com.example.antheia_plant_manager.screens.sign_in.WelcomeTextCompact
 import com.example.compose.AntheiaplantmanagerTheme
 
@@ -47,7 +47,7 @@ fun CreateAccountScreen(
     modifier: Modifier = Modifier,
     viewModel: CreateAccountViewModel = hiltViewModel<CreateAccountViewModel>()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

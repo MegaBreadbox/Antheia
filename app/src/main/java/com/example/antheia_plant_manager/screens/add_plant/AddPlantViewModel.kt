@@ -1,6 +1,5 @@
 package com.example.antheia_plant_manager.screens.add_plant
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.PlantRepository
-import com.example.antheia_plant_manager.model.service.AccountService
+import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.model.worker.ReminderRepository
 import com.example.antheia_plant_manager.screens.add_plant.util.UiState
 import com.example.antheia_plant_manager.util.ComposeText

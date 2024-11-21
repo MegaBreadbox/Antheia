@@ -1,7 +1,7 @@
 package com.example.antheia_plant_manager.mocks
 
 import androidx.credentials.GetCredentialRequest
-import com.example.antheia_plant_manager.model.service.GoogleSignIn
+import com.example.antheia_plant_manager.model.service.firebase_auth.GoogleSignIn
 
 class GoogleSignInMock: GoogleSignIn {
     override fun getCredentialRequest(): GetCredentialRequest {

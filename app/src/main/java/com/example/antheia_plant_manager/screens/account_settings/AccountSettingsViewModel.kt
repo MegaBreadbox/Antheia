@@ -4,10 +4,13 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.antheia_plant_manager.model.service.AccountService
+import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,7 +22,14 @@ class AccountSettingsViewModel @Inject constructor(
 ): ViewModel() {
 
     private val _dialogState = MutableStateFlow(DialogState())
-    val dialogState = _dialogState
+    val dialogState = _dialogState.asStateFlow()
+
+    val currentUser = accountService.currentUser()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = null
+        )
 
     fun signOut(navigation: () -> Unit) {
         viewModelScope.launch() {

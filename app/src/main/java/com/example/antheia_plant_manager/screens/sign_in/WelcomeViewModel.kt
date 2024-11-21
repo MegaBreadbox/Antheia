@@ -8,8 +8,8 @@ import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
-import com.example.antheia_plant_manager.model.service.AccountService
-import com.example.antheia_plant_manager.model.service.GoogleSignIn
+import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
+import com.example.antheia_plant_manager.model.service.firebase_auth.GoogleSignIn
 import com.example.antheia_plant_manager.util.ComposeText
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuthException

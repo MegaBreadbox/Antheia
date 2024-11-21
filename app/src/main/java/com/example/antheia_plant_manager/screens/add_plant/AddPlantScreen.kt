@@ -62,7 +62,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
-import com.example.antheia_plant_manager.model.service.mock.AccountServiceMock
+import com.example.antheia_plant_manager.model.service.firebase_auth.mock.AccountServiceMock
 import com.example.antheia_plant_manager.model.worker.mock.ReminderRepositoryImplMock
 import com.example.antheia_plant_manager.screens.add_plant.util.AddPlantConstant
 import com.example.antheia_plant_manager.util.ComposeText

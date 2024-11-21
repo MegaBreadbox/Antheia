@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -30,25 +29,29 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
-import com.example.antheia_plant_manager.screens.account_settings.util.AccountInfoType
+import com.example.antheia_plant_manager.screens.account_settings.util.AccountDetail
 import com.example.antheia_plant_manager.util.Header
 import com.example.compose.AntheiaplantmanagerTheme
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 
 @Composable
 fun AccountSettingsScreen(
-    navigateChangeDetail: (AccountInfoType) -> Unit,
+    navigateChangeDetail: (AccountDetail) -> Unit,
     navigateSignIn: () -> Unit,
     viewModel: AccountSettingsViewModel = hiltViewModel(),
 ) {
     val dialogState by viewModel.dialogState.collectAsStateWithLifecycle()
+    val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
+    Log.d("user", currentUser?.displayName.toString())
+    Log.d("Firebase user  ", Firebase.auth.currentUser?.displayName?: "")
     AccountSettingsScreenCompact(
         dialogState = dialogState,
+        userState = currentUser,
         updateDialogState = { viewModel.updateDialogState(it) },
         onSignOutClick = { viewModel.signOut(navigateSignIn) },
         onUserNameClick = { navigateChangeDetail(it) },
@@ -61,15 +64,15 @@ fun AccountSettingsScreen(
 @Composable
 fun AccountSettingsScreenCompact(
     dialogState: DialogState,
+    userState: FirebaseUser?,
     updateDialogState: (DialogState) -> Unit,
     onSignOutClick: () -> Unit,
-    onUserNameClick: (AccountInfoType) -> Unit,
-    onEmailClick: (AccountInfoType) -> Unit,
+    onUserNameClick: (AccountDetail) -> Unit,
+    onEmailClick: (AccountDetail) -> Unit,
     onPasswordClick: () -> Unit,
     onDeleteAccountClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val user = Firebase.auth.currentUser
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -88,17 +91,25 @@ fun AccountSettingsScreenCompact(
                 onDismissClick = { updateDialogState(dialogState.copy(isEnabled = false)) }
             )
         }
-        if(user?.providerData?.get(1)?.providerId != "google.com") {
+        if(userState?.providerData?.get(1)?.providerId != "google.com") {
             AccountDetail(
                 accountDetailTitle = stringResource(R.string.username),
-                accountDetail = user?.displayName?: "",
-                onDetailClick = { onUserNameClick(AccountInfoType.Username(user?.displayName)) }
+                accountDetail = userState?.displayName?: "",
+                onDetailClick = {
+                    onUserNameClick(
+                        AccountDetail.USERNAME
+                    )
+                }
             )
             Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
             AccountDetail(
                 accountDetailTitle = stringResource(R.string.email),
-                accountDetail = user?.email.toString(),
-                onDetailClick = { onEmailClick(AccountInfoType.Email(user?.email?: "")) }
+                accountDetail = userState?.email.toString(),
+                onDetailClick = {
+                    onEmailClick(
+                        AccountDetail.EMAIL
+                    )
+                }
             )
             Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
             AccountDetailMiniature(
@@ -309,6 +320,7 @@ fun AccountSettingsScreenCompactPreview() {
     AntheiaplantmanagerTheme() {
         AccountSettingsScreenCompact(
             dialogState = DialogState(),
+            userState = Firebase.auth.currentUser,
             updateDialogState = { },
             onSignOutClick = { },
             onUserNameClick = { },

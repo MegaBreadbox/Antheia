@@ -1,22 +1,18 @@
 package com.example.antheia_plant_manager.model.worker
 
 import android.content.Context
-import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.PlantRepository
-import com.example.antheia_plant_manager.model.service.AccountService
+import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.model.worker.util.reminderNotification
 import com.example.antheia_plant_manager.util.Reminder
 import com.example.antheia_plant_manager.util.determineReminder
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 

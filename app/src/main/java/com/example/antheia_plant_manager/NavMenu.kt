@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.example.antheia_plant_manager.nav_routes.AccountSettings
+import com.example.antheia_plant_manager.nav_routes.AccountSettingsEdit
 import com.example.antheia_plant_manager.nav_routes.AddPlant
 import com.example.antheia_plant_manager.nav_routes.CreateAccount
 import com.example.antheia_plant_manager.nav_routes.Home
@@ -17,6 +18,7 @@ import com.example.antheia_plant_manager.nav_routes.Notifications
 import com.example.antheia_plant_manager.nav_routes.PlantDetails
 import com.example.antheia_plant_manager.nav_routes.PlantList
 import com.example.antheia_plant_manager.nav_routes.accountSettings
+import com.example.antheia_plant_manager.nav_routes.accountSettingsEdit
 import com.example.antheia_plant_manager.nav_routes.addPlant
 import com.example.antheia_plant_manager.nav_routes.createAccount
 import com.example.antheia_plant_manager.nav_routes.home
@@ -90,7 +92,7 @@ fun NavMenu(
             )
             plantDetails()
             accountSettings(
-                navigateChangeDetail = { },
+                navigateChangeDetail = { navController.navigate(AccountSettingsEdit(it)) },
                 navigateSignIn = {
                     navController.navigate(Login) {
                         popUpTo<AccountSettings> {
@@ -105,6 +107,9 @@ fun NavMenu(
                         }
                     }
                 }
+            )
+            accountSettingsEdit(
+                navigateBack = { navController.popBackStack() }
             )
         }
     }

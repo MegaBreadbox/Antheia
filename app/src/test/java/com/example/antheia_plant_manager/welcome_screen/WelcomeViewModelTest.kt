@@ -1,6 +1,6 @@
 package com.example.antheia_plant_manager.welcome_screen
 
-import com.example.antheia_plant_manager.model.service.GoogleSignIn
+import com.example.antheia_plant_manager.model.service.firebase_auth.GoogleSignIn
 import com.example.antheia_plant_manager.screens.sign_in.WelcomeViewModel
 import com.example.antheia_plant_manager.mocks.AccountServiceMock
 import com.example.antheia_plant_manager.mocks.GoogleSignInMock

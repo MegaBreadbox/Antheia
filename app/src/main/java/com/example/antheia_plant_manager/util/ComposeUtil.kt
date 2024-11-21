@@ -1,5 +1,7 @@
 package com.example.antheia_plant_manager.util
 
+import androidx.compose.foundation.Indication
+import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -88,10 +91,7 @@ fun outlinedTextFieldClickModifier(
         .clip(RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)))
         .clickable(
             interactionSource = interactionSource,
-            indication = androidx.compose.material.ripple.rememberRipple(
-                bounded = false,
-                radius = dimensionResource(id = R.dimen.textfield_size_mini) /2
-            ),
+            indication = ripple(),
             onClickLabel = stringResource(R.string.select_watering_frequency)
         ) {
             onClick()

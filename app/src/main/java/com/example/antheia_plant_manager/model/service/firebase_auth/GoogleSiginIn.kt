@@ -1,8 +1,6 @@
-package com.example.antheia_plant_manager.model.service
+package com.example.antheia_plant_manager.model.service.firebase_auth
 
-import android.content.Context
 import androidx.credentials.GetCredentialRequest
-import androidx.credentials.GetCredentialResponse
 
 interface GoogleSignIn {
     fun getCredentialRequest(): GetCredentialRequest
