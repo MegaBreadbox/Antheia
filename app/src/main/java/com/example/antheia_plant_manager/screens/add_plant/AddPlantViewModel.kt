@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.PlantRepository
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
+import com.example.antheia_plant_manager.model.service.firestore.CloudService
 import com.example.antheia_plant_manager.model.worker.ReminderRepository
 import com.example.antheia_plant_manager.screens.add_plant.util.UiState
 import com.example.antheia_plant_manager.util.ComposeText
@@ -16,6 +17,7 @@ import com.example.antheia_plant_manager.util.PlantEntry
 import com.example.antheia_plant_manager.util.ReminderFrequency
 import com.example.antheia_plant_manager.util.SUBSCRIBE_DELAY
 import com.example.antheia_plant_manager.util.toPlant
+import com.example.antheia_plant_manager.util.toPlantModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -37,6 +39,7 @@ import javax.inject.Inject
 class AddPlantViewModel @Inject constructor(
     private val plantDatabase: PlantRepository,
     private val accountService: AccountService,
+    private val cloudService: CloudService,
     private val reminderWorker: ReminderRepository
 ): ViewModel() {
 
@@ -211,6 +214,7 @@ class AddPlantViewModel @Inject constructor(
                     )
                 }
                 plantDatabase.addPlant(_currentPlant.value.toPlant())
+                cloudService.addPlant(_currentPlant.value.toPlantModel())
                 reminderWorker.sendNotification()
                 navigation()
             }

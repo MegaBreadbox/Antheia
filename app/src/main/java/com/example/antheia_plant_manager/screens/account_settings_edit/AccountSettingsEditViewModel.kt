@@ -8,8 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
+import com.example.antheia_plant_manager.model.service.firestore.CloudService
+import com.example.antheia_plant_manager.model.service.firestore.UserModel
 import com.example.antheia_plant_manager.nav_routes.AccountSettingsEdit
 import com.example.antheia_plant_manager.screens.account_settings.util.AccountDetail
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +26,7 @@ import javax.inject.Inject
 class AccountSettingsEditViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val accountService: AccountService,
+    private val cloudService: CloudService,
     private val coroutineDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
@@ -62,6 +67,13 @@ class AccountSettingsEditViewModel @Inject constructor(
                 AccountDetail.USERNAME -> {
                     viewModelScope.launch() {
                         accountService.updateUsername(newAccountText)
+                        cloudService.updateUser(
+                            UserModel(
+                                username = newAccountText,
+                                email = Firebase.auth.currentUser?.email?: "",
+                                uid = Firebase.auth.currentUser?.uid?: "",
+                            )
+                        )
                     }
                 }
                 AccountDetail.EMAIL -> {

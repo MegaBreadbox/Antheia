@@ -5,6 +5,8 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
+import com.example.antheia_plant_manager.model.service.firestore.CloudService
+import com.example.antheia_plant_manager.util.SUBSCRIBE_DELAY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,18 +20,18 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountSettingsViewModel @Inject constructor(
     private val accountService: AccountService,
+    private val cloudService: CloudService,
     private val coroutineDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
     private val _dialogState = MutableStateFlow(DialogState())
     val dialogState = _dialogState.asStateFlow()
 
-    val currentUser = accountService.currentUser()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = null
-        )
+    val userState = cloudService.userFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY),
+        initialValue = null
+    )
 
     fun signOut(navigation: () -> Unit) {
         viewModelScope.launch() {

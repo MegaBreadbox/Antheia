@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
+import com.example.antheia_plant_manager.model.service.firestore.UserModel
 import com.example.antheia_plant_manager.screens.account_settings.util.AccountDetail
 import com.example.antheia_plant_manager.util.Header
 import com.example.compose.AntheiaplantmanagerTheme
@@ -46,12 +47,13 @@ fun AccountSettingsScreen(
     viewModel: AccountSettingsViewModel = hiltViewModel(),
 ) {
     val dialogState by viewModel.dialogState.collectAsStateWithLifecycle()
-    val currentUser by viewModel.currentUser.collectAsStateWithLifecycle()
-    Log.d("user", currentUser?.displayName.toString())
+    val currentUser by viewModel.userState.collectAsStateWithLifecycle()
+    Log.d("user", currentUser.toString())
     Log.d("Firebase user  ", Firebase.auth.currentUser?.displayName?: "")
     AccountSettingsScreenCompact(
         dialogState = dialogState,
         userState = currentUser,
+        signInProvider = Firebase.auth.currentUser?.providerData?.get(1)?.providerId?: "",
         updateDialogState = { viewModel.updateDialogState(it) },
         onSignOutClick = { viewModel.signOut(navigateSignIn) },
         onUserNameClick = { navigateChangeDetail(it) },
@@ -64,7 +66,8 @@ fun AccountSettingsScreen(
 @Composable
 fun AccountSettingsScreenCompact(
     dialogState: DialogState,
-    userState: FirebaseUser?,
+    signInProvider: String,
+    userState: UserModel?,
     updateDialogState: (DialogState) -> Unit,
     onSignOutClick: () -> Unit,
     onUserNameClick: (AccountDetail) -> Unit,
@@ -91,10 +94,10 @@ fun AccountSettingsScreenCompact(
                 onDismissClick = { updateDialogState(dialogState.copy(isEnabled = false)) }
             )
         }
-        if(userState?.providerData?.get(1)?.providerId != "google.com") {
+        if(signInProvider != "google.com") {
             AccountDetail(
                 accountDetailTitle = stringResource(R.string.username),
-                accountDetail = userState?.displayName?: "",
+                accountDetail = userState?.username?: "",
                 onDetailClick = {
                     onUserNameClick(
                         AccountDetail.USERNAME
@@ -104,7 +107,7 @@ fun AccountSettingsScreenCompact(
             Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
             AccountDetail(
                 accountDetailTitle = stringResource(R.string.email),
-                accountDetail = userState?.email.toString(),
+                accountDetail = userState?.email?: "",
                 onDetailClick = {
                     onEmailClick(
                         AccountDetail.EMAIL
@@ -320,7 +323,8 @@ fun AccountSettingsScreenCompactPreview() {
     AntheiaplantmanagerTheme() {
         AccountSettingsScreenCompact(
             dialogState = DialogState(),
-            userState = Firebase.auth.currentUser,
+            userState = UserModel(),
+            signInProvider = "",
             updateDialogState = { },
             onSignOutClick = { },
             onUserNameClick = { },

@@ -1,6 +1,7 @@
 package com.example.antheia_plant_manager.util
 
 import com.example.antheia_plant_manager.model.data.Plant
+import com.example.antheia_plant_manager.model.service.firestore.PlantModel
 import java.time.LocalDate
 import kotlin.math.absoluteValue
 
@@ -136,6 +137,19 @@ fun Plant.toPlantAlert(): PlantAlert {
 
 }
 
+fun Plant.toPlantModel(): PlantModel {
+    return PlantModel(
+        plantUserId = this.plantUserId,
+        plantName = this.name,
+        location = this.location,
+        waterReminder = this.waterReminder,
+        repottingReminder = this.repottingReminder,
+        fertilizerReminder = this.fertilizerReminder,
+        dateAdded = this.dateAdded,
+        notes = this.notes,
+    )
+}
+
 data class PlantAlert(
     val plantId: Int = 0,
     val plantName: String = "",
@@ -163,6 +177,19 @@ fun PlantEntry.toPlant(): Plant {
         dateAdded = this.dateAdded,
         plantUserId = this.plantUserId,
         notes = this.notes
+    )
+}
+
+fun PlantEntry.toPlantModel(): PlantModel {
+    return PlantModel(
+        plantUserId = this.plantUserId,
+        plantName = this.name,
+        location = this.location,
+        waterReminder = this.waterReminder,
+        repottingReminder = this.repottingReminder,
+        fertilizerReminder = this.fertilizerReminder,
+        dateAdded = this.dateAdded,
+        notes = this.notes,
     )
 }
 

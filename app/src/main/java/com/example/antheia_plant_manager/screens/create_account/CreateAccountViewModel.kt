@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
+import com.example.antheia_plant_manager.model.service.firestore.CloudService
 import com.example.antheia_plant_manager.util.ComposeText
 import com.example.antheia_plant_manager.util.validatePassword
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CreateAccountViewModel @Inject constructor(
     private val accountService: AccountService,
+    private val cloudService: CloudService,
 ): ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateAccountUiState())
@@ -81,6 +83,7 @@ class CreateAccountViewModel @Inject constructor(
                             emailText,
                             passwordText
                         )
+                        cloudService.addUser()
                         navigate()
                     } catch (e: Exception) {
                         println("$e ${e.message}")

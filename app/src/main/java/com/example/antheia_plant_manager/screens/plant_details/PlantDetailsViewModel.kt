@@ -8,6 +8,7 @@ import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.Plant
 import com.example.antheia_plant_manager.model.data.PlantRepository
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
+import com.example.antheia_plant_manager.model.service.firestore.CloudService
 import com.example.antheia_plant_manager.model.worker.ReminderRepository
 import com.example.antheia_plant_manager.nav_routes.PlantDetails
 import com.example.antheia_plant_manager.screens.plant_details.util.ButtonType
@@ -21,10 +22,12 @@ import com.example.antheia_plant_manager.util.determineReminder
 import com.example.antheia_plant_manager.util.toPlant
 import com.example.antheia_plant_manager.util.toPlantAlert
 import com.example.antheia_plant_manager.util.toPlantEntry
+import com.example.antheia_plant_manager.util.toPlantModel
 import com.example.antheia_plant_manager.util.updateReminderDate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -48,6 +51,7 @@ class PlantDetailsViewModel @Inject constructor(
     private val plantDatabase: PlantRepository,
     private val accountService: AccountService,
     private val reminderWorker: ReminderRepository,
+    private val cloudService: CloudService,
     private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
@@ -133,29 +137,32 @@ class PlantDetailsViewModel @Inject constructor(
         when(buttonType) {
             ButtonType.WATER -> {
                 viewModelScope.launch {
-                    plantDatabase.updatePlant(
+                    val plant =
                         plant.value.copy(
                             waterReminder = plant.value.waterReminder.updateReminderDate()
                         )
-                    )
+                    plantDatabase.updatePlant(plant)
+                    cloudService.updatePlant(plant.toPlantModel())
                 }
             }
             ButtonType.REPOT -> {
                 viewModelScope.launch {
-                    plantDatabase.updatePlant(
+                    val plant =
                         plant.value.copy(
                             repottingReminder = plant.value.repottingReminder.updateReminderDate()
                         )
-                    )
+                    plantDatabase.updatePlant(plant)
+                    cloudService.updatePlant(plant.toPlantModel())
                 }
             }
             ButtonType.FERTILIZE -> {
                 viewModelScope.launch {
-                    plantDatabase.updatePlant(
+                    val plant =
                         plant.value.copy(
                             repottingReminder = plant.value.repottingReminder.updateReminderDate()
                         )
-                    )
+                    plantDatabase.updatePlant(plant)
+                    cloudService.updatePlant(plant.toPlantModel())
                 }
             }
         }
@@ -276,12 +283,14 @@ class PlantDetailsViewModel @Inject constructor(
     fun savePlant() {
         viewModelScope.launch {
             plantDatabase.updatePlant(_plantEntry.value.toPlant())
+            cloudService.updatePlant(_plantEntry.value.toPlantModel())
             reminderWorker.sendNotification()
         }
     }
 
     //Notes Tab ************************************************************************************
 
+    private var inputTextJob: Job? = null
 
     fun updateNotesText(newText: String) {
         _plantEntryTemp.update {
@@ -290,12 +299,18 @@ class PlantDetailsViewModel @Inject constructor(
         _plantEntry.update {
             it.copy(notes = newText)
         }
-        viewModelScope.launch(ioDispatcher) {
+        inputTextJob?.cancel()
+        inputTextJob = viewModelScope.launch(ioDispatcher) {
+            delay(SAVE_DEBOUNCE)
             plantDatabase.updatePlant(_plantEntry.value.toPlant().copy(notes = newText))
+            cloudService.updatePlant(_plantEntry.value.toPlantModel().copy(notes = newText))
         }
     }
 
 
+    companion object {
+        const val SAVE_DEBOUNCE = 1000L
+    }
 }
 
 data class PlantDetailsUiState(

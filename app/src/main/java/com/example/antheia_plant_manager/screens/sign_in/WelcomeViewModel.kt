@@ -1,5 +1,6 @@
 package com.example.antheia_plant_manager.screens.sign_in
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.model.service.firebase_auth.GoogleSignIn
+import com.example.antheia_plant_manager.model.service.firestore.CloudService
 import com.example.antheia_plant_manager.util.ComposeText
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseAuthException
@@ -25,7 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class WelcomeViewModel @Inject constructor(
     private val accountService: AccountService,
-    private val googleSignIn: Lazy<GoogleSignIn>
+    private val googleSignIn: Lazy<GoogleSignIn>,
+    private val cloudService: CloudService,
 ): ViewModel() {
     private val _uiState = MutableStateFlow(WelcomeUiState())
     val uiState = _uiState.asStateFlow()
@@ -72,8 +75,10 @@ class WelcomeViewModel @Inject constructor(
                     email = emailText,
                     password = passwordText
                 )
+                cloudService.addUser()
                 navigate()
             } catch(e: Exception) {
+                Log.d("error", e.toString())
                 when (e) {
                     is FirebaseAuthInvalidCredentialsException -> updateErrorText(R.string.wrong_user_details_error)
                     is FirebaseAuthException -> updateErrorText(R.string.error_occurred_while_signing_in)
@@ -92,6 +97,7 @@ class WelcomeViewModel @Inject constructor(
             try {
                 if (googleResponse.credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     accountService.googleSignIn(GoogleIdTokenCredential.createFrom(googleResponse.credential.data).idToken)
+                    cloudService.addUser()
                     navigate()
                 }
             } catch (e: Exception) {
@@ -104,6 +110,7 @@ class WelcomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 accountService.anonymousSignIn()
+                cloudService.addUser()
                 navigate()
             } catch (e: Exception) {
                 updateErrorText(R.string.error_occurred_while_signing_in)

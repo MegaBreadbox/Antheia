@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.service.firebase_auth.mock.AccountServiceMock
+import com.example.antheia_plant_manager.model.service.firestore.mock.CloudServiceMock
 import com.example.antheia_plant_manager.screens.sign_in.WelcomeTextCompact
 import com.example.compose.AntheiaplantmanagerTheme
 
@@ -236,7 +237,7 @@ fun CreateAccountForm(
 fun CreateAccountScreenPreview() {
     AntheiaplantmanagerTheme {
         CreateAccountScreen(
-            viewModel = CreateAccountViewModel(AccountServiceMock()),
+            viewModel = CreateAccountViewModel(AccountServiceMock(), CloudServiceMock()),
             navigateHome = {}
         )
     }

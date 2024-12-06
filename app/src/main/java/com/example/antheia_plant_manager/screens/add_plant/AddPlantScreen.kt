@@ -63,6 +63,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
 import com.example.antheia_plant_manager.model.service.firebase_auth.mock.AccountServiceMock
+import com.example.antheia_plant_manager.model.service.firestore.mock.CloudServiceMock
 import com.example.antheia_plant_manager.model.worker.mock.ReminderRepositoryImplMock
 import com.example.antheia_plant_manager.screens.add_plant.util.AddPlantConstant
 import com.example.antheia_plant_manager.util.ComposeText
@@ -664,7 +665,9 @@ fun AddPlantScreenCompactPreview() {
         val addPlantViewModel = AddPlantViewModel(
             plantDatabase = PlantRepositoryImplMock(),
             accountService = AccountServiceMock(),
-            reminderWorker = ReminderRepositoryImplMock()
+            reminderWorker = ReminderRepositoryImplMock(),
+            cloudService = CloudServiceMock()
+
         )
         PlantFormCompact(
             viewModel = addPlantViewModel,
@@ -679,7 +682,8 @@ fun AddPlantScreenMediumPreview() {
         val addPlantViewModel = AddPlantViewModel(
             plantDatabase = PlantRepositoryImplMock(),
             accountService = AccountServiceMock(),
-            reminderWorker = ReminderRepositoryImplMock()
+            reminderWorker = ReminderRepositoryImplMock(),
+            cloudService = CloudServiceMock()
         )
         PlantFormMedium(
             viewModel = addPlantViewModel,
