@@ -4,7 +4,8 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface CloudService {
-    val userFlow: Flow<UserModel?>
+
+    fun userFlow(): Flow<UserModel>
 
     suspend fun addPlant(plant: PlantModel)
 

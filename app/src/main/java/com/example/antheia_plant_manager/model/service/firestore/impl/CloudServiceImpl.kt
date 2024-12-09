@@ -1,6 +1,5 @@
 package com.example.antheia_plant_manager.model.service.firestore.impl
 
-import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.model.service.firestore.CloudService
 import com.example.antheia_plant_manager.model.service.firestore.PlantModel
 import com.example.antheia_plant_manager.model.service.firestore.UserModel
@@ -10,27 +9,34 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import javax.inject.Inject
 
-class CloudServiceImpl @Inject constructor(
-   private val accountService: AccountService
-) : CloudService {
+class CloudServiceImpl() : CloudService {
     private val db = Firebase.firestore
     private val auth = Firebase.auth
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override val userFlow: Flow<UserModel>
-        get() =
-            accountService.currentUser()
-                .filter { it != null }
-                .mapLatest { user ->
-                db.collection(USERS).document(user?.uid?: "").get().await().toObject<UserModel>()?: UserModel()
-            }
+    override fun userFlow(): Flow<UserModel> {
+        return callbackFlow {
+            Firebase.auth.currentUser?.let { user ->
+                    val snapshot = db.collection(USERS).document(user.uid)
+                    snapshot.addSnapshotListener { value, error ->
+                        error?.let {
+                            this.close(it)
+                        }
+
+                        value?.let {
+                            val userData = value.toObject<UserModel>()
+                            this.trySend(userData?: UserModel())
+                        }
+                    }
+                }
+            awaitClose { this.cancel() }
+        }
+    }
 
     override suspend fun addPlant(plant: PlantModel) {
         db.collection(USERS).document(auth.currentUser!!.uid)

@@ -27,7 +27,7 @@ class AccountSettingsViewModel @Inject constructor(
     private val _dialogState = MutableStateFlow(DialogState())
     val dialogState = _dialogState.asStateFlow()
 
-    val userState = cloudService.userFlow.stateIn(
+    val userState = cloudService.userFlow().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY),
         initialValue = null
