@@ -6,12 +6,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.model.service.firestore.CloudService
+import com.example.antheia_plant_manager.model.service.firestore.UserModel
 import com.example.antheia_plant_manager.util.SUBSCRIBE_DELAY
+import com.google.firebase.firestore.FirebaseFirestoreException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,11 +30,13 @@ class AccountSettingsViewModel @Inject constructor(
     private val _dialogState = MutableStateFlow(DialogState())
     val dialogState = _dialogState.asStateFlow()
 
-    val userState = cloudService.userFlow().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY),
-        initialValue = null
-    )
+    val userState = cloudService.userFlow()
+        .catch { e -> if( e is FirebaseFirestoreException) emit(UserModel()) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY),
+            initialValue = null
+        )
 
     fun signOut(navigation: () -> Unit) {
         viewModelScope.launch() {

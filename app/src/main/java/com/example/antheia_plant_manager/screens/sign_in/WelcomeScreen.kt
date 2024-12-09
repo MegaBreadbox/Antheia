@@ -31,7 +31,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -56,6 +55,7 @@ import kotlinx.coroutines.launch
 fun WelcomeScreen(
     navigateCreateAccount: () -> Unit,
     navigateHome: () -> Unit,
+    welcomeText: String = "",
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>(),
 ) {
@@ -74,7 +74,8 @@ fun WelcomeScreen(
     ){
         WelcomeTextCompact(
             processWelcomeText = uiState.value.processWelcomeText,
-            updateWelcomeText = { viewModel.updateWelcomeText(it) }
+            updateWelcomeText = { viewModel.updateWelcomeText(it) },
+            welcomeText = welcomeText.ifEmpty { stringResource(R.string.welcome_to_antheia) },
         )
 
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
@@ -117,7 +118,7 @@ fun WelcomeScreen(
     processWelcomeText: String,
     updateWelcomeText: (Char) -> Unit,
     modifier: Modifier = Modifier,
-    welcomeText: String = stringResource(R.string.welcome_to_antheia),
+    welcomeText: String,
 ) {
     LaunchedEffect(key1 = processWelcomeText) {
         if(welcomeText.length != processWelcomeText.length) {
@@ -150,7 +151,8 @@ fun WelcomeScreen(
     signIn: () -> Unit,
     anonymousSignIn: () -> Unit,
     googleSignIn: () -> Unit,
-    navigateCreateAccount: () -> Unit,
+    navigateCreateAccount: () -> Unit = { },
+    isReauthenticate: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -270,19 +272,21 @@ fun WelcomeScreen(
                 )
             }
         }
-        Row() {
-            TextButton(
-                onClick = navigateCreateAccount
-            ) {
-                Text(stringResource(R.string.create_an_account))
-            }
+        if(!isReauthenticate) {
+            Row() {
+                TextButton(
+                    onClick = navigateCreateAccount
+                ) {
+                    Text(stringResource(R.string.create_an_account))
+                }
 
-            Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.small_padding)))
+                Spacer(modifier = modifier.width(dimensionResource(id = R.dimen.small_padding)))
 
-            TextButton(
-                onClick = anonymousSignIn
-            ) {
-                Text(stringResource(R.string.continue_without_an_account))
+                TextButton(
+                    onClick = anonymousSignIn
+                ) {
+                    Text(stringResource(R.string.continue_without_an_account))
+                }
             }
         }
     }

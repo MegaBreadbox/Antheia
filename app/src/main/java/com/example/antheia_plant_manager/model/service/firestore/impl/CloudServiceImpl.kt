@@ -13,30 +13,45 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class CloudServiceImpl() : CloudService {
+class CloudServiceImpl @Inject constructor() : CloudService {
     private val db = Firebase.firestore
     private val auth = Firebase.auth
 
-    override fun userFlow(): Flow<UserModel> {
-        return callbackFlow {
-            Firebase.auth.currentUser?.let { user ->
-                    val snapshot = db.collection(USERS).document(user.uid)
-                    snapshot.addSnapshotListener { value, error ->
-                        error?.let {
-                            this.close(it)
-                        }
-
-                        value?.let {
-                            val userData = value.toObject<UserModel>()
-                            this.trySend(userData?: UserModel())
-                        }
-                    }
-                }
-            awaitClose { this.cancel() }
+    private val userIDFlow = flow {
+        auth.currentUser?.uid?.let {
+            emit(it)
         }
     }
+
+    override fun userFlow(): Flow<UserModel> {
+        return callbackFlow {
+            userIDFlow.collect { id ->
+                val snapshot = db.collection(USERS)
+                    .document(id)
+                val listener = snapshot.addSnapshotListener { value, error ->
+                    error?.let {
+                        this.close(it)
+                        return@addSnapshotListener
+                    }
+
+                    value?.let {
+                        val userData = value.toObject<UserModel>()
+                        this.trySend(userData ?: UserModel())
+                    }
+                }
+                awaitClose {
+                    listener.remove()
+                    this.cancel()
+                }
+            }
+        }
+    }
+
+
 
     override suspend fun addPlant(plant: PlantModel) {
         db.collection(USERS).document(auth.currentUser!!.uid)

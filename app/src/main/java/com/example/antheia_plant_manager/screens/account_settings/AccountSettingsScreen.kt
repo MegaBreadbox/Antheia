@@ -37,7 +37,6 @@ import com.example.antheia_plant_manager.screens.account_settings.util.AccountDe
 import com.example.antheia_plant_manager.util.Header
 import com.example.compose.AntheiaplantmanagerTheme
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 
 @Composable
@@ -117,7 +116,16 @@ fun AccountSettingsScreenCompact(
             Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
             AccountDetailMiniature(
                 accountDetailTitle = stringResource(R.string.password),
-                onDetailClick = { onPasswordClick() }
+                onDetailClick = {
+                    updateDialogState(
+                        dialogState.copy(
+                            title = R.string.reset_password,
+                            text = R.string.a_reset_link_will_be_sent_to_your_email,
+                            dialogAction = onPasswordClick,
+                            isEnabled = true
+                        )
+                    )
+                }
             )
         }
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))

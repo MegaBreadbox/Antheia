@@ -81,4 +81,6 @@
     <string name="confirm_text_form">Confirm %1$s</string>
     <string name="change_account_detail_header">Change %1$s?</string>
     <string name="account_info_mismatch">Both entries do not match</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="a_reset_link_will_be_sent_to_your_email">A reset link will be sent to your email. Continue?</string>
 </resources>
