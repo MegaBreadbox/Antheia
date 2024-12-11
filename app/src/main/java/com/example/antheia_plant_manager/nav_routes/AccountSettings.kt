@@ -15,6 +15,7 @@ object AccountSettings: NavigationObject
 fun NavGraphBuilder.accountSettings(
     navigateChangeDetail: (AccountDetail) -> Unit,
     navigateSignIn: () -> Unit,
+    navigateReauthenticate : () -> Unit,
     bottomAppBarNavigate: (NavigationObject) -> Unit
 ) {
     composable<AccountSettings>(
@@ -34,7 +35,8 @@ fun NavGraphBuilder.accountSettings(
         ) {
             AccountSettingsScreen(
                 navigateChangeDetail = { navigateChangeDetail(it) },
-                navigateSignIn = navigateSignIn
+                navigateSignIn = navigateSignIn,
+                navigateReauthenticate = navigateReauthenticate
             )
         }
     }

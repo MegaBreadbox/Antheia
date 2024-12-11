@@ -1,6 +1,5 @@
 package com.example.antheia_plant_manager.screens.sign_in
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -68,7 +67,7 @@ class WelcomeViewModel @Inject constructor(
         }
     }
 
-    fun signIn(navigate: () -> Unit) {
+    fun signIn(isReauthenticate: Boolean, navigate: () -> Unit) {
         viewModelScope.launch {
             try {
                 accountService.signIn(
@@ -76,9 +75,9 @@ class WelcomeViewModel @Inject constructor(
                     password = passwordText
                 )
                 cloudService.addUser()
+                if(isReauthenticate) accountService.deleteAccount()
                 navigate()
             } catch(e: Exception) {
-                Log.d("error", e.toString())
                 when (e) {
                     is FirebaseAuthInvalidCredentialsException -> updateErrorText(R.string.wrong_user_details_error)
                     is FirebaseAuthException -> updateErrorText(R.string.error_occurred_while_signing_in)
@@ -92,12 +91,13 @@ class WelcomeViewModel @Inject constructor(
         return googleSignIn.get().getCredentialRequest()
     }
 
-    fun googleSignIn(googleResponse: GetCredentialResponse, navigate:() -> Unit) {
+    fun googleSignIn(googleResponse: GetCredentialResponse, isReauthenticate: Boolean, navigate:() -> Unit) {
         viewModelScope.launch {
             try {
                 if (googleResponse.credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     accountService.googleSignIn(GoogleIdTokenCredential.createFrom(googleResponse.credential.data).idToken)
                     cloudService.addUser()
+                    if(isReauthenticate) accountService.deleteAccount()
                     navigate()
                 }
             } catch (e: Exception) {

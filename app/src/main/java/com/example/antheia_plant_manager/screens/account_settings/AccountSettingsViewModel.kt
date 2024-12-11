@@ -53,7 +53,6 @@ class AccountSettingsViewModel @Inject constructor(
             _dialogState.update {
                 it.copy(isEnabled = false)
             }
-            accountService.deleteAccount()
             navigation()
         }
     }

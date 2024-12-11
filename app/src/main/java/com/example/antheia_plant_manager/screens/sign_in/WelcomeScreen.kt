@@ -56,6 +56,7 @@ fun WelcomeScreen(
     navigateCreateAccount: () -> Unit,
     navigateHome: () -> Unit,
     welcomeText: String = "",
+    isReauthenticate: Boolean = false,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>(),
 ) {
@@ -89,7 +90,7 @@ fun WelcomeScreen(
             isPasswordVisible = uiState.value.isPasswordVisible,
             updateIsPasswordVisible = { viewModel.updateIsPasswordVisible() },
             signIn = {
-                viewModel.signIn(navigateHome)
+                viewModel.signIn(isReauthenticate, navigateHome)
                 keyboardController?.hide()
             },
             anonymousSignIn = {
@@ -103,13 +104,14 @@ fun WelcomeScreen(
                             context = context,
                             request = viewModel.getGoogleSignInRequest()
                         )
-                        viewModel.googleSignIn(getResponse, navigateHome)
+                        viewModel.googleSignIn(getResponse, isReauthenticate, navigateHome)
                     } catch (e: GetCredentialCancellationException) {
                         viewModel.updateErrorText(R.string.google_sign_in_cancelled)
                     }
                 }
             },
-            navigateCreateAccount = navigateCreateAccount
+            navigateCreateAccount = navigateCreateAccount,
+            isReauthenticate = isReauthenticate
         )
     }
 }

@@ -17,6 +17,7 @@ import com.example.antheia_plant_manager.nav_routes.NavigationObject
 import com.example.antheia_plant_manager.nav_routes.Notifications
 import com.example.antheia_plant_manager.nav_routes.PlantDetails
 import com.example.antheia_plant_manager.nav_routes.PlantList
+import com.example.antheia_plant_manager.nav_routes.Reauthenticate
 import com.example.antheia_plant_manager.nav_routes.accountSettings
 import com.example.antheia_plant_manager.nav_routes.accountSettingsEdit
 import com.example.antheia_plant_manager.nav_routes.addPlant
@@ -26,6 +27,7 @@ import com.example.antheia_plant_manager.nav_routes.loginScreen
 import com.example.antheia_plant_manager.nav_routes.notifications
 import com.example.antheia_plant_manager.nav_routes.plantDetails
 import com.example.antheia_plant_manager.nav_routes.plantList
+import com.example.antheia_plant_manager.nav_routes.reauthenticate
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import kotlinx.serialization.Serializable
@@ -100,6 +102,9 @@ fun NavMenu(
                         }
                     }
                 },
+                navigateReauthenticate = {
+                    navController.navigate(Reauthenticate)
+                },
                 bottomAppBarNavigate = {
                     navController.navigate(it) {
                         popUpTo<AccountSettings> {
@@ -110,6 +115,15 @@ fun NavMenu(
             )
             accountSettingsEdit(
                 navigateBack = { navController.popBackStack() }
+            )
+            reauthenticate(
+                navigateToSignIn = {
+                    navController.navigate(Login) {
+                        popUpTo<AccountSettings> {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
     }

@@ -76,11 +76,12 @@
     <string name="username">Username</string>
     <string name="edit">Edit %1$s</string>
     <string name="account_detail_not_set">%1$s not set</string>
-    <string name="delete_account_confirmation">Are you sure you want to delete your account?</string>
+    <string name="delete_account_confirmation">Sign in is required to delete your account. Continue?</string>
     <string name="sign_out_confirmation">Are you sure you want to sign out?</string>
     <string name="confirm_text_form">Confirm %1$s</string>
     <string name="change_account_detail_header">Change %1$s?</string>
     <string name="account_info_mismatch">Both entries do not match</string>
     <string name="reset_password">Reset Password</string>
     <string name="a_reset_link_will_be_sent_to_your_email">A reset link will be sent to your email. Continue?</string>
+    <string name="sign_in_to_continue">Sign in to continue</string>
 </resources>

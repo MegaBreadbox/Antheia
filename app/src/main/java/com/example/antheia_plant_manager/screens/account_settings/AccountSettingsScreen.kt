@@ -43,6 +43,7 @@ import com.google.firebase.auth.auth
 fun AccountSettingsScreen(
     navigateChangeDetail: (AccountDetail) -> Unit,
     navigateSignIn: () -> Unit,
+    navigateReauthenticate: () -> Unit,
     viewModel: AccountSettingsViewModel = hiltViewModel(),
 ) {
     val dialogState by viewModel.dialogState.collectAsStateWithLifecycle()
@@ -58,7 +59,7 @@ fun AccountSettingsScreen(
         onUserNameClick = { navigateChangeDetail(it) },
         onEmailClick = { navigateChangeDetail(it) },
         onPasswordClick = { viewModel.passwordReset() },
-        onDeleteAccountClick = { viewModel.deleteAccount(navigateSignIn) },
+        onDeleteAccountClick = { viewModel.deleteAccount(navigateReauthenticate) },
     )
 }
 
@@ -93,41 +94,43 @@ fun AccountSettingsScreenCompact(
                 onDismissClick = { updateDialogState(dialogState.copy(isEnabled = false)) }
             )
         }
-        if(signInProvider != "google.com") {
-            AccountDetail(
-                accountDetailTitle = stringResource(R.string.username),
-                accountDetail = userState?.username?: "",
-                onDetailClick = {
-                    onUserNameClick(
-                        AccountDetail.USERNAME
+        //if(signInProvider != "google.com") {
+        AccountDetail(
+            accountDetailTitle = stringResource(R.string.username),
+            accountDetail = userState?.username?: "",
+            enabled = signInProvider != "google.com",
+            onDetailClick = {
+                onUserNameClick(
+                    AccountDetail.USERNAME
+                )
+            }
+        )
+        Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
+        AccountDetail(
+            accountDetailTitle = stringResource(R.string.email),
+            accountDetail = userState?.email?: "",
+            enabled = signInProvider != "google.com",
+            onDetailClick = {
+                onEmailClick(
+                    AccountDetail.EMAIL
+                )
+            }
+        )
+        Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
+        AccountDetailMiniature(
+            accountDetailTitle = stringResource(R.string.password),
+            enabled = signInProvider != "google.com",
+            onDetailClick = {
+                updateDialogState(
+                    dialogState.copy(
+                        title = R.string.reset_password,
+                        text = R.string.a_reset_link_will_be_sent_to_your_email,
+                        dialogAction = onPasswordClick,
+                        isEnabled = true
                     )
-                }
-            )
-            Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
-            AccountDetail(
-                accountDetailTitle = stringResource(R.string.email),
-                accountDetail = userState?.email?: "",
-                onDetailClick = {
-                    onEmailClick(
-                        AccountDetail.EMAIL
-                    )
-                }
-            )
-            Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
-            AccountDetailMiniature(
-                accountDetailTitle = stringResource(R.string.password),
-                onDetailClick = {
-                    updateDialogState(
-                        dialogState.copy(
-                            title = R.string.reset_password,
-                            text = R.string.a_reset_link_will_be_sent_to_your_email,
-                            dialogAction = onPasswordClick,
-                            isEnabled = true
-                        )
-                    )
-                }
-            )
-        }
+                )
+            }
+        )
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
         Row(
             modifier = modifier
@@ -174,6 +177,7 @@ fun AccountSettingsScreenCompact(
 fun AccountDetail(
     accountDetailTitle: String,
     accountDetail: String,
+    enabled: Boolean = true,
     onDetailClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -221,6 +225,7 @@ fun AccountDetail(
             Spacer(modifier = modifier.weight(1f))
             TextButton(
                 onClick = { onDetailClick() },
+                enabled = enabled
             ) {
                 Text(
                     text = stringResource(
@@ -238,6 +243,7 @@ fun AccountDetail(
 fun AccountDetailMiniature(
     accountDetailTitle: String,
     onDetailClick: () -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -266,6 +272,7 @@ fun AccountDetailMiniature(
         )
         TextButton(
             onClick = { onDetailClick() },
+            enabled = enabled
         ) {
             Text(
                 text = stringResource(
