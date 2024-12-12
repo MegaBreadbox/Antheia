@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
@@ -99,6 +100,7 @@ class PlantDetailsViewModel @Inject constructor(
                 )
             )
         }
+        .catch { emit(PlantAlert()) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY),
@@ -288,6 +290,15 @@ class PlantDetailsViewModel @Inject constructor(
             plantDatabase.updatePlant(_plantEntry.value.toPlant())
             cloudService.updatePlant(_plantEntry.value.toPlantModel())
             reminderWorker.sendNotification()
+        }
+    }
+
+    fun deletePlant(navigate:() -> Unit) {
+        viewModelScope.launch {
+            plantDatabase.deletePlant(plant.value)
+            cloudService.deletePlant(plant.value.toPlantModel())
+            navigate()
+
         }
     }
 

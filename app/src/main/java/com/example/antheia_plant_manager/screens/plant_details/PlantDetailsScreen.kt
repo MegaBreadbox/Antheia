@@ -42,13 +42,17 @@ import com.example.antheia_plant_manager.util.Header
 
 @Composable
 fun PlantDetailsScreen(
+    navigateBack: () -> Unit,
 ) {
-    PlantDetailsCompact()
+    PlantDetailsCompact(
+        navigateBack = navigateBack,
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PlantDetailsCompact(
+    navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PlantDetailsViewModel = hiltViewModel(),
 ) {
@@ -103,7 +107,8 @@ fun PlantDetailsCompact(
                         viewModel.updateReminderOfPlant(reminderString, reminderType)
                     },
                     onDismissClick = { viewModel.clearSelectedReminder() },
-                    onSaveClick = { viewModel.savePlant() }
+                    onSaveClick = { viewModel.savePlant() },
+                    onDeleteClick = { viewModel.deletePlant(navigateBack) }
                 )
                 TabList.NOTES.ordinal -> PlantDetailsNotes(
                     notesText = plantEntry.notes,

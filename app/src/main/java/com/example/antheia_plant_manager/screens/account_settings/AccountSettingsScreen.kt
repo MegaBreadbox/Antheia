@@ -1,7 +1,6 @@
 package com.example.antheia_plant_manager.screens.account_settings
 
 import android.content.res.Configuration
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

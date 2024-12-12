@@ -9,7 +9,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PlantDetails(val plantId: Int): NavigationObject
 
-fun NavGraphBuilder.plantDetails() {
+fun NavGraphBuilder.plantDetails(
+    navigateBack: () -> Unit
+) {
     composable<PlantDetails>(
         enterTransition = {
             AnimationConstants.fadeInAnimation()
@@ -18,6 +20,8 @@ fun NavGraphBuilder.plantDetails() {
             AnimationConstants.fadeOutAnimation()
         },
     ) {
-        PlantDetailsScreen()
+        PlantDetailsScreen(
+            navigateBack = navigateBack
+        )
     }
 }

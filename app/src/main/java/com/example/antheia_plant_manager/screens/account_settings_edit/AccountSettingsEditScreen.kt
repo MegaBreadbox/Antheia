@@ -1,6 +1,5 @@
 package com.example.antheia_plant_manager.screens.account_settings_edit
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -36,8 +35,6 @@ import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.screens.account_settings.util.AccountDetail
 import com.example.antheia_plant_manager.screens.sign_in.WelcomeTextCompact
 import com.example.compose.AntheiaplantmanagerTheme
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
 import kotlinx.coroutines.launch
 
 @Composable
@@ -57,9 +54,7 @@ fun AccountSettingsEditScreen(
         updateNewAccountDetail = { viewModel.updateAccountInfoText(it) },
         saveChanges = {
             coroutineScope.launch {
-                Log.d("before change  ", Firebase.auth.currentUser?.displayName?: "")
                 viewModel.saveAccountInfo()
-                Log.d("after change  ", Firebase.auth.currentUser?.displayName?: "")
                 navigateBack()
             }
         },

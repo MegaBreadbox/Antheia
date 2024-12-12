@@ -88,4 +88,5 @@
     <string name="link_account_confirmation">To link your account, create an account to link to. Continue?</string>
     <string name="this_email_is_already_in_use">This email is already in use</string>
     <string name="delete_account_warning">Are you sure you want to delete your account?</string>
+    <string name="delete_plant">Delete plant</string>
 </resources>

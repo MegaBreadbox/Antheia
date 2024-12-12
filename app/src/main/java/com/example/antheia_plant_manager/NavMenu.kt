@@ -94,7 +94,15 @@ fun NavMenu(
             plantList(
                 navigatePlantDetails = { navController.navigate(PlantDetails(it)) }
             )
-            plantDetails()
+            plantDetails(
+                navigateBack = {
+                    navController.navigate(Home) {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
             accountSettings(
                 navigateChangeDetail = { navController.navigate(AccountSettingsEdit(it)) },
                 navigateSignIn = {

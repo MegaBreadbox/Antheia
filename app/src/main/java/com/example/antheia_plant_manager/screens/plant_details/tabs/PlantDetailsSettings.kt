@@ -24,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
@@ -70,6 +71,7 @@ fun PlantDetailsSettings(
     onConfirmClick: (String, ReminderFrequency) -> Unit,
     onDismissClick: () -> Unit,
     onSaveClick: () -> Unit,
+    onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var locationFocus by remember { mutableStateOf(false) }
@@ -209,6 +211,18 @@ fun PlantDetailsSettings(
                 .padding(top = dimensionResource(id = R.dimen.big_padding))
         ) {
             Text(stringResource(R.string.save))
+        }
+        Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
+        Button(
+            onClick = onDeleteClick,
+            colors = ButtonDefaults.filledTonalButtonColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer
+            ),
+            modifier = modifier
+                .width(dimensionResource(id = R.dimen.button_wide))
+        ) {
+            Text(stringResource(R.string.delete_plant))
         }
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.huge_padding)))
         Spacer(modifier = modifier
