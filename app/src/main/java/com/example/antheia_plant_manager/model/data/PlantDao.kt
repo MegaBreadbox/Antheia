@@ -17,8 +17,12 @@ interface PlantDao {
     @Delete
     suspend fun deletePlant(plant: Plant)
 
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updatePlant(plant: Plant)
+
+    @Query("DELETE FROM plant WHERE plantUserId = :userId")
+    suspend fun deleteUserData(userId: String)
 
     @Query("SELECT DISTINCT(location) from plant " +
             "WHERE plantUserId = :userId " +
@@ -33,8 +37,9 @@ interface PlantDao {
     @Query("SELECT DISTINCT location from plant WHERE " +
             "location LIKE '%' || :location || '%'" +
             "AND location != :location " +
+            "AND plantUserId = :userId " +
             "LIMIT 3")
-    fun getPlantLocationSuggestions(location: String): Flow<List<String>>
+    fun getPlantLocationSuggestions(userId: String, location: String): Flow<List<String>>
 
     @Query("SELECT * from plant WHERE plantUserId = :userId" +
             " AND plantId = :plantId")

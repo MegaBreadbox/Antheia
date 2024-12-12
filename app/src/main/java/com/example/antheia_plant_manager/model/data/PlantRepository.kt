@@ -10,11 +10,13 @@ interface PlantRepository {
 
     suspend fun updatePlant(plant: Plant)
 
+    suspend fun deleteUserData(userId: String)
+
     fun getPlantLocations(userId: String): Flow<List<String>>
 
     fun getPlants(userId: String, location: String): Flow<List<Plant>>
 
-    fun getPlantLocationSuggestions(query: String): Flow<List<String>>
+    fun getPlantLocationSuggestions(userId: String, query: String): Flow<List<String>>
 
     fun getPlant(userId: String, plantId: Int): Flow<Plant>
 

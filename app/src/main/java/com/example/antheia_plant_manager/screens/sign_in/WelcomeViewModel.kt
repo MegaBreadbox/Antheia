@@ -8,13 +8,16 @@ import androidx.credentials.GetCredentialResponse
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.R
+import com.example.antheia_plant_manager.model.data.PlantRepository
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.model.service.firebase_auth.GoogleSignIn
 import com.example.antheia_plant_manager.model.service.firestore.CloudService
 import com.example.antheia_plant_manager.util.ComposeText
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.auth
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +31,7 @@ class WelcomeViewModel @Inject constructor(
     private val accountService: AccountService,
     private val googleSignIn: Lazy<GoogleSignIn>,
     private val cloudService: CloudService,
+    private val plantDatabase: PlantRepository
 ): ViewModel() {
     private val _uiState = MutableStateFlow(WelcomeUiState())
     val uiState = _uiState.asStateFlow()
@@ -75,7 +79,10 @@ class WelcomeViewModel @Inject constructor(
                     password = passwordText
                 )
                 cloudService.addUser()
-                if(isReauthenticate) accountService.deleteAccount()
+                if(isReauthenticate) {
+                    Firebase.auth.currentUser?.uid?.let { plantDatabase.deleteUserData(it) }
+                    accountService.deleteAccount()
+                }
                 navigate()
             } catch(e: Exception) {
                 when (e) {

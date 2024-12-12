@@ -8,16 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.add
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -45,7 +39,6 @@ import com.example.antheia_plant_manager.screens.plant_details.tabs.PlantDetails
 import com.example.antheia_plant_manager.screens.plant_details.util.TabList
 import com.example.antheia_plant_manager.screens.plant_details.util.getTaskButtonColor
 import com.example.antheia_plant_manager.util.Header
-import com.example.antheia_plant_manager.util.getReminderFrequency
 
 @Composable
 fun PlantDetailsScreen(

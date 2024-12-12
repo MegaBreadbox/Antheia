@@ -3,6 +3,7 @@ package com.example.antheia_plant_manager.model.service.firestore
 import com.example.antheia_plant_manager.model.data.Plant
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ServerTimestamp
+import java.util.Date
 
 data class PlantModel(
     val plantUserId: String,
@@ -14,7 +15,7 @@ data class PlantModel(
     val dateAdded: String,
     val notes: String,
     @ServerTimestamp
-    val timeStamp: FieldValue = FieldValue.serverTimestamp()
+    val timeStamp: Date = Date()
 
 )
 

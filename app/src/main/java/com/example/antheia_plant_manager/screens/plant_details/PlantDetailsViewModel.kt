@@ -186,7 +186,10 @@ class PlantDetailsViewModel @Inject constructor(
         _plantEntryTemp
             .filter { it.location.isNotEmpty() }
             .flatMapLatest { currentPlant ->
-                plantDatabase.getPlantLocationSuggestions(currentPlant.location)
+                plantDatabase.getPlantLocationSuggestions(
+                    userId = accountService.currentUserId,
+                    query = currentPlant.location
+                )
             }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY), emptyList())
 

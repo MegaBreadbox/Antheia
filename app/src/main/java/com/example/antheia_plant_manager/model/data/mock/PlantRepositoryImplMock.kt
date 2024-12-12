@@ -17,6 +17,9 @@ class PlantRepositoryImplMock: PlantRepository {
     override suspend fun updatePlant(plant: Plant) {
     }
 
+    override suspend fun deleteUserData(userId: String) {
+    }
+
     override fun getPlantLocations(userId: String): Flow<List<String>> {
         return flowOf(listOf("Location 1", "Location 2"))
     }
@@ -30,7 +33,8 @@ class PlantRepositoryImplMock: PlantRepository {
         )
     }
 
-    override fun getPlantLocationSuggestions(query: String): Flow<List<String>> {
+
+    override fun getPlantLocationSuggestions(userId: String,query: String): Flow<List<String>> {
         return flowOf(listOf("Location 1", "Location 2"))
     }
 

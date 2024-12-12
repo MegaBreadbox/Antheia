@@ -19,6 +19,10 @@ class PlantRepositoryImpl @Inject constructor (private val plantDao: PlantDao): 
         plantDao.updatePlant(plant)
     }
 
+    override suspend fun deleteUserData(userId: String) {
+        plantDao.deleteUserData(userId)
+    }
+
     override fun getPlantLocations(userId: String): Flow<List<String>> {
         return plantDao.getPlantLocations(userId)
     }
@@ -27,8 +31,8 @@ class PlantRepositoryImpl @Inject constructor (private val plantDao: PlantDao): 
         return plantDao.getPlants(userId, location)
     }
 
-    override fun getPlantLocationSuggestions(query: String): Flow<List<String>> {
-        return plantDao.getPlantLocationSuggestions(query)
+    override fun getPlantLocationSuggestions(userId: String, query: String): Flow<List<String>> {
+        return plantDao.getPlantLocationSuggestions(userId, query)
     }
 
     override fun getPlant(userId: String, plantId: Int): Flow<Plant> {
