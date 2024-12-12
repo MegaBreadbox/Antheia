@@ -8,6 +8,8 @@ import com.example.antheia_plant_manager.model.service.firebase_auth.AccountServ
 import com.example.antheia_plant_manager.model.service.firestore.CloudService
 import com.example.antheia_plant_manager.model.service.firestore.UserModel
 import com.example.antheia_plant_manager.util.SUBSCRIBE_DELAY
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestoreException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -48,12 +50,25 @@ class AccountSettingsViewModel @Inject constructor(
         }
     }
 
-    fun deleteAccount(navigation: () -> Unit) {
+    fun signInProvider(): String? {
+        return if(Firebase.auth.currentUser?.isAnonymous == true) {
+            null
+        } else {
+            Firebase.auth.currentUser?.providerData?.get(1)?.providerId?: ""
+        }
+    }
+
+    fun deleteAccount(navigation: () -> Unit, anonymousNavigation: () -> Unit) {
         viewModelScope.launch() {
             _dialogState.update {
                 it.copy(isEnabled = false)
             }
-            navigation()
+            if(Firebase.auth.currentUser?.isAnonymous == true) {
+                accountService.signOutOfApp()
+                anonymousNavigation()
+            } else {
+                navigation()
+            }
         }
     }
 

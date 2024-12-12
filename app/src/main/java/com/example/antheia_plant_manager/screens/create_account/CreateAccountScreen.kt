@@ -1,5 +1,7 @@
 package com.example.antheia_plant_manager.screens.create_account
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,9 +25,12 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -34,22 +39,29 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.credentials.CredentialManager
+import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.service.firebase_auth.mock.AccountServiceMock
+import com.example.antheia_plant_manager.model.service.firebase_auth.mock.GoogleSignInMock
 import com.example.antheia_plant_manager.model.service.firestore.mock.CloudServiceMock
 import com.example.antheia_plant_manager.screens.sign_in.WelcomeTextCompact
 import com.example.compose.AntheiaplantmanagerTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun CreateAccountScreen(
     navigateHome: () -> Unit,
+    isLinkAccount: Boolean = false,
     modifier: Modifier = Modifier,
     viewModel: CreateAccountViewModel = hiltViewModel<CreateAccountViewModel>()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -71,14 +83,27 @@ fun CreateAccountScreen(
             confirmPasswordText = viewModel.confirmPasswordText,
             isPasswordVisible = uiState.isPasswordVisible,
             errorText = uiState.errorText?.asString(),
+            isLinkAccount = isLinkAccount,
             emailValueChange = { viewModel.updateEmailText(it) },
             passwordValueChange = { viewModel.updatePasswordText(it) },
             confirmPasswordValueChange = { viewModel.updateConfirmPasswordText(it) },
             updateIsPasswordVisible = { viewModel.updateIsPasswordVisible() },
             createAccount = {
                 viewModel.createAccount(navigateHome)
-            }
-
+            },
+            googleSignIn = {
+                coroutineScope.launch {
+                    try {
+                        val getResponse = CredentialManager.create(context).getCredential(
+                            context = context,
+                            request = viewModel.getGoogleSignInRequest()
+                        )
+                        viewModel.googleSignIn(getResponse, navigateHome)
+                    } catch (e: GetCredentialCancellationException) {
+                        viewModel.updateErrorText(R.string.google_sign_in_cancelled)
+                    }
+                }
+            },
         )
     }
 }
@@ -95,6 +120,8 @@ fun CreateAccountForm(
     confirmPasswordValueChange: (String) -> Unit,
     updateIsPasswordVisible: () -> Unit,
     createAccount: () -> Unit,
+    googleSignIn: () -> Unit,
+    isLinkAccount: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -226,19 +253,21 @@ fun CreateAccountForm(
                         text = stringResource(R.string.create_account),
                     )
                 }
+                Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.medium_padding)))
+                if(isLinkAccount) {
+                    Image(
+                        painter = painterResource(id = R.drawable.android_neutral_rd_si),
+                        contentDescription = stringResource(R.string.sign_in_with_google),
+                        modifier = modifier
+                            .clip(RoundedCornerShape(dimensionResource(id = R.dimen.google_sign_in_button_shape)))
+                            .clickable {
+                                googleSignIn()
+                            }
+                    )
+
+                }
+
             }
         }
-    }
-}
-
-
-@Composable
-@Preview(showBackground = true)
-fun CreateAccountScreenPreview() {
-    AntheiaplantmanagerTheme {
-        CreateAccountScreen(
-            viewModel = CreateAccountViewModel(AccountServiceMock(), CloudServiceMock()),
-            navigateHome = {}
-        )
     }
 }

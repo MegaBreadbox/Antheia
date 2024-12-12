@@ -84,4 +84,8 @@
     <string name="reset_password">Reset Password</string>
     <string name="a_reset_link_will_be_sent_to_your_email">A reset link will be sent to your email. Continue?</string>
     <string name="sign_in_to_continue">Sign in to continue</string>
+    <string name="link_account">Link account</string>
+    <string name="link_account_confirmation">To link your account, create an account to link to. Continue?</string>
+    <string name="this_email_is_already_in_use">This email is already in use</string>
+    <string name="delete_account_warning">Are you sure you want to delete your account?</string>
 </resources>

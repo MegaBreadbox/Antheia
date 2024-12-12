@@ -44,35 +44,38 @@ fun AccountSettingsScreen(
     navigateChangeDetail: (AccountDetail) -> Unit,
     navigateSignIn: () -> Unit,
     navigateReauthenticate: () -> Unit,
+    navigateLinkAccount: () -> Unit,
     viewModel: AccountSettingsViewModel = hiltViewModel(),
 ) {
     val dialogState by viewModel.dialogState.collectAsStateWithLifecycle()
     val currentUser by viewModel.userState.collectAsStateWithLifecycle()
-    Log.d("user", currentUser.toString())
-    Log.d("Firebase user  ", Firebase.auth.currentUser?.displayName?: "")
     AccountSettingsScreenCompact(
         dialogState = dialogState,
         userState = currentUser,
-        signInProvider = Firebase.auth.currentUser?.providerData?.get(1)?.providerId?: "",
+        signInProvider = viewModel.signInProvider(),
+        isAnonymous = Firebase.auth.currentUser?.isAnonymous?: false,
         updateDialogState = { viewModel.updateDialogState(it) },
         onSignOutClick = { viewModel.signOut(navigateSignIn) },
         onUserNameClick = { navigateChangeDetail(it) },
         onEmailClick = { navigateChangeDetail(it) },
         onPasswordClick = { viewModel.passwordReset() },
-        onDeleteAccountClick = { viewModel.deleteAccount(navigateReauthenticate) },
+        onLinkAccountClick = { navigateLinkAccount() },
+        onDeleteAccountClick = { viewModel.deleteAccount(navigateReauthenticate, navigateSignIn) },
     )
 }
 
 @Composable
 fun AccountSettingsScreenCompact(
     dialogState: DialogState,
-    signInProvider: String,
+    signInProvider: String?,
+    isAnonymous: Boolean = false,
     userState: UserModel?,
     updateDialogState: (DialogState) -> Unit,
     onSignOutClick: () -> Unit,
     onUserNameClick: (AccountDetail) -> Unit,
     onEmailClick: (AccountDetail) -> Unit,
     onPasswordClick: () -> Unit,
+    onLinkAccountClick: () -> Unit,
     onDeleteAccountClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -94,43 +97,44 @@ fun AccountSettingsScreenCompact(
                 onDismissClick = { updateDialogState(dialogState.copy(isEnabled = false)) }
             )
         }
-        //if(signInProvider != "google.com") {
-        AccountDetail(
-            accountDetailTitle = stringResource(R.string.username),
-            accountDetail = userState?.username?: "",
-            enabled = signInProvider != "google.com",
-            onDetailClick = {
-                onUserNameClick(
-                    AccountDetail.USERNAME
-                )
-            }
-        )
-        Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
-        AccountDetail(
-            accountDetailTitle = stringResource(R.string.email),
-            accountDetail = userState?.email?: "",
-            enabled = signInProvider != "google.com",
-            onDetailClick = {
-                onEmailClick(
-                    AccountDetail.EMAIL
-                )
-            }
-        )
-        Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
-        AccountDetailMiniature(
-            accountDetailTitle = stringResource(R.string.password),
-            enabled = signInProvider != "google.com",
-            onDetailClick = {
-                updateDialogState(
-                    dialogState.copy(
-                        title = R.string.reset_password,
-                        text = R.string.a_reset_link_will_be_sent_to_your_email,
-                        dialogAction = onPasswordClick,
-                        isEnabled = true
+        if(signInProvider != null) {
+            AccountDetail(
+                accountDetailTitle = stringResource(R.string.username),
+                accountDetail = userState?.username ?: "",
+                enabled = signInProvider != "google.com",
+                onDetailClick = {
+                    onUserNameClick(
+                        AccountDetail.USERNAME
                     )
-                )
-            }
-        )
+                }
+            )
+            Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
+            AccountDetail(
+                accountDetailTitle = stringResource(R.string.email),
+                accountDetail = userState?.email ?: "",
+                enabled = signInProvider != "google.com",
+                onDetailClick = {
+                    onEmailClick(
+                        AccountDetail.EMAIL
+                    )
+                }
+            )
+            Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.big_padding)))
+            AccountDetailMiniature(
+                accountDetailTitle = stringResource(R.string.password),
+                enabled = signInProvider != "google.com",
+                onDetailClick = {
+                    updateDialogState(
+                        dialogState.copy(
+                            title = R.string.reset_password,
+                            text = R.string.a_reset_link_will_be_sent_to_your_email,
+                            dialogAction = onPasswordClick,
+                            isEnabled = true
+                        )
+                    )
+                }
+            )
+        }
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
         Row(
             modifier = modifier
@@ -140,7 +144,12 @@ fun AccountSettingsScreenCompact(
                     updateDialogState(
                         dialogState.copy(
                             title = R.string.delete_account,
-                            text = R.string.delete_account_confirmation,
+                            text =
+                             if (isAnonymous){
+                                R.string.delete_account_warning
+                            } else {
+                                R.string.delete_account_confirmation
+                            },
                             dialogAction = onDeleteAccountClick,
                             isEnabled = true
                         )
@@ -154,19 +163,36 @@ fun AccountSettingsScreenCompact(
                 Text(text = stringResource(R.string.delete_account))
             }
             Spacer(modifier = modifier.padding(dimensionResource(id = R.dimen.medium_padding)))
-            OutlinedButton(
-                onClick = {
-                    updateDialogState(
-                        dialogState.copy(
-                            title = R.string.sign_out,
-                            text = R.string.sign_out_confirmation,
-                            dialogAction = onSignOutClick,
-                            isEnabled = true
+            if(!isAnonymous) {
+                OutlinedButton(
+                    onClick = {
+                        updateDialogState(
+                            dialogState.copy(
+                                title = R.string.sign_out,
+                                text = R.string.sign_out_confirmation,
+                                dialogAction = onSignOutClick,
+                                isEnabled = true
+                            )
                         )
-                    )
-                },
-            ) {
-                Text(text = stringResource(R.string.sign_out))
+                    },
+                ) {
+                    Text(text = stringResource(R.string.sign_out))
+                }
+            } else {
+                OutlinedButton(
+                    onClick = {
+                        updateDialogState(
+                            dialogState.copy(
+                                title = R.string.link_account,
+                                text = R.string.link_account_confirmation,
+                                dialogAction = onLinkAccountClick,
+                                isEnabled = true
+                            )
+                        )
+                    },
+                ) {
+                    Text(text = stringResource(R.string.link_account))
+                }
             }
         }
 
@@ -345,6 +371,7 @@ fun AccountSettingsScreenCompactPreview() {
             onUserNameClick = { },
             onEmailClick = { },
             onPasswordClick = { },
+            onLinkAccountClick = { },
             onDeleteAccountClick = { },
         )
     }

@@ -1,6 +1,7 @@
 package com.example.antheia_plant_manager.model.service.firebase_auth.mock
 
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 
@@ -13,6 +14,14 @@ class AccountServiceMock: AccountService {
     }
 
     override suspend fun googleSignIn(idToken: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun googleLinkAccount(googleIdToken: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun emailLinkAccount(email: String, password: String) {
         TODO("Not yet implemented")
     }
 

@@ -3,6 +3,8 @@ package com.example.antheia_plant_manager.model.service.firebase_auth.impl
 import android.util.Log
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.google.firebase.Firebase
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -37,11 +39,24 @@ class AccountServiceImpl @Inject constructor(): AccountService {
 
     }
 
+    override suspend fun googleLinkAccount(googleIdToken: String) {
+        val credential = GoogleAuthProvider.getCredential(googleIdToken, null)
+        Firebase.auth.currentUser!!.linkWithCredential(credential).await()
+    }
+
+    override suspend fun emailLinkAccount(email: String, password: String) {
+        val credential = EmailAuthProvider.getCredential(email, password)
+        Firebase.auth.currentUser!!.linkWithCredential(credential).await()
+    }
+
     override suspend fun signIn(email: String, password: String) {
         Firebase.auth.signInWithEmailAndPassword(email, password).await()
     }
 
     override suspend fun signOutOfApp() {
+        if(Firebase.auth.currentUser!!.isAnonymous) {
+            Firebase.auth.currentUser!!.delete().await()
+        }
         Firebase.auth.signOut()
     }
 

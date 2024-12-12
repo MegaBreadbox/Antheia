@@ -12,6 +12,7 @@ import com.example.antheia_plant_manager.nav_routes.AccountSettingsEdit
 import com.example.antheia_plant_manager.nav_routes.AddPlant
 import com.example.antheia_plant_manager.nav_routes.CreateAccount
 import com.example.antheia_plant_manager.nav_routes.Home
+import com.example.antheia_plant_manager.nav_routes.LinkAccount
 import com.example.antheia_plant_manager.nav_routes.Login
 import com.example.antheia_plant_manager.nav_routes.NavigationObject
 import com.example.antheia_plant_manager.nav_routes.Notifications
@@ -23,6 +24,7 @@ import com.example.antheia_plant_manager.nav_routes.accountSettingsEdit
 import com.example.antheia_plant_manager.nav_routes.addPlant
 import com.example.antheia_plant_manager.nav_routes.createAccount
 import com.example.antheia_plant_manager.nav_routes.home
+import com.example.antheia_plant_manager.nav_routes.linkAccount
 import com.example.antheia_plant_manager.nav_routes.loginScreen
 import com.example.antheia_plant_manager.nav_routes.notifications
 import com.example.antheia_plant_manager.nav_routes.plantDetails
@@ -105,6 +107,10 @@ fun NavMenu(
                 navigateReauthenticate = {
                     navController.navigate(Reauthenticate)
                 },
+                navigateLinkAccount = {
+                    navController.navigate(LinkAccount) {
+                    }
+                },
                 bottomAppBarNavigate = {
                     navController.navigate(it) {
                         popUpTo<AccountSettings> {
@@ -119,7 +125,16 @@ fun NavMenu(
             reauthenticate(
                 navigateToSignIn = {
                     navController.navigate(Login) {
-                        popUpTo<AccountSettings> {
+                        popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+            linkAccount(
+                navigateHome = {
+                    navController.navigate(Home) {
+                        popUpTo(navController.graph.id) {
                             inclusive = true
                         }
                     }
