@@ -6,6 +6,8 @@ interface PlantRepository {
 
     suspend fun addPlant(plant: Plant)
 
+    suspend fun addPlants(plants: List<Plant>)
+
     suspend fun deletePlant(plant: Plant)
 
     suspend fun updatePlant(plant: Plant)

@@ -11,6 +11,9 @@ class PlantRepositoryImplMock: PlantRepository {
     override suspend fun addPlant(plant: Plant) {
     }
 
+    override suspend fun addPlants(plants: List<Plant>) {
+    }
+
     override suspend fun deletePlant(plant: Plant) {
     }
 

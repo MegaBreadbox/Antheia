@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,6 +14,9 @@ interface PlantDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addPlant(plant: Plant)
+
+    @Upsert
+    suspend fun addPlants(plants: List<Plant>)
 
     @Delete
     suspend fun deletePlant(plant: Plant)

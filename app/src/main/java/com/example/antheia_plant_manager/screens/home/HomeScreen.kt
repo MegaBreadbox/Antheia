@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
 import com.example.antheia_plant_manager.model.service.firebase_auth.mock.AccountServiceMock
+import com.example.antheia_plant_manager.model.service.firestore.mock.CloudServiceMock
 import com.example.antheia_plant_manager.util.cardColor
 import com.example.compose.AntheiaplantmanagerTheme
 
@@ -136,7 +137,9 @@ fun PlantsScreenPreview() {
         LocationListCompact(
             viewModel = HomeViewModel(
                 plantDatabase = PlantRepositoryImplMock(),
-                accountService = AccountServiceMock()
+                accountService = AccountServiceMock(),
+                cloudService = CloudServiceMock(),
+                ioDispatcher = kotlinx.coroutines.Dispatchers.IO
             ),
             navigatePlantList = { }
         )

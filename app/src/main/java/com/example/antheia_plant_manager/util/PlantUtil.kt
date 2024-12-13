@@ -139,6 +139,7 @@ fun Plant.toPlantAlert(): PlantAlert {
 
 fun Plant.toPlantModel(): PlantModel {
     return PlantModel(
+        plantId = this.plantId,
         plantUserId = this.plantUserId,
         plantName = this.name,
         location = this.location,

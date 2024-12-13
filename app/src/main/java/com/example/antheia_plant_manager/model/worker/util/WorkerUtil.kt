@@ -8,15 +8,12 @@ import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.net.toUri
 import com.example.antheia_plant_manager.MainActivity
 import com.example.antheia_plant_manager.R
-import com.example.antheia_plant_manager.util.ComposeText
 
 fun reminderNotification(message: String, context: Context) {
     val importance = NotificationManager.IMPORTANCE_LOW
@@ -24,7 +21,10 @@ fun reminderNotification(message: String, context: Context) {
         NOTIFICATION_CHANNEL_ID,
         NOTIFICATION_CHANNEL_NAME,
         importance,
-    ).apply { description = NOTIFICATION_DESCRIPTION}
+    ).apply {
+        description = NOTIFICATION_DESCRIPTION
+        setShowBadge(true)
+    }
 
     val deepLinkIntent = Intent(
         Intent.ACTION_VIEW,

@@ -11,6 +11,10 @@ class PlantRepositoryImpl @Inject constructor (private val plantDao: PlantDao): 
         plantDao.addPlant(plant)
     }
 
+    override suspend fun addPlants(plants: List<Plant>) {
+        plantDao.addPlants(plants)
+    }
+
     override suspend fun deletePlant(plant: Plant) {
         plantDao.deletePlant(plant)
     }
