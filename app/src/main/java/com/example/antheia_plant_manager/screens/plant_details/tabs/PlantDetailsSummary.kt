@@ -197,13 +197,15 @@ fun PlantDetailEntry(
             when (plantAlert) {
                 Reminder.AfterReminder -> Text(
                     text =
-                    if(plantAlertDate.daysSinceLastReminder() > 90) {
-                        stringResource(R.string.late_by_90_days)
-                    } else {
-                        stringResource(
-                            R.string.late_by_days,
-                            plantAlertDate.daysSinceLastReminder()
-                        )
+                    when(plantAlertDate.daysSinceLastReminder()) {
+                        1 -> (stringResource(R.string.late_by_1_day))
+                        in 2..<90  ->
+                            stringResource(
+                                R.string.late_by_days,
+                                plantAlertDate.daysSinceLastReminder()
+                            )
+                        else -> stringResource(R.string.late_by_90_days)
+
                     },
                     color = MaterialTheme.colorScheme.error
                 )

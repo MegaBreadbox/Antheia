@@ -47,12 +47,17 @@ fun NavMenu(
     ) {
 
         loginScreen(
-            navigateCreateAccount = { navController.navigate(CreateAccount) },
+            navigateCreateAccount = {
+                navController.navigate(CreateAccount) {
+                    launchSingleTop = true
+                }
+            },
             navigateHome = {
                 navController.navigate(App) {
                     popUpTo<Login> {
                         inclusive = true
                     }
+                    launchSingleTop = true
                 }
             }
         )
@@ -62,6 +67,7 @@ fun NavMenu(
                     popUpTo<CreateAccount> {
                         inclusive = true
                     }
+                    launchSingleTop = true
                 }
             }
         )
@@ -72,10 +78,19 @@ fun NavMenu(
                         popUpTo<Home> {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 },
-                navigateAddPlant = { navController.navigate(AddPlant) },
-                navigatePlantList = { navController.navigate(PlantList(it)) }
+                navigateAddPlant = {
+                    navController.navigate(AddPlant) {
+                        launchSingleTop = true
+                    }
+                },
+                navigatePlantList = {
+                    navController.navigate(PlantList(it)) {
+                        launchSingleTop = true
+                    }
+                }
             )
             notifications(
                 bottomAppBarNavigate = {
@@ -83,16 +98,25 @@ fun NavMenu(
                         popUpTo<Notifications> {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 },
-                navigatePlantDetails = { navController.navigate(PlantDetails(it)) }
+                navigatePlantDetails = {
+                    navController.navigate(PlantDetails(it)) {
+                        launchSingleTop = true
+                    }
+                }
             )
             addPlant(
                 windowSize = windowSize,
                 navigateBack = { navController.popBackStack() }
             )
             plantList(
-                navigatePlantDetails = { navController.navigate(PlantDetails(it)) }
+                navigatePlantDetails = {
+                    navController.navigate(PlantDetails(it)) {
+                        launchSingleTop = true
+                    }
+                }
             )
             plantDetails(
                 navigateBack = {
@@ -104,19 +128,27 @@ fun NavMenu(
                 }
             )
             accountSettings(
-                navigateChangeDetail = { navController.navigate(AccountSettingsEdit(it)) },
+                navigateChangeDetail = {
+                    navController.navigate(AccountSettingsEdit(it)) {
+                        launchSingleTop = true
+                    }
+                },
                 navigateSignIn = {
                     navController.navigate(Login) {
                         popUpTo<AccountSettings> {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 },
                 navigateReauthenticate = {
-                    navController.navigate(Reauthenticate)
+                    navController.navigate(Reauthenticate) {
+                        launchSingleTop = true
+                    }
                 },
                 navigateLinkAccount = {
                     navController.navigate(LinkAccount) {
+                        launchSingleTop = true
                     }
                 },
                 bottomAppBarNavigate = {
@@ -124,6 +156,7 @@ fun NavMenu(
                         popUpTo<AccountSettings> {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 }
             )
@@ -136,6 +169,7 @@ fun NavMenu(
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 }
             )
@@ -145,6 +179,7 @@ fun NavMenu(
                         popUpTo(navController.graph.id) {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 }
             )

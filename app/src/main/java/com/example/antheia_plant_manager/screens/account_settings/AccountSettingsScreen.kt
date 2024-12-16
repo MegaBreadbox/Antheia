@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
@@ -78,11 +80,14 @@ fun AccountSettingsScreenCompact(
     onDeleteAccountClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val scrollState = rememberScrollState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .safeContentPadding()
             .fillMaxWidth()
+            .padding(horizontal = dimensionResource(id = R.dimen.medium_padding))
+            .verticalScroll(scrollState)
     ) {
         Header(
             screenTitle = stringResource(id = R.string.account_settings),

@@ -1,10 +1,16 @@
 package com.example.antheia_plant_manager.screens.plant_details.tabs
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
@@ -23,29 +29,57 @@ fun PlantDetailsNotes(
     onNotesChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Column(
         modifier = modifier
-            .padding(dimensionResource(id = R.dimen.large_padding))
+            .padding(horizontal = dimensionResource(id = R.dimen.large_padding))
             .imePadding()
     ) {
         BasicTextField(
             value = notesText,
-            onValueChange = onNotesChange,
+            onValueChange = {
+                onNotesChange(it)
+            },
             textStyle = LocalTextStyle.current.merge(
                 TextStyle(TextFieldDefaults.colors().focusedTextColor)
             ),
             cursorBrush = SolidColor(TextFieldDefaults.colors().cursorColor),
-
+            decorationBox = { innerTextField -> Margins(innerTextField, notesText) },
             modifier = modifier
                 .fillMaxWidth()
         )
-        if(notesText.isEmpty()) {
-            Text(
-                text = stringResource(R.string.enter_notes_here),
-                style =  LocalTextStyle.current.merge(
-                    TextStyle(TextFieldDefaults.colors().disabledPlaceholderColor)
-                ),
-            )
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun Margins(
+    innerTextField: @Composable () -> Unit,
+    notesText: String,
+    modifier: Modifier = Modifier
+) {
+    BoxWithConstraints() {
+        val maxHeight = this.maxHeight
+        Box(
+            modifier = modifier
+                .height(maxHeight + dimensionResource(id = R.dimen.huge_padding))
+                .imePadding()
+                .let {
+                    if (WindowInsets.isImeVisible) it
+                        .statusBarsPadding()
+                    else it
+                        .padding(vertical = dimensionResource(id = R.dimen.big_padding))
+                }
+        ) {
+            if(notesText.isEmpty()) {
+                Text(
+                    text = stringResource(R.string.enter_notes_here),
+                    style =  LocalTextStyle.current.merge(
+                        TextStyle(TextFieldDefaults.colors().disabledPlaceholderColor)
+                    ),
+                )
+            }
+            innerTextField()
         }
     }
+
 }

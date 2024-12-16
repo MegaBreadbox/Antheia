@@ -16,7 +16,7 @@ import com.example.antheia_plant_manager.MainActivity
 import com.example.antheia_plant_manager.R
 
 fun reminderNotification(message: String, context: Context) {
-    val importance = NotificationManager.IMPORTANCE_LOW
+    val importance = NotificationManager.IMPORTANCE_DEFAULT
     val channel = NotificationChannel(
         NOTIFICATION_CHANNEL_ID,
         NOTIFICATION_CHANNEL_NAME,
@@ -44,7 +44,8 @@ fun reminderNotification(message: String, context: Context) {
     notificationManager.createNotificationChannel(channel)
 
     val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-        .setSmallIcon(R.drawable.ic_launcher_foreground)
+        .setSmallIcon(R.drawable.planticon)
+        .setColor(ICON_BACKGROUND_COLOR)
         .setContentText(message)
         .setContentIntent(pendingIntent)
         .setAutoCancel(true)

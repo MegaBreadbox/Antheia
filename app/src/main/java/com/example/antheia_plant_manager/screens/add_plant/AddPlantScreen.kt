@@ -107,7 +107,10 @@ fun PlantFormCompact(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.large_padding))
+            .padding(
+                horizontal = dimensionResource(id = R.dimen.large_padding),
+                vertical = dimensionResource(id = R.dimen.huge_padding)
+            )
             .verticalScroll(scroll)
     ) {
         OutlinedTextField(
@@ -329,7 +332,10 @@ fun PlantFormMedium(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.large_padding))
+            .padding(
+                horizontal = dimensionResource(id = R.dimen.large_padding),
+                vertical = dimensionResource(id = R.dimen.huge_padding)
+            )
             .verticalScroll(scroll)
     ) {
         OutlinedTextField(
