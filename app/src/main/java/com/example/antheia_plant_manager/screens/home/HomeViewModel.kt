@@ -11,9 +11,6 @@ import com.example.antheia_plant_manager.util.SUBSCRIBE_DELAY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -28,11 +25,27 @@ class HomeViewModel @Inject constructor(
 ): ViewModel() {
 
     val locationsList = plantDatabase.getPlantLocations(accountService.currentUserId)
+        .onStart {
+            viewModelScope.launch(ioDispatcher) {
+                syncUserData()
+            }
+        }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY),
             initialValue = emptyList()
         )
 
+    private suspend fun syncUserData() {
+        Log.d("HomeViewModel", "syncUserData: called")
+        plantDatabase.addPlants(
+            cloudService.getAllUserData().map { list ->
+                Log.d("HomeViewModel", "syncUserData: $list")
+                list.toPlant().also {
+                    Log.d("HomeViewModel", "syncUserData: ${list.toPlant()}")
+                }
+            }
+        )
+    }
 }
 

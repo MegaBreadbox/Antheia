@@ -12,7 +12,6 @@ import com.example.antheia_plant_manager.model.data.PlantRepository
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.model.service.firebase_auth.GoogleSignIn
 import com.example.antheia_plant_manager.model.service.firestore.CloudService
-import com.example.antheia_plant_manager.model.service.firestore.toPlant
 import com.example.antheia_plant_manager.util.ComposeText
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.Firebase
@@ -72,13 +71,6 @@ class WelcomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun syncUserData() {
-        plantDatabase.addPlants(
-            cloudService.getAllUserData().map {
-                it.toPlant()
-            }
-        )
-    }
 
     fun signIn(isReauthenticate: Boolean, navigate: () -> Unit) {
         viewModelScope.launch {
@@ -91,8 +83,6 @@ class WelcomeViewModel @Inject constructor(
                 if(isReauthenticate) {
                     Firebase.auth.currentUser?.uid?.let { plantDatabase.deleteUserData(it) }
                     accountService.deleteAccount()
-                } else {
-                    syncUserData()
                 }
                 navigate()
             } catch(e: Exception) {
@@ -115,7 +105,7 @@ class WelcomeViewModel @Inject constructor(
                 if (googleResponse.credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     accountService.googleSignIn(GoogleIdTokenCredential.createFrom(googleResponse.credential.data).idToken)
                     cloudService.addUser()
-                    if(isReauthenticate) accountService.deleteAccount() else syncUserData()
+                    if(isReauthenticate) accountService.deleteAccount()
                     navigate()
                 }
             } catch (e: Exception) {

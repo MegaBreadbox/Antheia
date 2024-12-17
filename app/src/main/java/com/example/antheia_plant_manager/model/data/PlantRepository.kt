@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlantRepository {
 
-    suspend fun addPlant(plant: Plant)
+    suspend fun addPlant(plant: Plant): Long
 
     suspend fun addPlants(plants: List<Plant>)
 

@@ -183,6 +183,7 @@ fun PlantEntry.toPlant(): Plant {
 
 fun PlantEntry.toPlantModel(): PlantModel {
     return PlantModel(
+        plantId = if(this.plantId == 0) 0 else this.plantId,
         plantUserId = this.plantUserId,
         plantName = this.name,
         location = this.location,

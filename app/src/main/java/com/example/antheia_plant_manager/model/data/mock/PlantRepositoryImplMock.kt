@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class PlantRepositoryImplMock: PlantRepository {
-    override suspend fun addPlant(plant: Plant) {
+    override suspend fun addPlant(plant: Plant): Long {
+        return 5
     }
 
     override suspend fun addPlants(plants: List<Plant>) {

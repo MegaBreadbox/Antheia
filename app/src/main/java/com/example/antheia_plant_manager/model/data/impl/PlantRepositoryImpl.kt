@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class PlantRepositoryImpl @Inject constructor (private val plantDao: PlantDao): PlantRepository {
-    override suspend fun addPlant(plant: Plant) {
-        plantDao.addPlant(plant)
+    override suspend fun addPlant(plant: Plant): Long {
+        return plantDao.addPlant(plant)
     }
 
     override suspend fun addPlants(plants: List<Plant>) {

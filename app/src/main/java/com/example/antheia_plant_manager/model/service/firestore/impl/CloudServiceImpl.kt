@@ -55,17 +55,17 @@ class CloudServiceImpl @Inject constructor() : CloudService {
 
     override suspend fun addPlant(plant: PlantModel) {
         db.collection(USERS).document(auth.currentUser!!.uid)
-            .collection(PLANTS).document(plant.plantUserId).set(plant)
+            .collection(PLANTS).document(plant.plantId.toString()).set(plant)
     }
 
     override suspend fun deletePlant(plant: PlantModel) {
         db.collection(USERS).document(auth.currentUser!!.uid)
-            .collection(PLANTS).document(plant.plantUserId).delete()
+            .collection(PLANTS).document(plant.plantId.toString()).delete()
     }
 
     override suspend fun updatePlant(plant: PlantModel) {
         db.collection(USERS).document(auth.currentUser!!.uid)
-            .collection(PLANTS).document(plant.plantUserId).set(plant)
+            .collection(PLANTS).document(plant.plantId.toString()).set(plant)
     }
 
     override suspend fun addUser() {
