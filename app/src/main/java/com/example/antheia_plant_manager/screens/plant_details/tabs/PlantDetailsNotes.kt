@@ -3,14 +3,10 @@ package com.example.antheia_plant_manager.screens.plant_details.tabs
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
@@ -50,7 +46,6 @@ fun PlantDetailsNotes(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun Margins(
     innerTextField: @Composable () -> Unit,
@@ -63,12 +58,7 @@ fun Margins(
             modifier = modifier
                 .height(maxHeight + dimensionResource(id = R.dimen.huge_padding))
                 .imePadding()
-                .let {
-                    if (WindowInsets.isImeVisible) it
-                        .statusBarsPadding()
-                    else it
-                        .padding(vertical = dimensionResource(id = R.dimen.big_padding))
-                }
+                .padding(vertical = dimensionResource(id = R.dimen.large_padding))
         ) {
             if(notesText.isEmpty()) {
                 Text(

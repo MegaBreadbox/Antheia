@@ -13,13 +13,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SecondaryTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.window.core.layout.WindowWidthSizeClass
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.screens.plant_details.tabs.PlantDetailsNotes
 import com.example.antheia_plant_manager.screens.plant_details.tabs.PlantDetailsSummary
@@ -64,13 +65,14 @@ fun PlantDetailsCompact(
     val locationSuggestions by viewModel.suggestions.collectAsStateWithLifecycle()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val summaryScrollState = rememberScrollState()
+    val screenSize = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
     Box(
         modifier = modifier
     ) {
         Column(
             modifier = modifier
         ) {
-            AnimatedVisibility(visible = !WindowInsets.isImeVisible) {
+            AnimatedVisibility(visible = !WindowInsets.isImeVisible && screenSize == WindowWidthSizeClass.COMPACT) {
                 Column() {
                     Header(screenTitle = plantInfo.name)
                     Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.medium_padding)))
@@ -79,6 +81,15 @@ fun PlantDetailsCompact(
                         avatarSizeVertical = dimensionResource(id = R.dimen.plant_avatar_size)
                     )
                     Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.small_padding)))
+                    PlantTabBar(selectedTabIndex = uiState.selectedTab) {
+                        viewModel.updateSelectedTab(it)
+                    }
+                }
+            }
+            AnimatedVisibility(visible = !WindowInsets.isImeVisible && screenSize != WindowWidthSizeClass.COMPACT) {
+                Column() {
+                    Header(screenTitle = plantInfo.name)
+                    Spacer(modifier = modifier.padding(vertical = dimensionResource(id = R.dimen.medium_padding)))
                     PlantTabBar(selectedTabIndex = uiState.selectedTab) {
                         viewModel.updateSelectedTab(it)
                     }

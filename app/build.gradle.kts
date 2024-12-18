@@ -68,6 +68,7 @@ dependencies {
     //extras
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.material3.window.size)
+    implementation(libs.androidx.compose.material3.adaptive)
     //daggerHilt
     ksp(libs.ksp.dagger.hilt)
     ksp(libs.ksp.dagger)

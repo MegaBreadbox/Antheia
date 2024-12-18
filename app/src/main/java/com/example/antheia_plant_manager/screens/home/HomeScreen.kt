@@ -31,13 +31,13 @@ import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
 import com.example.antheia_plant_manager.model.service.firebase_auth.mock.AccountServiceMock
 import com.example.antheia_plant_manager.model.service.firestore.mock.CloudServiceMock
+import com.example.antheia_plant_manager.model.worker.mock.ReminderRepositoryImplMock
 import com.example.antheia_plant_manager.util.cardColor
 import com.example.compose.AntheiaplantmanagerTheme
 
 @Composable
 fun HomeScreen(
     navigatePlantList: (String) -> Unit,
-    modifier: Modifier = Modifier
 ) {
     LocationListCompact(
         navigatePlantList
@@ -58,11 +58,13 @@ fun LocationListCompact(
             ),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.dialog_padding))
         ) {
-            itemsIndexed(items = locationList) { index, location ->
+            itemsIndexed(items = locationList, key = { index, _ -> index }) { index, location ->
                 LocationCard(
                     index = index,
                     locationName = location,
-                    navigatePlantList = navigatePlantList
+                    navigatePlantList = navigatePlantList,
+                    modifier = Modifier
+                        .animateItem()
                 )
             }
         }
@@ -139,6 +141,7 @@ fun PlantsScreenPreview() {
                 plantDatabase = PlantRepositoryImplMock(),
                 accountService = AccountServiceMock(),
                 cloudService = CloudServiceMock(),
+                reminderWorker = ReminderRepositoryImplMock(),
                 ioDispatcher = kotlinx.coroutines.Dispatchers.IO
             ),
             navigatePlantList = { }
