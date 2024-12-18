@@ -20,7 +20,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val plantDatabase: PlantRepository,
     private val reminderWorker: ReminderRepository,
-    accountService: AccountService,
+    private val accountService: AccountService,
     private val cloudService: CloudService,
     private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
@@ -38,12 +38,14 @@ class HomeViewModel @Inject constructor(
         )
 
     private suspend fun syncUserData() {
-        reminderWorker.sendNotification()
-        plantDatabase.addPlants(
-            cloudService.getAllUserData().map { list ->
-                list.toPlant()
-            }
-        )
+        if(plantDatabase.getAllPlants(accountService.currentUserId).isEmpty()) {
+            reminderWorker.sendNotification()
+            plantDatabase.addPlants(
+                cloudService.getAllUserData().map { list ->
+                    list.toPlant()
+                }
+            )
+        }
     }
 }
 

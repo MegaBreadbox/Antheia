@@ -105,7 +105,10 @@ class WelcomeViewModel @Inject constructor(
                 if (googleResponse.credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     accountService.googleSignIn(GoogleIdTokenCredential.createFrom(googleResponse.credential.data).idToken)
                     cloudService.addUser()
-                    if(isReauthenticate) accountService.deleteAccount()
+                    if(isReauthenticate) {
+                        Firebase.auth.currentUser?.uid?.let { plantDatabase.deleteUserData(it) }
+                        accountService.deleteAccount()
+                    }
                     navigate()
                 }
             } catch (e: Exception) {
