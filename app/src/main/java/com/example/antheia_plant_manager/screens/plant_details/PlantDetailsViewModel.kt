@@ -10,6 +10,7 @@ import com.example.antheia_plant_manager.model.data.PlantRepository
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.model.service.firestore.CloudService
 import com.example.antheia_plant_manager.model.worker.ReminderRepository
+import com.example.antheia_plant_manager.model.worker.TextSyncRepository
 import com.example.antheia_plant_manager.nav_routes.PlantDetails
 import com.example.antheia_plant_manager.screens.plant_details.util.ButtonType
 import com.example.antheia_plant_manager.util.ComposeText
@@ -52,6 +53,7 @@ class PlantDetailsViewModel @Inject constructor(
     private val plantDatabase: PlantRepository,
     private val accountService: AccountService,
     private val reminderWorker: ReminderRepository,
+    private val textSyncWorker: TextSyncRepository,
     private val cloudService: CloudService,
     private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
@@ -306,6 +308,7 @@ class PlantDetailsViewModel @Inject constructor(
 
     private var inputTextJob: Job? = null
 
+
     fun updateNotesText(newText: String) {
         _plantEntryTemp.update {
             it.copy(notes = newText)
@@ -317,10 +320,9 @@ class PlantDetailsViewModel @Inject constructor(
         inputTextJob = viewModelScope.launch(ioDispatcher) {
             delay(SAVE_DEBOUNCE)
             plantDatabase.updatePlant(_plantEntry.value.toPlant().copy(notes = newText))
-            cloudService.updatePlant(_plantEntry.value.toPlantModel().copy(notes = newText))
+            textSyncWorker.syncText(plantId)
         }
     }
-
 
     companion object {
         const val SAVE_DEBOUNCE = 1000L

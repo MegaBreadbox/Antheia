@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.antheia_plant_manager.model.data.PlantRepository
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.example.antheia_plant_manager.model.service.firestore.CloudService
 import com.example.antheia_plant_manager.model.service.firestore.UserModel
@@ -26,6 +27,7 @@ import javax.inject.Inject
 class AccountSettingsViewModel @Inject constructor(
     private val accountService: AccountService,
     private val cloudService: CloudService,
+    private val plantDatabase: PlantRepository,
     private val coroutineDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
@@ -45,6 +47,7 @@ class AccountSettingsViewModel @Inject constructor(
             _dialogState.update {
                 it.copy(isEnabled = false)
             }
+            plantDatabase.deleteUserData(accountService.currentUserId)
             accountService.signOutOfApp()
             navigation()
         }
@@ -65,6 +68,7 @@ class AccountSettingsViewModel @Inject constructor(
             }
             if(Firebase.auth.currentUser?.isAnonymous == true) {
                 accountService.signOutOfApp()
+
                 anonymousNavigation()
             } else {
                 navigation()

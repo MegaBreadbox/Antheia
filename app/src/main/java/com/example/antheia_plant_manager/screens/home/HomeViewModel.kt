@@ -8,6 +8,8 @@ import com.example.antheia_plant_manager.model.service.firestore.CloudService
 import com.example.antheia_plant_manager.model.service.firestore.toPlant
 import com.example.antheia_plant_manager.model.worker.ReminderRepository
 import com.example.antheia_plant_manager.util.SUBSCRIBE_DELAY
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,7 +22,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val plantDatabase: PlantRepository,
     private val reminderWorker: ReminderRepository,
-    accountService: AccountService,
+    private val accountService: AccountService,
     private val cloudService: CloudService,
     private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
@@ -38,12 +40,14 @@ class HomeViewModel @Inject constructor(
         )
 
     private suspend fun syncUserData() {
-        reminderWorker.sendNotification()
-        plantDatabase.addPlants(
-            cloudService.getAllUserData().map { list ->
-                list.toPlant()
-            }
-        )
+        if(Firebase.auth.currentUser?.isAnonymous == false && plantDatabase.getAllPlants(accountService.currentUserId).isEmpty()) {
+            reminderWorker.sendNotification()
+            plantDatabase.addPlants(
+                cloudService.getAllUserData().map { list ->
+                    list.toPlant()
+                }
+            )
+        }
     }
 }
 
