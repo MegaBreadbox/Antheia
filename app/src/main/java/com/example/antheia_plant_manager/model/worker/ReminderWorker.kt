@@ -10,6 +10,8 @@ import com.example.antheia_plant_manager.model.service.firebase_auth.AccountServ
 import com.example.antheia_plant_manager.model.worker.util.reminderNotification
 import com.example.antheia_plant_manager.util.Reminder
 import com.example.antheia_plant_manager.util.determineReminder
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +33,7 @@ class ReminderWorker @AssistedInject constructor(
 
         return withContext(Dispatchers.IO) {
             return@withContext try {
-                plantDatabase.getAllPlants(accountService.currentUserId)
+                plantDatabase.getAllPlants(Firebase.auth.currentUser!!.uid)
                     .forEach { plant ->
                         when {
                             determineReminder(

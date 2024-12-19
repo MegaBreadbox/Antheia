@@ -12,7 +12,10 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -27,26 +30,30 @@ class HomeViewModel @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ): ViewModel() {
 
-    val locationsList = plantDatabase.getPlantLocations(accountService.currentUserId)
-        .onStart {
-            viewModelScope.launch(ioDispatcher) {
-                syncUserData()
-            }
-        }
+
+
+    val locationsList = plantDatabase.getPlantLocations(Firebase.auth.currentUser!!.uid)
+        .onStart { syncUserData() }
+        .catch { emit(emptyList()) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY),
             initialValue = emptyList()
         )
 
-    private suspend fun syncUserData() {
-        if(Firebase.auth.currentUser?.isAnonymous == false && plantDatabase.getAllPlants(accountService.currentUserId).isEmpty()) {
-            plantDatabase.addPlants(
-                cloudService.getAllUserData().map { list ->
-                    list.toPlant()
-                }
-            )
-            reminderWorker.sendNotification()
+    private fun syncUserData() {
+        viewModelScope.launch(ioDispatcher) {
+            if (
+                Firebase.auth.currentUser?.isAnonymous == false &&
+                plantDatabase.getAllPlants(Firebase.auth.currentUser!!.uid).isEmpty()
+            ) {
+                plantDatabase.addPlants(
+                    cloudService.getAllUserData().map { list ->
+                        list.toPlant()
+                    }
+                )
+                reminderWorker.sendNotification()
+            }
         }
     }
 }

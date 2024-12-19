@@ -77,10 +77,8 @@ fun NavMenu(
                     navController.navigate(it) {
                         popUpTo<Home> {
                             inclusive = true
-                            saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
                     }
                 },
                 navigateAddPlant = {
@@ -99,10 +97,8 @@ fun NavMenu(
                     navController.navigate(it) {
                         popUpTo<Notifications> {
                             inclusive = true
-                            saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
                     }
                 },
                 navigatePlantDetails = {
@@ -126,7 +122,6 @@ fun NavMenu(
                 navigatePlantDetails = {
                     navController.navigate(PlantDetails(it)) {
                         launchSingleTop = true
-                        restoreState = true
                     }
                 }
             )
@@ -167,10 +162,8 @@ fun NavMenu(
                     navController.navigate(it) {
                         popUpTo<AccountSettings> {
                             inclusive = true
-                            saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
                     }
                 }
             )
