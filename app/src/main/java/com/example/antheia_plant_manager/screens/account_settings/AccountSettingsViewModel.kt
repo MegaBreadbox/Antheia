@@ -47,7 +47,6 @@ class AccountSettingsViewModel @Inject constructor(
             _dialogState.update {
                 it.copy(isEnabled = false)
             }
-            plantDatabase.deleteUserData(accountService.currentUserId)
             accountService.signOutOfApp()
             navigation()
         }
@@ -67,8 +66,8 @@ class AccountSettingsViewModel @Inject constructor(
                 it.copy(isEnabled = false)
             }
             if(Firebase.auth.currentUser?.isAnonymous == true) {
+                plantDatabase.deleteUserData(accountService.currentUserId)
                 accountService.signOutOfApp()
-
                 anonymousNavigation()
             } else {
                 navigation()

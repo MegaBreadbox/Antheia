@@ -15,7 +15,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.model.data.mock.PlantRepositoryImplMock
 import com.example.antheia_plant_manager.model.service.firebase_auth.mock.AccountServiceMock
@@ -49,7 +49,7 @@ fun LocationListCompact(
     navigatePlantList: (String) -> Unit,
     viewModel: HomeViewModel = hiltViewModel<HomeViewModel>(),
 ) {
-    val locationList by viewModel.locationsList.collectAsState()
+    val locationList by viewModel.locationsList.collectAsStateWithLifecycle()
     if(locationList.isNotEmpty()) {
         LazyColumn(
             contentPadding = PaddingValues(

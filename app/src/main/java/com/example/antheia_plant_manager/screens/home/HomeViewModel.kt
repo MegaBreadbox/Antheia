@@ -41,12 +41,12 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun syncUserData() {
         if(Firebase.auth.currentUser?.isAnonymous == false && plantDatabase.getAllPlants(accountService.currentUserId).isEmpty()) {
-            reminderWorker.sendNotification()
             plantDatabase.addPlants(
                 cloudService.getAllUserData().map { list ->
                     list.toPlant()
                 }
             )
+            reminderWorker.sendNotification()
         }
     }
 }

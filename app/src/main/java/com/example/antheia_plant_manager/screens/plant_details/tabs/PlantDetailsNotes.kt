@@ -28,6 +28,10 @@ fun PlantDetailsNotes(
     Column(
         modifier = modifier
             .padding(horizontal = dimensionResource(id = R.dimen.large_padding))
+            .padding(
+                top = dimensionResource(id = R.dimen.large_padding),
+                bottom = dimensionResource(id = R.dimen.big_padding)
+            )
             .imePadding()
     ) {
         BasicTextField(
@@ -58,7 +62,6 @@ fun Margins(
             modifier = modifier
                 .height(maxHeight + dimensionResource(id = R.dimen.huge_padding))
                 .imePadding()
-                .padding(vertical = dimensionResource(id = R.dimen.large_padding))
         ) {
             if(notesText.isEmpty()) {
                 Text(

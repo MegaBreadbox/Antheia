@@ -214,8 +214,14 @@ class AddPlantViewModel @Inject constructor(
                     plant.copy(
                         dateAdded = it.toString(),
                         plantUserId = accountService.currentUserId,
-                        plantId = plantDatabase.addPlant(_currentPlant.value.toPlant()).toInt()
                     )
+                }
+                plantDatabase.addPlant(_currentPlant.value.toPlant()).toInt().also {
+                    _currentPlant.update { plant ->
+                        plant.copy(
+                            plantId = it
+                        )
+                    }
                 }
                 cloudService.addPlant(_currentPlant.value.toPlantModel())
                 reminderWorker.sendNotification()
