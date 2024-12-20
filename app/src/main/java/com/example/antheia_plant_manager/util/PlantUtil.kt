@@ -139,7 +139,7 @@ fun Plant.toPlantAlert(): PlantAlert {
 
 fun Plant.toPlantModel(): PlantModel {
     return PlantModel(
-        plantId = this.plantId,
+        id = this.plantId,
         plantUserId = this.plantUserId,
         plantName = this.name,
         location = this.location,
@@ -152,7 +152,7 @@ fun Plant.toPlantModel(): PlantModel {
 }
 
 data class PlantAlert(
-    val plantId: Int = 0,
+    val plantId: String = "",
     val plantName: String = "",
     val waterAlert: Reminder = Reminder.NotEnabled,
     val repottingAlert: Reminder = Reminder.NotEnabled,
@@ -169,7 +169,7 @@ fun PlantEntry.determineReminderText(reminder: ReminderFrequency): String {
 
 fun PlantEntry.toPlant(): Plant {
     return Plant(
-        plantId = if(this.plantId == 0) 0 else this.plantId,
+        plantId = this.plantId,
         name = this.name,
         location = this.location,
         waterReminder = this.waterReminder,
@@ -183,7 +183,7 @@ fun PlantEntry.toPlant(): Plant {
 
 fun PlantEntry.toPlantModel(): PlantModel {
     return PlantModel(
-        plantId = if(this.plantId == 0) 0 else this.plantId,
+        id  = this.plantId,
         plantUserId = this.plantUserId,
         plantName = this.name,
         location = this.location,
@@ -210,7 +210,7 @@ fun Plant.toPlantEntry(): PlantEntry {
 }
 
 data class PlantEntry(
-    val plantId: Int = 0,
+    val plantId: String = "",
     val plantUserId: String = "",
     val name: String = "",
     val location: String = "",

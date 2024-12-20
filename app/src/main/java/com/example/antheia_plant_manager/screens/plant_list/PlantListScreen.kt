@@ -35,7 +35,7 @@ import com.example.antheia_plant_manager.util.cardColor
 
 @Composable
 fun PlantListScreen(
-    navigatePlantDetails: (Int) -> Unit,
+    navigatePlantDetails: (String) -> Unit,
     viewModel: PlantListViewModel = hiltViewModel()
 ) {
     val plantAlerts by viewModel.plantAlerts.collectAsStateWithLifecycle()
@@ -49,7 +49,7 @@ fun PlantListScreen(
 
 @Composable
 fun PlantListCompact(
-    navigatePlantDetails: (Int) -> Unit,
+    navigatePlantDetails: (String) -> Unit,
     plantAlerts: List<PlantAlert>,
     header: String,
     modifier: Modifier = Modifier,
@@ -81,7 +81,7 @@ fun PlantListCompact(
 fun PlantListEntry(
     index: Int,
     plantAlert: PlantAlert,
-    navigatePlantDetails: (Int) -> Unit,
+    navigatePlantDetails: (String) -> Unit,
     plantListModifier: Modifier,
     modifier: Modifier = Modifier,
 ) {

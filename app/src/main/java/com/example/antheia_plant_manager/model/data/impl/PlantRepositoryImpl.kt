@@ -39,11 +39,11 @@ class PlantRepositoryImpl @Inject constructor (private val plantDao: PlantDao): 
         return plantDao.getPlantLocationSuggestions(userId, query)
     }
 
-    override fun getPlant(userId: String, plantId: Int): Flow<Plant> {
+    override fun getPlant(userId: String, plantId: String): Flow<Plant> {
         return plantDao.getPlant(userId, plantId)
     }
 
-    override suspend fun getPlantOneShot(userId: String, plantId: Int): Plant {
+    override suspend fun getPlantOneShot(userId: String, plantId: String): Plant {
         return plantDao.getPlantOneShot(userId, plantId)
     }
 
@@ -55,7 +55,7 @@ class PlantRepositoryImpl @Inject constructor (private val plantDao: PlantDao): 
         return plantDao.getAllPlantsFlow(userId)
     }
 
-    override suspend fun getPlantNotes(userId: String, plantId: Int): String {
+    override suspend fun getPlantNotes(userId: String, plantId: String): String {
         return plantDao.getPlantNotes(userId, plantId)
     }
 

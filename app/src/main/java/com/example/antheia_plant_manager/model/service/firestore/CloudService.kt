@@ -7,6 +7,8 @@ interface CloudService {
 
     fun userFlow(): Flow<UserModel>
 
+    suspend fun generatePlantId(): String
+
     suspend fun addPlant(plant: PlantModel)
 
     suspend fun deletePlant(plant: PlantModel)

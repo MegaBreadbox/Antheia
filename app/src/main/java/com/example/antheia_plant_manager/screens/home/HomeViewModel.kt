@@ -32,9 +32,8 @@ class HomeViewModel @Inject constructor(
 
 
 
-    val locationsList = plantDatabase.getPlantLocations(Firebase.auth.currentUser!!.uid)
+    val locationsList = plantDatabase.getPlantLocations(accountService.currentUserId)
         .onStart { syncUserData() }
-        .catch { emit(emptyList()) }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY),
@@ -45,7 +44,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(ioDispatcher) {
             if (
                 Firebase.auth.currentUser?.isAnonymous == false &&
-                plantDatabase.getAllPlants(Firebase.auth.currentUser!!.uid).isEmpty()
+                plantDatabase.getAllPlants(accountService.currentUserId).isEmpty()
             ) {
                 plantDatabase.addPlants(
                     cloudService.getAllUserData().map { list ->

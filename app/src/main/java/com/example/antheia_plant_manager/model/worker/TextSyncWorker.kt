@@ -22,7 +22,7 @@ class TextSyncWorker @AssistedInject constructor(
     private val cloudService: CloudService
 ): CoroutineWorker(context, params) {
     override suspend fun doWork(): Result {
-        val plantId = inputData.getInt("plantId", -1)
+        val plantId = inputData.getString("plantId")?: ""
 
         if(!accountService.isSignedIn()) return Result.failure()
 

@@ -11,6 +11,10 @@ class CloudServiceMock: CloudService {
         TODO("Not yet implemented")
     }
 
+    override suspend fun generatePlantId(): String {
+        return "test"
+    }
+
     override suspend fun addPlant(plant: PlantModel) {
     }
 

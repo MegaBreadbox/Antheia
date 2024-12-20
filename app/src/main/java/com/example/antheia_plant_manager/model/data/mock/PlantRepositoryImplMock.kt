@@ -42,11 +42,11 @@ class PlantRepositoryImplMock: PlantRepository {
         return flowOf(listOf("Location 1", "Location 2"))
     }
 
-    override fun getPlant(userId: String, plantId: Int): Flow<Plant> {
+    override fun getPlant(userId: String, plantId: String): Flow<Plant> {
         return flowOf(PlantEntry().toPlant())
     }
 
-    override suspend fun getPlantOneShot(userId: String, plantId: Int): Plant {
+    override suspend fun getPlantOneShot(userId: String, plantId: String): Plant {
         return PlantEntry().toPlant()
     }
 
@@ -66,7 +66,7 @@ class PlantRepositoryImplMock: PlantRepository {
         )
     }
 
-    override suspend fun getPlantNotes(userId: String, plantId: Int): String {
+    override suspend fun getPlantNotes(userId: String, plantId: String): String {
         return "Notes"
     }
 }

@@ -5,7 +5,7 @@ import com.google.firebase.firestore.ServerTimestamp
 import java.util.Date
 
 data class PlantModel(
-    val plantId: Int = 0,
+    val id: String = "",
     val plantUserId: String = "",
     val plantName: String = "",
     val location: String = "",
@@ -20,7 +20,7 @@ data class PlantModel(
 
 fun PlantModel.toPlant(): Plant {
     return Plant(
-        plantId = this.plantId,
+        plantId = this.id,
         plantUserId = this.plantUserId,
         name = this.plantName,
         location = this.location,

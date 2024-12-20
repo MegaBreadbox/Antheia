@@ -10,7 +10,7 @@ import kotlinx.serialization.Serializable
 data class PlantList(val location: String): NavigationObject
 
 fun NavGraphBuilder.plantList(
-    navigatePlantDetails: (Int) -> Unit,
+    navigatePlantDetails: (String) -> Unit,
 ) {
     composable<PlantList>(
         enterTransition = {

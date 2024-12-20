@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity()
 data class Plant(
-    @PrimaryKey(autoGenerate = true)
-    val plantId: Int = 0,
+    @PrimaryKey(autoGenerate = false)
+    val plantId: String,
     val plantUserId: String,
     val name: String,
     val location: String,

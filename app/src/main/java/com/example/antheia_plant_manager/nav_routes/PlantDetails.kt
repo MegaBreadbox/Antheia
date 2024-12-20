@@ -7,7 +7,7 @@ import com.example.antheia_plant_manager.screens.plant_details.PlantDetailsScree
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PlantDetails(val plantId: Int): NavigationObject
+data class PlantDetails(val plantId: String): NavigationObject
 
 fun NavGraphBuilder.plantDetails(
     navigateBack: () -> Unit

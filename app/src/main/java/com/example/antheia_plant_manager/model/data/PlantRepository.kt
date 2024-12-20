@@ -20,13 +20,13 @@ interface PlantRepository {
 
     fun getPlantLocationSuggestions(userId: String, query: String): Flow<List<String>>
 
-    fun getPlant(userId: String, plantId: Int): Flow<Plant>
+    fun getPlant(userId: String, plantId: String): Flow<Plant>
 
-    suspend fun getPlantOneShot(userId: String, plantId: Int): Plant
+    suspend fun getPlantOneShot(userId: String, plantId: String): Plant
 
     suspend fun getAllPlants(userId: String): List<Plant>
 
     fun getAllPlantsFlow(userId: String): Flow<List<Plant>>
 
-    suspend fun getPlantNotes(userId: String, plantId: Int): String
+    suspend fun getPlantNotes(userId: String, plantId: String): String
 }

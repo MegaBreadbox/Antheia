@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,7 +15,7 @@ interface PlantDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addPlant(plant: Plant): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert
     suspend fun addPlants(plants: List<Plant>)
 
     @Delete
@@ -46,11 +47,11 @@ interface PlantDao {
 
     @Query("SELECT * from plant WHERE plantUserId = :userId" +
             " AND plantId = :plantId")
-    fun getPlant(userId: String, plantId: Int): Flow<Plant>
+    fun getPlant(userId: String, plantId: String): Flow<Plant>
 
     @Query("SELECT * from plant WHERE plantUserId = :userId" +
             " AND plantId = :plantId")
-    suspend fun getPlantOneShot(userId: String, plantId: Int): Plant
+    suspend fun getPlantOneShot(userId: String, plantId: String): Plant
 
     @Query("SELECT * from plant WHERE plantUserId = :userId")
     suspend fun getAllPlants(userId: String): List<Plant>
@@ -59,6 +60,6 @@ interface PlantDao {
     fun getAllPlantsFlow(userId: String): Flow<List<Plant>>
 
     @Query("SELECT notes from plant WHERE plantUserId = :userId AND plantId = :plantId")
-    suspend fun getPlantNotes(userId: String, plantId: Int): String
+    suspend fun getPlantNotes(userId: String, plantId: String): String
 
 }

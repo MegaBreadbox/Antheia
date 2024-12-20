@@ -13,18 +13,18 @@ import javax.inject.Inject
 
 class TextSyncRepositoryImpl @Inject constructor(private val workManager: WorkManager): TextSyncRepository {
 
-    override fun syncText(plantId: Int) {
+    override fun syncText(plantId: String) {
 
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.UNMETERED)
             .build()
 
         val createDataFromPlantId = Data.Builder()
-            .putInt("plantId", plantId)
+            .putString("plantId", plantId)
             .build()
 
         workManager.enqueueUniqueWork(
-            plantId.toString(),
+            plantId,
             ExistingWorkPolicy.REPLACE,
             OneTimeWorkRequestBuilder<TextSyncWorker>()
                 .setInitialDelay(INITIAL_DELAY, TimeUnit.MINUTES)

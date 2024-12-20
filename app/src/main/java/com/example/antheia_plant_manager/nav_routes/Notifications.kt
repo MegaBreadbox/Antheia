@@ -11,7 +11,7 @@ import kotlinx.serialization.Serializable
 object Notifications: NavigationObject
 
 fun NavGraphBuilder.notifications(
-    navigatePlantDetails: (Int) -> Unit,
+    navigatePlantDetails: (String) -> Unit,
     bottomAppBarNavigate: (NavigationObject) -> Unit
 ) {
     composable<Notifications>(
