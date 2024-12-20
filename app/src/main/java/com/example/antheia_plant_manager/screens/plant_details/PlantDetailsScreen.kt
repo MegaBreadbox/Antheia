@@ -115,8 +115,8 @@ fun PlantDetailsCompact(
                     onRadioClick = { reminderString, reminderType ->
                         viewModel.updateTempReminderOfPlant(reminderString, reminderType)
                                    },
-                    onConfirmClick = { reminderString, reminderType ->
-                        viewModel.updateReminderOfPlant(reminderString, reminderType)
+                    onConfirmClick = {
+                        viewModel.updateReminderOfPlant()
                     },
                     onDismissClick = { viewModel.clearSelectedReminder() },
                     onSaveClick = { viewModel.savePlant() },

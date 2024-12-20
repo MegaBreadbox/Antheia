@@ -68,7 +68,7 @@ fun PlantDetailsSettings(
     validatePlant: Boolean,
     onDropdownClick: (ReminderFrequency) -> Unit,
     onRadioClick: (String, ReminderFrequency) -> Unit,
-    onConfirmClick: (String, ReminderFrequency) -> Unit,
+    onConfirmClick: () -> Unit,
     onDismissClick: () -> Unit,
     onSaveClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -181,10 +181,7 @@ fun PlantDetailsSettings(
                     selectedReminder = currentPlant.determineReminderText(selectedReminder)
                         .getReminderFrequency(),
                     onConfirmClick = {
-                        onConfirmClick(
-                            it,
-                            selectedReminder
-                        )
+                        onConfirmClick()
                     },
                     onDismissClick = onDismissClick,
                     onRadioClick = {

@@ -58,4 +58,5 @@ fun reminderNotification(message: String, context: Context) {
     ) {
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
     }
+
 }

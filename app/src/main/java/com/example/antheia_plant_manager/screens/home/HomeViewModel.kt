@@ -1,5 +1,6 @@
 package com.example.antheia_plant_manager.screens.home
 
+import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.antheia_plant_manager.model.data.PlantRepository
@@ -40,6 +41,10 @@ class HomeViewModel @Inject constructor(
             initialValue = emptyList()
         )
 
+    fun sendNotification() {
+        reminderWorker.sendNotification()
+    }
+
     private fun syncUserData() {
         viewModelScope.launch(ioDispatcher) {
             if (
@@ -51,7 +56,6 @@ class HomeViewModel @Inject constructor(
                         list.toPlant()
                     }
                 )
-                reminderWorker.sendNotification()
             }
         }
     }

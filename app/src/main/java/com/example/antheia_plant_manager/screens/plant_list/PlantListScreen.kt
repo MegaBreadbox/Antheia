@@ -2,8 +2,10 @@ package com.example.antheia_plant_manager.screens.plant_list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,6 +26,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,7 +45,8 @@ fun PlantListScreen(
     PlantListCompact(
         navigatePlantDetails = navigatePlantDetails,
         plantAlerts = plantAlerts,
-        header = viewModel.location
+        header = viewModel.location,
+        onEmptyList = { OnEmptyPlantList(header = viewModel.location) }
     )
 }
 
@@ -52,6 +56,7 @@ fun PlantListCompact(
     navigatePlantDetails: (String) -> Unit,
     plantAlerts: List<PlantAlert>,
     header: String,
+    onEmptyList: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val listModifier = Modifier
@@ -59,22 +64,49 @@ fun PlantListCompact(
             horizontal = dimensionResource(id = R.dimen.large_padding),
             vertical = dimensionResource(id = R.dimen.medium_padding)
         )
-    LazyColumn() {
-        item {
-            Header(screenTitle = header)
-            Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
-        }
+    if(plantAlerts.isNotEmpty()) {
+        LazyColumn() {
+            item {
+                Header(screenTitle = header)
+                Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
+            }
 
-        itemsIndexed(plantAlerts, key = { _, plantAlert -> plantAlert.plantId  }) { index, plantAlert  ->
-            PlantListEntry(
-                index = index,
-                plantAlert = plantAlert,
-                navigatePlantDetails = navigatePlantDetails,
-                plantListModifier = listModifier
-            )
-            HorizontalDivider(listModifier)
+            itemsIndexed(
+                plantAlerts,
+                key = { _, plantAlert -> plantAlert.plantId }) { index, plantAlert ->
+                PlantListEntry(
+                    index = index,
+                    plantAlert = plantAlert,
+                    navigatePlantDetails = navigatePlantDetails,
+                    plantListModifier = listModifier
+                )
+                HorizontalDivider(listModifier)
+            }
         }
+    } else {
+        onEmptyList()
     }
+}
+
+@Composable
+fun OnEmptyPlantList(
+    header: String,
+    modifier: Modifier = Modifier
+) {
+    Header(screenTitle = header)
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(R.string.no_more_plants_here_now),
+            textAlign = TextAlign.Center,
+            modifier = modifier
+                .alpha(0.5F)
+        )
+    }
+
 }
 
 @Composable

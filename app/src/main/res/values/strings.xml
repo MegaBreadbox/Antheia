@@ -90,4 +90,6 @@
     <string name="delete_account_warning">Are you sure you want to delete your account?</string>
     <string name="delete_plant">Delete plant</string>
     <string name="late_by_1_day">Late by 1 day</string>
+    <string name="no_more_plants_here_now">No more plants here now</string>
+    <string name="you_have_no_notifications">You have no notifications</string>
 </resources>

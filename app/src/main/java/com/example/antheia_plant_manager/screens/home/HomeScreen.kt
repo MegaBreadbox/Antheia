@@ -1,5 +1,8 @@
 package com.example.antheia_plant_manager.screens.home
 
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +18,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
@@ -34,6 +39,7 @@ import com.example.antheia_plant_manager.model.service.firestore.mock.CloudServi
 import com.example.antheia_plant_manager.model.worker.mock.ReminderRepositoryImplMock
 import com.example.antheia_plant_manager.util.cardColor
 import com.example.compose.AntheiaplantmanagerTheme
+import java.util.jar.Manifest
 
 @Composable
 fun HomeScreen(
@@ -50,7 +56,16 @@ fun LocationListCompact(
     viewModel: HomeViewModel = hiltViewModel<HomeViewModel>(),
 ) {
     val locationList by viewModel.locationsList.collectAsStateWithLifecycle()
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { viewModel.sendNotification() }
+
     if(locationList.isNotEmpty()) {
+        LaunchedEffect(true) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                launcher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
         LazyColumn(
             contentPadding = PaddingValues(
                 top = dimensionResource(id = R.dimen.dialog_padding),

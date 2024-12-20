@@ -247,11 +247,13 @@ class PlantDetailsViewModel @Inject constructor(
         }
     }
 
-    fun updateReminderOfPlant(completeReminderText: String, reminderType: ReminderFrequency) {
-        when(reminderType) {
-            ReminderFrequency.WATERREMINDER -> { _plantEntry.update { it.copy(waterReminder = completeReminderText) } }
-            ReminderFrequency.REPOTTINGREMINDER -> { _plantEntry.update { it.copy(repottingReminder = completeReminderText) } }
-            ReminderFrequency.FERTILIZERREMINDER -> { _plantEntry.update { it.copy(fertilizerReminder = completeReminderText) } }
+    fun updateReminderOfPlant() {
+        _plantEntry.update {
+            it.copy(
+                waterReminder = _plantEntryTemp.value.waterReminder,
+                repottingReminder = _plantEntryTemp.value.repottingReminder,
+                fertilizerReminder = _plantEntryTemp.value.fertilizerReminder
+            )
         }
     }
 
