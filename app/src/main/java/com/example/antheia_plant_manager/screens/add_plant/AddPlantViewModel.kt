@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -201,11 +202,15 @@ class AddPlantViewModel @Inject constructor(
         }
     }
 
-    fun validatePlant(): Boolean {
-        return _currentPlant.value.name.isNotEmpty() &&
-            _currentPlant.value.location.isNotEmpty() &&
-            _currentPlant.value.waterReminder.isNotEmpty()
-    }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val validatePlant = _currentPlant
+        .mapLatest { plant -> plant.name.isNotEmpty() && plant.location.isNotEmpty() && plant.waterReminder.isNotEmpty() }
+        .stateIn(
+            initialValue = false,
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(SUBSCRIBE_DELAY)
+        )
+
 
     fun savePlant(navigation: () -> Unit) {
         viewModelScope.launch {

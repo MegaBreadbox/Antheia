@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -15,23 +16,36 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
 import com.example.antheia_plant_manager.screens.plant_list.PlantListCompact
+import com.example.antheia_plant_manager.screens.plant_list.PlantListMediumAndExpanded
 import com.example.antheia_plant_manager.util.Header
 
 @Composable
 fun NotificationsScreen(
     navigatePlantDetails: (String) -> Unit,
+    windowSize: WindowWidthSizeClass,
     viewModel: NotificationsViewModel = hiltViewModel()
 ) {
     val plantAlerts by viewModel.plantAlerts.collectAsStateWithLifecycle()
-    PlantListCompact(
-        navigatePlantDetails = navigatePlantDetails,
-        plantAlerts = plantAlerts,
-        header = stringResource(id = R.string.notifications_header),
-        onEmptyList = {
-            EmptyNotifications(header = stringResource(id = R.string.notifications_header))
-        }
+    if(windowSize == WindowWidthSizeClass.Compact) {
+        PlantListCompact(
+            navigatePlantDetails = navigatePlantDetails,
+            plantAlerts = plantAlerts,
+            header = stringResource(id = R.string.notifications_header),
+            onEmptyList = {
+                EmptyNotifications(header = stringResource(id = R.string.notifications_header))
+            }
 
-    )
+        )
+    } else {
+        PlantListMediumAndExpanded(
+            navigatePlantDetails = navigatePlantDetails,
+            plantAlerts = plantAlerts,
+            header = stringResource(id = R.string.notifications_header),
+            onEmptyList = {
+                EmptyNotifications(header = stringResource(id = R.string.notifications_header))
+            }
+        )
+    }
 
 
 }

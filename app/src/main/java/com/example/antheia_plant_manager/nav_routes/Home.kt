@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
@@ -25,6 +26,7 @@ import kotlinx.serialization.Serializable
 object Home: NavigationObject
 
 fun NavGraphBuilder.home(
+    windowSize: WindowWidthSizeClass,
     navigateAddPlant: () -> Unit,
     navigatePlantList: (String) -> Unit,
     bottomAppBarNavigate: (NavigationObject) -> Unit,
@@ -55,7 +57,8 @@ fun NavGraphBuilder.home(
             }
         ) {
             HomeScreen(
-                navigatePlantList = navigatePlantList
+                navigatePlantList = navigatePlantList,
+                windowSize = windowSize
             )
         }
     }

@@ -12,11 +12,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -29,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.antheia_plant_manager.R
@@ -39,20 +42,22 @@ import com.example.antheia_plant_manager.model.service.firestore.mock.CloudServi
 import com.example.antheia_plant_manager.model.worker.mock.ReminderRepositoryImplMock
 import com.example.antheia_plant_manager.util.cardColor
 import com.example.compose.AntheiaplantmanagerTheme
-import java.util.jar.Manifest
 
 @Composable
 fun HomeScreen(
     navigatePlantList: (String) -> Unit,
+    windowSize: WindowWidthSizeClass,
 ) {
     LocationListCompact(
-        navigatePlantList
+        navigatePlantList = navigatePlantList,
+        windowSize = windowSize
     )
 }
 
 @Composable
 fun LocationListCompact(
     navigatePlantList: (String) -> Unit,
+    windowSize: WindowWidthSizeClass,
     viewModel: HomeViewModel = hiltViewModel<HomeViewModel>(),
 ) {
     val locationList by viewModel.locationsList.collectAsStateWithLifecycle()
@@ -66,22 +71,50 @@ fun LocationListCompact(
                 launcher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
             }
         }
-        LazyColumn(
-            contentPadding = PaddingValues(
-                top = dimensionResource(id = R.dimen.dialog_padding),
-                bottom = dimensionResource(id = R.dimen.dialog_padding),
-            ),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.dialog_padding))
-        ) {
-            itemsIndexed(items = locationList, key = { index, _ -> index }) { index, location ->
-                LocationCard(
-                    index = index,
-                    locationName = location,
-                    navigatePlantList = navigatePlantList,
-                    modifier = Modifier
-                        .animateItem()
-                )
+        if(windowSize == WindowWidthSizeClass.Compact) {
+            LazyColumn(
+                contentPadding = PaddingValues(
+                    top = dimensionResource(id = R.dimen.dialog_padding),
+                    bottom = dimensionResource(id = R.dimen.dialog_padding),
+                ),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.dialog_padding))
+            ) {
+                itemsIndexed(
+                    items = locationList,
+                    key = { index, _ -> index }) { index, location ->
+                    LocationCard(
+                        index = index,
+                        locationName = location,
+                        navigatePlantList = navigatePlantList,
+                        modifier = Modifier
+                            .animateItem()
+                            .fillMaxWidth()
+                    )
+                }
             }
+        } else {
+            LazyVerticalGrid(
+                contentPadding = PaddingValues(
+                    top = dimensionResource(id = R.dimen.dialog_padding),
+                    bottom = dimensionResource(id = R.dimen.dialog_padding),
+                ),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.dialog_padding)),
+                columns = GridCells.Adaptive(minSize = dimensionResource(id = R.dimen.grid_cell_location_size))
+            ) {
+                itemsIndexed(
+                    items = locationList,
+                    key = { index, _ -> index }) { index, location ->
+                    LocationCard(
+                        index = index,
+                        locationName = location,
+                        navigatePlantList = navigatePlantList,
+                        modifier = Modifier
+                            .animateItem()
+                    )
+                }
+
+            }
+
         }
     } else {
         EmptyPlantList()
@@ -100,7 +133,6 @@ fun LocationCard(
         colors = cardColor(index),
         elevation = CardDefaults.cardElevation(dimensionResource(id = R.dimen.small_padding)),
         modifier = modifier
-            .fillMaxWidth()
             .padding(horizontal = dimensionResource(id = R.dimen.dialog_padding))
             .height(dimensionResource(id = R.dimen.location_card_height))
             .clickable { navigatePlantList(locationName) }
@@ -159,7 +191,8 @@ fun PlantsScreenPreview() {
                 reminderWorker = ReminderRepositoryImplMock(),
                 ioDispatcher = kotlinx.coroutines.Dispatchers.IO
             ),
-            navigatePlantList = { }
+            navigatePlantList = { },
+            windowSize = WindowWidthSizeClass.Compact
         )
     }
 }
