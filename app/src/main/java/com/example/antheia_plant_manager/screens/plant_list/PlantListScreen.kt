@@ -9,6 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -16,6 +20,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,15 +44,67 @@ import com.example.antheia_plant_manager.util.cardColor
 @Composable
 fun PlantListScreen(
     navigatePlantDetails: (String) -> Unit,
+    windowSize: WindowWidthSizeClass,
     viewModel: PlantListViewModel = hiltViewModel()
 ) {
     val plantAlerts by viewModel.plantAlerts.collectAsStateWithLifecycle()
-    PlantListCompact(
-        navigatePlantDetails = navigatePlantDetails,
-        plantAlerts = plantAlerts,
-        header = viewModel.location,
-        onEmptyList = { OnEmptyPlantList(header = viewModel.location) }
-    )
+
+    if(windowSize == WindowWidthSizeClass.Compact) {
+        PlantListCompact(
+            navigatePlantDetails = navigatePlantDetails,
+            plantAlerts = plantAlerts,
+            header = viewModel.location,
+            onEmptyList = { OnEmptyPlantList(header = viewModel.location) }
+        )
+    } else {
+        PlantListMediumAndExpanded(
+            navigatePlantDetails = navigatePlantDetails,
+            plantAlerts = plantAlerts,
+            header = viewModel.location,
+            onEmptyList = { OnEmptyPlantList(header = viewModel.location) }
+        )
+    }
+}
+
+@Composable
+fun PlantListMediumAndExpanded(
+    navigatePlantDetails: (String) -> Unit,
+    plantAlerts: List<PlantAlert>,
+    header: String,
+    onEmptyList: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val listModifier = Modifier
+        .padding(
+            horizontal = dimensionResource(id = R.dimen.large_padding),
+            vertical = dimensionResource(id = R.dimen.big_padding)
+        )
+    if(plantAlerts.isNotEmpty()) {
+        LazyVerticalGrid(
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.large_padding)),
+            columns = GridCells.Adaptive(minSize = dimensionResource(id = R.dimen.grid_cell_size))
+        ) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
+                Header(screenTitle = header)
+                Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
+            }
+
+            itemsIndexed(
+                plantAlerts,
+                key = { _, plantAlert -> plantAlert.plantId }) { index, plantAlert ->
+                PlantListEntry(
+                    index = index,
+                    plantAlert = plantAlert,
+                    navigatePlantDetails = navigatePlantDetails,
+                    plantListModifier = listModifier
+                )
+                Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.dialog_padding)))
+            }
+
+        }
+    } else {
+        onEmptyList()
+    }
 }
 
 

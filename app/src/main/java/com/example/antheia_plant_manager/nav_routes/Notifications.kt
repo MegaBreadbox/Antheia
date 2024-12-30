@@ -1,4 +1,5 @@
 package com.example.antheia_plant_manager.nav_routes
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navDeepLink
@@ -11,6 +12,7 @@ import kotlinx.serialization.Serializable
 object Notifications: NavigationObject
 
 fun NavGraphBuilder.notifications(
+    windowSize: WindowWidthSizeClass,
     navigatePlantDetails: (String) -> Unit,
     bottomAppBarNavigate: (NavigationObject) -> Unit
 ) {
@@ -26,6 +28,7 @@ fun NavGraphBuilder.notifications(
             bottomAppBarNavigate = bottomAppBarNavigate,
         ) {
             NotificationsScreen(
+                windowSize = windowSize,
                 navigatePlantDetails = navigatePlantDetails
             )
         }

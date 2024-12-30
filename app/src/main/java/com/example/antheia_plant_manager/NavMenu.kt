@@ -73,6 +73,7 @@ fun NavMenu(
         )
         navigation<App>(startDestination = Home) {
             home(
+                windowSize = windowSize,
                 bottomAppBarNavigate = {
                     navController.navigate(it) {
                         popUpTo<Home> {
@@ -93,6 +94,7 @@ fun NavMenu(
                 }
             )
             notifications(
+                windowSize = windowSize,
                 bottomAppBarNavigate = {
                     navController.navigate(it) {
                         popUpTo<Notifications> {
@@ -119,6 +121,7 @@ fun NavMenu(
                 }
             )
             plantList(
+                windowSize = windowSize,
                 navigatePlantDetails = {
                     navController.navigate(PlantDetails(it)) {
                         launchSingleTop = true

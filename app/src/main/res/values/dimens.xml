@@ -22,4 +22,6 @@
     <dimen name="header_card_bottom_corner_radius">100dp</dimen>
     <dimen name="plant_avatar_size">200dp</dimen>
     <dimen name="task_button_size">100dp</dimen>"
+    <dimen name="grid_cell_size">300dp</dimen>"
+    <dimen name="grid_cell_location_size">400dp</dimen>""
 </resources>

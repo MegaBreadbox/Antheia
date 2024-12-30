@@ -1,5 +1,6 @@
 package com.example.antheia_plant_manager.nav_routes
 
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.antheia_plant_manager.nav_routes.util.AnimationConstants
@@ -10,6 +11,7 @@ import kotlinx.serialization.Serializable
 data class PlantList(val location: String): NavigationObject
 
 fun NavGraphBuilder.plantList(
+    windowSize: WindowWidthSizeClass,
     navigatePlantDetails: (String) -> Unit,
 ) {
     composable<PlantList>(
@@ -22,7 +24,8 @@ fun NavGraphBuilder.plantList(
     ){
 
         PlantListScreen(
-            navigatePlantDetails = navigatePlantDetails
+            navigatePlantDetails = navigatePlantDetails,
+            windowSize = windowSize
         )
     }
 

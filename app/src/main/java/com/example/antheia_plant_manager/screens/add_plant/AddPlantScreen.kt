@@ -85,6 +85,9 @@ fun AddPlantScreen(
         WindowWidthSizeClass.Medium -> {
             PlantFormMedium(navigateBack)
         }
+        WindowWidthSizeClass.Expanded -> {
+            PlantFormMedium(navigateBack)
+        }
     }
 }
 
@@ -97,6 +100,7 @@ fun PlantFormCompact(
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val locationSuggestions by viewModel.suggestions.collectAsStateWithLifecycle()
+    val validatePlant by viewModel.validatePlant.collectAsStateWithLifecycle()
     val scroll = rememberScrollState()
     val focusManager = LocalFocusManager.current
     var selectedSuggestion by remember { mutableStateOf(false) }
@@ -296,7 +300,7 @@ fun PlantFormCompact(
             }
         }
         Button(
-            enabled = viewModel.validatePlant(),
+            enabled = validatePlant,
             onClick = {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     launcher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
@@ -322,6 +326,7 @@ fun PlantFormMedium(
 ) {
     val locationSuggestions by viewModel.suggestions.collectAsStateWithLifecycle()
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val validatePlant by viewModel.validatePlant.collectAsStateWithLifecycle()
     val scroll = rememberScrollState()
     val focusManager = LocalFocusManager.current
     var selectedSuggestion by remember { mutableStateOf(false) }
@@ -517,7 +522,7 @@ fun PlantFormMedium(
             }
         }
         Button(
-            enabled = viewModel.validatePlant(),
+            enabled = validatePlant,
             onClick = {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     launcher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
