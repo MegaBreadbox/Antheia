@@ -36,7 +36,9 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -69,6 +71,8 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.material3.window.size)
     implementation(libs.androidx.compose.material3.adaptive)
+    implementation(libs.android.gms.play.services.auth)
+
     //daggerHilt
     ksp(libs.ksp.dagger.hilt)
     ksp(libs.ksp.dagger)

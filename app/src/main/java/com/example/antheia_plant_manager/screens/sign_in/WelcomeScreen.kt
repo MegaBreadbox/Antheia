@@ -95,7 +95,6 @@ fun WelcomeScreen(
             },
             anonymousSignIn = {
                 viewModel.anonymousSignIn(navigateHome)
-                navigateHome()
             },
             googleSignIn = {
                 coroutineScope.launch {

@@ -1,6 +1,5 @@
 package com.example.antheia_plant_manager.model.service.firebase_auth.impl
 
-import android.util.Log
 import com.example.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.google.firebase.Firebase
 import com.google.firebase.auth.EmailAuthProvider
@@ -17,7 +16,7 @@ import javax.inject.Inject
 class AccountServiceImpl @Inject constructor(): AccountService {
 
     override val currentUserId: String
-        get() = Firebase.auth.currentUser?.uid.orEmpty().also { Log.d("currentUserId", "${isSignedIn()}") }
+        get() = Firebase.auth.currentUser?.uid.orEmpty()
 
     override fun currentUser(): Flow<FirebaseUser?> = callbackFlow {
         val authTokenListener = FirebaseAuth.IdTokenListener { auth ->
