@@ -12,17 +12,17 @@ plugins {
 }
 
 android {
-    namespace = "com.example.antheia_plant_manager"
+    namespace = "com.mega_breadbox.antheia_plant_manager"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.antheia_plant_manager"
+        applicationId = "com.mega_breadbox.antheia_plant_manager"
         minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "com.example.antheia_plant_manager.junit_runner.CustomTestRunner"
+        testInstrumentationRunner = "com.mega_breadbox.antheia_plant_manager.junit_runner.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
