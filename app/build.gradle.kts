@@ -19,8 +19,9 @@ android {
         applicationId = "com.mega_breadbox.antheia_plant_manager"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 4
+        versionName = "1.3"
+        ndkVersion = "27.2.12479018"
 
         testInstrumentationRunner = "com.mega_breadbox.antheia_plant_manager.junit_runner.CustomTestRunner"
         vectorDrawables {
@@ -36,6 +37,9 @@ android {
 
     buildTypes {
         release {
+            ndk {
+                debugSymbolLevel = "full"
+            }
             isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
