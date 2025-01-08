@@ -9,5 +9,7 @@ data class UserModel(
     val uid: String = "",
     @ServerTimestamp
     val timeStamp: Date = Date()
-)
+) {
+    constructor(): this("", "", "", Date())
+}
 
