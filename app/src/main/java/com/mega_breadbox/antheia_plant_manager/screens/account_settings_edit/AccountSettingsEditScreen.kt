@@ -35,7 +35,6 @@ import com.mega_breadbox.antheia_plant_manager.R
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.AccountDetail
 import com.mega_breadbox.antheia_plant_manager.screens.sign_in.WelcomeTextCompact
 import com.mega_breadbox.compose.AntheiaplantmanagerTheme
-import kotlinx.coroutines.launch
 
 @Composable
 fun AccountSettingsEditScreen(
@@ -49,15 +48,10 @@ fun AccountSettingsEditScreen(
         headerText = uiState.welcomeText,
         updateHeaderText = { viewModel.updateWelcomeText(it) },
         newAccountDetail = viewModel.newAccountText,
-        errorPresent = uiState.errorPresent,
+        errorText = uiState.errorText?.asString(),
         confirmNewAccountDetail = viewModel.confirmNewAccountText,
         updateNewAccountDetail = { viewModel.updateAccountInfoText(it) },
-        saveChanges = {
-            coroutineScope.launch {
-                viewModel.saveAccountInfo()
-                navigateBack()
-            }
-        },
+        saveChanges = { viewModel.saveAccountInfo(navigateBack) },
         updateConfirmNewAccountDetail = { viewModel.updateConfirmAccountInfoText(it) },
     )
 }
@@ -69,7 +63,7 @@ fun EditFormCompact(
     updateHeaderText: (Char) -> Unit,
     newAccountDetail: String,
     confirmNewAccountDetail: String,
-    errorPresent: Boolean,
+    errorText: String?,
     saveChanges: () -> Unit,
     updateNewAccountDetail: (String) -> Unit,
     updateConfirmNewAccountDetail: (String) -> Unit,
@@ -92,7 +86,7 @@ fun EditFormCompact(
         FormType(
             accountInfoType = accountInfoType,
             newAccountDetail = newAccountDetail,
-            errorPresent = errorPresent,
+            errorText = errorText,
             confirmNewAccountDetail = confirmNewAccountDetail,
             updateNewAccountDetail = updateNewAccountDetail,
             updateConfirmNewAccountDetail = updateConfirmNewAccountDetail,
@@ -118,7 +112,7 @@ fun FormType(
     accountInfoType: AccountDetail,
     newAccountDetail: String,
     confirmNewAccountDetail: String,
-    errorPresent: Boolean,
+    errorText: String?,
     updateNewAccountDetail: (String) -> Unit,
     updateConfirmNewAccountDetail: (String) -> Unit,
     saveChanges: () -> Unit,
@@ -140,7 +134,7 @@ fun FormType(
                 value = newAccountDetail,
                 onValueChange = { updateNewAccountDetail(it) },
                 placeholder = { Text(text = stringResource(accountInfoType.stringId)) },
-                isError = errorPresent,
+                isError = errorText != null,
                 shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
                 singleLine = true,
                 colors = TextFieldDefaults.colors(
@@ -160,7 +154,7 @@ fun FormType(
             TextField(
                 value = confirmNewAccountDetail,
                 onValueChange = { updateConfirmNewAccountDetail(it) },
-                isError = errorPresent,
+                isError = errorText != null,
                 placeholder = {
                     Text(
                         text = stringResource(
@@ -182,11 +176,7 @@ fun FormType(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(onDone = { saveChanges() }),
-                supportingText = {
-                    if (errorPresent) {
-                        Text(text = stringResource(R.string.account_info_mismatch))
-                    }
-                },
+                supportingText = { Text(errorText ?: "") },
                 modifier = modifier
                     .width(dimensionResource(id = R.dimen.textfield_size_compact))
             )
@@ -206,7 +196,7 @@ fun EditFormCompactPreview() {
             newAccountDetail = "",
             confirmNewAccountDetail = "",
             updateConfirmNewAccountDetail = { },
-            errorPresent = false,
+            errorText = null,
             saveChanges = { },
         )
     }

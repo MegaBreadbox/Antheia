@@ -40,6 +40,7 @@ android {
             ndk {
                 debugSymbolLevel = "full"
             }
+            isDebuggable = true
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(

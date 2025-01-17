@@ -8,6 +8,7 @@ import com.mega_breadbox.antheia_plant_manager.model.service.firestore.CloudServ
 import com.mega_breadbox.antheia_plant_manager.model.service.firestore.toPlant
 import com.mega_breadbox.antheia_plant_manager.model.worker.ReminderRepository
 import com.mega_breadbox.antheia_plant_manager.util.SUBSCRIBE_DELAY
+import com.mega_breadbox.antheia_plant_manager.util.toPlantModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.SharingStarted
@@ -49,6 +50,7 @@ class HomeViewModel @Inject constructor(
                         list.toPlant()
                     }
                 )
+            } else {
             }
         }
     }

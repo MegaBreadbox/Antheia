@@ -21,6 +21,8 @@
 #-renamesourcefileattribute SourceFile
 -keep class com.google.firebase.auth.** { *; }
 -keep class com.google.firebase.firestore.** { *; }
+-keep class com.mega_breadbox.antheia_plant_manager.model.service.firestore.PlantModel
+-keep class com.mega_breadbox.antheia_plant_manager.model.service.firestore.UserModel
 -keep class com.google.android.gms.** { *; }
 -keep class androidx.navigation.** { *; }
 -keep class com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.AccountDetail { *; }

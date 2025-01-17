@@ -13,7 +13,11 @@ import com.mega_breadbox.antheia_plant_manager.model.service.firestore.UserModel
 import com.mega_breadbox.antheia_plant_manager.nav_routes.AccountSettingsEdit
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.AccountDetail
 import com.google.firebase.Firebase
+import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.auth
+import com.mega_breadbox.antheia_plant_manager.R
+import com.mega_breadbox.antheia_plant_manager.util.ComposeText
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,9 +50,9 @@ class AccountSettingsEditViewModel @Inject constructor(
         }
     }
 
-    private fun updateError(isErrorPresent: Boolean) {
+    private fun updateError(errorTextId: Int) {
         _uiState.update {
-            it.copy(errorPresent = isErrorPresent)
+            it.copy(errorText = ComposeText(errorTextId))
         }
     }
 
@@ -60,30 +64,51 @@ class AccountSettingsEditViewModel @Inject constructor(
         confirmNewAccountText = input
     }
 
-    fun saveAccountInfo() {
-        if(newAccountText == confirmNewAccountText) {
-            updateError(false)
+    fun saveAccountInfo(navigateBack: () -> Unit) {
+        if (newAccountText == confirmNewAccountText) {
             when (userDetail) {
                 AccountDetail.USERNAME -> {
                     viewModelScope.launch() {
-                        accountService.updateUsername(newAccountText)
-                        cloudService.updateUser(
-                            UserModel(
-                                username = newAccountText,
-                                email = Firebase.auth.currentUser?.email?: "",
-                                uid = Firebase.auth.currentUser?.uid?: "",
+                        try {
+                            accountService.updateUsername(newAccountText)
+                            cloudService.updateUser(
+                                UserModel(
+                                    username = newAccountText,
+                                    email = Firebase.auth.currentUser?.email ?: "",
+                                    uid = Firebase.auth.currentUser?.uid ?: "",
+                                )
                             )
-                        )
+                            navigateBack()
+                        } catch (e: FirebaseNetworkException) {
+                            updateError(R.string.not_connected_to_network)
+                        }
                     }
                 }
+
                 AccountDetail.EMAIL -> {
                     viewModelScope.launch() {
-                        accountService.updateEmail(newAccountText)
+                        try {
+                            accountService.updateEmail(newAccountText)
+                            cloudService.updateUser(
+                                UserModel(
+                                    username = Firebase.auth.currentUser?.displayName ?: "",
+                                    email = newAccountText,
+                                    uid = Firebase.auth.currentUser?.uid ?: "",
+                                )
+                            )
+                            navigateBack()
+                        }
+                        catch (e: FirebaseNetworkException) {
+                            updateError(R.string.not_connected_to_network)
+                        }
+                        catch (e: FirebaseException) {
+                            updateError(R.string.error_not_a_valid_email)
+                        }
                     }
                 }
             }
         } else {
-            updateError(true)
+            updateError(R.string.credential_does_not_match)
         }
     }
 
@@ -94,5 +119,5 @@ class AccountSettingsEditViewModel @Inject constructor(
 
 data class UiState(
     val welcomeText: String = "",
-    val errorPresent: Boolean = false
+    val errorText: ComposeText? = null
 )

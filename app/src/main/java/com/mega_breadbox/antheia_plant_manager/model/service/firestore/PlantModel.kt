@@ -16,9 +16,7 @@ data class PlantModel(
     val notes: String = "",
     @ServerTimestamp
     val timeStamp: Date = Date()
-) {
-    constructor(): this("", "", "", "", "", "", "", "", "", Date())
-}
+)
 
 fun PlantModel.toPlant(): Plant {
     return Plant(

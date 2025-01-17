@@ -92,4 +92,7 @@
     <string name="late_by_1_day">Late by 1 day</string>
     <string name="no_more_plants_here_now">No more plants here now</string>
     <string name="you_have_no_notifications">You have no notifications</string>
+    <string name="not_connected_to_network">Not connected to a network!</string>
+    <string name="credential_does_not_match">Credential does not match!</string>
+    <string name="error_not_a_valid_email">Error! Not a valid email!</string>
 </resources>
