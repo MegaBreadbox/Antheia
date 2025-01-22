@@ -55,6 +55,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
@@ -566,6 +567,10 @@ fun FrequencyDialog(
                 Text(
                     text = "Repeat how often?",
                     style = MaterialTheme.typography.displayLarge,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = modifier
+                        .padding(dimensionResource(id = R.dimen.big_padding))
                 )
                 inputMap.forEach {
                     val reminderFrequencyAndDate = "${ it.key.asString()}+${ it.value }"
