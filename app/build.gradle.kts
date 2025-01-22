@@ -19,8 +19,8 @@ android {
         applicationId = "com.mega_breadbox.antheia_plant_manager"
         minSdk = 26
         targetSdk = 35
-        versionCode = 6
-        versionName = "1.5"
+        versionCode = 7
+        versionName = "1.6"
         ndkVersion = "27.2.12479018"
 
         testInstrumentationRunner = "com.mega_breadbox.antheia_plant_manager.junit_runner.CustomTestRunner"
@@ -36,11 +36,13 @@ android {
     }
 
     buildTypes {
+        debug {
+        }
         release {
             ndk {
                 debugSymbolLevel = "full"
             }
-            isDebuggable = true
+            isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(

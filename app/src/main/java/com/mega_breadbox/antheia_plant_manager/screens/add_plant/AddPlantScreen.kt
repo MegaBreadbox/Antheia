@@ -563,6 +563,10 @@ fun FrequencyDialog(
                     .weight(1F)
                     .verticalScroll(scroll)
             ) {
+                Text(
+                    text = "Repeat how often?",
+                    style = MaterialTheme.typography.displayLarge,
+                )
                 inputMap.forEach {
                     val reminderFrequencyAndDate = "${ it.key.asString()}+${ it.value }"
                     Row(

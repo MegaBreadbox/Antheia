@@ -161,6 +161,7 @@ fun WelcomeScreen(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxSize()
+            .padding(horizontal = dimensionResource(R.dimen.medium_padding))
     ) {
         Card(
             elevation = CardDefaults.cardElevation(

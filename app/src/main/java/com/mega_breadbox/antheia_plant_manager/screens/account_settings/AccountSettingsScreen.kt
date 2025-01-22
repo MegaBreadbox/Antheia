@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -235,6 +236,7 @@ fun AccountDetail(
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = modifier
                 .fillMaxWidth()
         ) {
@@ -244,15 +246,20 @@ fun AccountDetail(
                         R.string.account_detail_not_set,
                         accountDetailTitle
                     ),
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    modifier = modifier.weight(1f)
                 )
             } else {
                 Text(
                     text = accountDetail,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     color = MaterialTheme.colorScheme.onSurface,
+                    modifier = modifier.weight(1f),
                 )
             }
-            Spacer(modifier = modifier.weight(1f))
             TextButton(
                 onClick = { onDetailClick() },
                 enabled = enabled
@@ -262,6 +269,7 @@ fun AccountDetail(
                         R.string.edit,
                         accountDetailTitle.lowercase()
                     ),
+                    maxLines = 1,
                     textAlign = TextAlign.Center,
                 )
             }
