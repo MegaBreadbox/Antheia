@@ -61,7 +61,7 @@ fun AccountSettingsScreen(
         onUserNameClick = { navigateChangeDetail(it) },
         onEmailClick = { navigateChangeDetail(it) },
         onPasswordClick = { viewModel.passwordReset() },
-        onLinkAccountClick = { navigateLinkAccount() },
+        onLinkAccountClick = { viewModel.linkAccount(navigateLinkAccount) },
         onDeleteAccountClick = { viewModel.deleteAccount(navigateReauthenticate, navigateSignIn) },
     )
 }

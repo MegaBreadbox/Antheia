@@ -100,6 +100,7 @@ fun CreateAccountScreen(
                 }
             },
         )
+        Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
     }
 }
 
@@ -124,6 +125,7 @@ fun CreateAccountForm(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .fillMaxSize()
+            .padding(horizontal = dimensionResource(R.dimen.medium_padding))
     ) {
         Card(
             elevation = CardDefaults.cardElevation(

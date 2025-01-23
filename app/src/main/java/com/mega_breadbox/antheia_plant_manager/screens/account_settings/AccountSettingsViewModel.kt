@@ -75,6 +75,13 @@ class AccountSettingsViewModel @Inject constructor(
         }
     }
 
+    fun linkAccount(navigation: () -> Unit) {
+        _dialogState.update {
+            it.copy(isEnabled = false)
+        }
+        navigation()
+    }
+
     fun updateDialogState(
         dialogState: DialogState,
     ) {
