@@ -89,8 +89,8 @@ class AccountServiceImpl @Inject constructor(): AccountService {
         ).await()
     }
 
-
     override fun isSignedIn(): Boolean {
         return Firebase.auth.currentUser != null
     }
+
 }

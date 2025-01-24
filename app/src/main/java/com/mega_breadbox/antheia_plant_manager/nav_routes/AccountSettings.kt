@@ -7,6 +7,7 @@ import com.mega_breadbox.antheia_plant_manager.nav_routes.util.AnimationConstant
 import com.mega_breadbox.antheia_plant_manager.nav_routes.util.AppScaffold
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.AccountSettingsScreen
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.AccountDetail
+import com.mega_breadbox.antheia_plant_manager.screens.sign_in.util.ReauthenticateValue
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -15,7 +16,7 @@ object AccountSettings: NavigationObject
 fun NavGraphBuilder.accountSettings(
     navigateChangeDetail: (AccountDetail) -> Unit,
     navigateSignIn: () -> Unit,
-    navigateReauthenticate : () -> Unit,
+    navigateReauthenticate : (ReauthenticateValue) -> Unit,
     navigateLinkAccount: () -> Unit,
     bottomAppBarNavigate: (NavigationObject) -> Unit
 ) {
@@ -37,7 +38,7 @@ fun NavGraphBuilder.accountSettings(
             AccountSettingsScreen(
                 navigateChangeDetail = { navigateChangeDetail(it) },
                 navigateSignIn = navigateSignIn,
-                navigateReauthenticate = navigateReauthenticate,
+                navigateReauthenticate = { navigateReauthenticate(it) },
                 navigateLinkAccount = navigateLinkAccount
             )
         }

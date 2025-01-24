@@ -5,7 +5,6 @@ import com.mega_breadbox.antheia_plant_manager.model.service.firestore.PlantMode
 import com.mega_breadbox.antheia_plant_manager.model.service.firestore.UserModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
@@ -78,8 +77,7 @@ class CloudServiceImpl @Inject constructor() : CloudService {
             email = auth.currentUser!!.email?: "",
             uid = auth.currentUser!!.uid
         )
-
-        db.collection(USERS).document(auth.currentUser!!.uid).set(user, SetOptions.merge())
+        db.collection(USERS).document(auth.currentUser!!.uid).set(user)
     }
 
     override suspend fun updateUser(user: UserModel) {

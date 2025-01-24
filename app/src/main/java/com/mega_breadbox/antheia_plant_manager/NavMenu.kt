@@ -32,6 +32,7 @@ import com.mega_breadbox.antheia_plant_manager.nav_routes.plantList
 import com.mega_breadbox.antheia_plant_manager.nav_routes.reauthenticate
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.AccountDetail
 import kotlinx.serialization.Serializable
 
 @Composable
@@ -45,7 +46,6 @@ fun NavMenu(
         startDestination = checkLogin(),
         modifier = modifier
     ) {
-
         loginScreen(
             navigateCreateAccount = {
                 navController.navigate(CreateAccount) {
@@ -59,6 +59,8 @@ fun NavMenu(
                     }
                     launchSingleTop = true
                 }
+            },
+            navigateAccountEdit = {
             }
         )
         createAccount(
@@ -152,7 +154,7 @@ fun NavMenu(
                     }
                 },
                 navigateReauthenticate = {
-                    navController.navigate(Reauthenticate) {
+                    navController.navigate(Reauthenticate(it)) {
                         launchSingleTop = true
                     }
                 },
@@ -184,6 +186,14 @@ fun NavMenu(
                 navigateToSignIn = {
                     navController.navigate(Login) {
                         popUpTo(navController.graph.id) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                },
+                navigateAccountEdit = {
+                    navController.navigate(AccountSettingsEdit(AccountDetail.EMAIL)) {
+                        popUpTo<Login> {
                             inclusive = true
                         }
                         launchSingleTop = true

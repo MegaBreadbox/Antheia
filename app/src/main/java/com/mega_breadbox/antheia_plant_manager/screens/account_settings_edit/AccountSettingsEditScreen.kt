@@ -32,7 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mega_breadbox.antheia_plant_manager.R
+import com.mega_breadbox.antheia_plant_manager.screens.account_settings.ConfirmationDialog
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.AccountDetail
+import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.DialogState
 import com.mega_breadbox.antheia_plant_manager.screens.sign_in.WelcomeTextCompact
 import com.mega_breadbox.compose.AntheiaplantmanagerTheme
 
@@ -42,8 +44,10 @@ fun AccountSettingsEditScreen(
     viewModel: AccountSettingsEditViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val dialogState by viewModel.dialogState.collectAsStateWithLifecycle()
     val coroutineScope = rememberCoroutineScope()
     EditFormCompact(
+        dialogState = dialogState,
         accountInfoType = viewModel.userDetail,
         headerText = uiState.welcomeText,
         updateHeaderText = { viewModel.updateWelcomeText(it) },
@@ -52,12 +56,14 @@ fun AccountSettingsEditScreen(
         confirmNewAccountDetail = viewModel.confirmNewAccountText,
         updateNewAccountDetail = { viewModel.updateAccountInfoText(it) },
         saveChanges = { viewModel.saveAccountInfo(navigateBack) },
+        updateDialogState = { viewModel.updateDialogState(it) },
         updateConfirmNewAccountDetail = { viewModel.updateConfirmAccountInfoText(it) },
     )
 }
 
 @Composable
 fun EditFormCompact(
+    dialogState: DialogState,
     accountInfoType: AccountDetail,
     headerText: String,
     updateHeaderText: (Char) -> Unit,
@@ -66,6 +72,7 @@ fun EditFormCompact(
     errorText: String?,
     saveChanges: () -> Unit,
     updateNewAccountDetail: (String) -> Unit,
+    updateDialogState: (DialogState) -> Unit,
     updateConfirmNewAccountDetail: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -74,6 +81,15 @@ fun EditFormCompact(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
+        if(dialogState.isEnabled) {
+            ConfirmationDialog(
+                dialogTitleResource = dialogState.title,
+                dialogTextResource = dialogState.text,
+                onDismissRequest = { updateDialogState(dialogState.copy(isEnabled = false)) },
+                onConfirmClick = dialogState.dialogAction,
+                onDismissClick = { updateDialogState(dialogState.copy(isEnabled = false)) }
+            )
+        }
         WelcomeTextCompact(
             processWelcomeText = headerText,
             updateWelcomeText = { updateHeaderText(it) },
@@ -124,7 +140,9 @@ fun FormType(
         ),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer
-        )
+        ),
+        modifier = modifier
+            .padding(horizontal = dimensionResource(R.dimen.medium_padding))
     ) {
         Column(
             modifier = modifier
@@ -189,12 +207,14 @@ fun FormType(
 fun EditFormCompactPreview() {
     AntheiaplantmanagerTheme() {
         EditFormCompact(
+            dialogState = DialogState(),
             accountInfoType = AccountDetail.USERNAME,
             updateNewAccountDetail = { },
             headerText = "test",
             updateHeaderText = { },
             newAccountDetail = "",
             confirmNewAccountDetail = "",
+            updateDialogState = { },
             updateConfirmNewAccountDetail = { },
             errorText = null,
             saveChanges = { },

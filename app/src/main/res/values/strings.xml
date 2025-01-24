@@ -95,4 +95,6 @@
     <string name="not_connected_to_network">Not connected to a network!</string>
     <string name="credential_does_not_match">Credential does not match!</string>
     <string name="error_not_a_valid_email">Error! Not a valid email!</string>
+    <string name="email_change_requested">Email change requested</string>
+    <string name="email_change_text">Send a change email request? Email change will occur after logging out</string>
 </resources>

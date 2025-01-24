@@ -11,7 +11,8 @@ object Login: NavigationObject
 
 fun NavGraphBuilder.loginScreen(
     navigateCreateAccount: () -> Unit,
-    navigateHome: () -> Unit
+    navigateHome: () -> Unit,
+    navigateAccountEdit: () -> Unit
 ) {
     composable<Login>(
         enterTransition = {
@@ -23,7 +24,8 @@ fun NavGraphBuilder.loginScreen(
     ) {
         WelcomeScreen(
             navigateCreateAccount = navigateCreateAccount,
-            navigateHome = navigateHome
+            navigateHome = navigateHome,
+            navigateAccountEdit = navigateAccountEdit
         )
     }
 }

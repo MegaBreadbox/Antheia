@@ -1,7 +1,5 @@
 package com.mega_breadbox.antheia_plant_manager.screens.account_settings
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mega_breadbox.antheia_plant_manager.model.data.PlantRepository
@@ -12,6 +10,7 @@ import com.mega_breadbox.antheia_plant_manager.util.SUBSCRIBE_DELAY
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.DialogState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -96,17 +95,10 @@ class AccountSettingsViewModel @Inject constructor(
         }
     }
 
+
     fun passwordReset() {
         viewModelScope.launch(coroutineDispatcher) {
             accountService.sendPasswordReset()
         }
     }
 }
-
-data class DialogState(
-    @DrawableRes val iconResource: Int? = null,
-    @StringRes val title: Int = 0,
-    @StringRes val text: Int = 0,
-    val dialogAction: () -> Unit = { },
-    val isEnabled: Boolean = false,
-)

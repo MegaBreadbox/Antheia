@@ -40,12 +40,14 @@ import com.mega_breadbox.antheia_plant_manager.util.Header
 import com.mega_breadbox.compose.AntheiaplantmanagerTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.DialogState
+import com.mega_breadbox.antheia_plant_manager.screens.sign_in.util.ReauthenticateValue
 
 @Composable
 fun AccountSettingsScreen(
     navigateChangeDetail: (AccountDetail) -> Unit,
     navigateSignIn: () -> Unit,
-    navigateReauthenticate: () -> Unit,
+    navigateReauthenticate: (ReauthenticateValue) -> Unit,
     navigateLinkAccount: () -> Unit,
     viewModel: AccountSettingsViewModel = hiltViewModel(),
 ) {
@@ -59,10 +61,11 @@ fun AccountSettingsScreen(
         updateDialogState = { viewModel.updateDialogState(it) },
         onSignOutClick = { viewModel.signOut(navigateSignIn) },
         onUserNameClick = { navigateChangeDetail(it) },
-        onEmailClick = { navigateChangeDetail(it) },
+        onEmailClick = { navigateReauthenticate(ReauthenticateValue.CHANGE_EMAIL) },
         onPasswordClick = { viewModel.passwordReset() },
         onLinkAccountClick = { viewModel.linkAccount(navigateLinkAccount) },
-        onDeleteAccountClick = { viewModel.deleteAccount(navigateReauthenticate, navigateSignIn) },
+        onDeleteAccountClick = {
+            viewModel.deleteAccount({ navigateReauthenticate(ReauthenticateValue.DELETE_ACCOUNT) }, navigateSignIn) },
     )
 }
 

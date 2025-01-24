@@ -47,6 +47,7 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mega_breadbox.antheia_plant_manager.R
+import com.mega_breadbox.antheia_plant_manager.screens.sign_in.util.ReauthenticateValue
 import com.mega_breadbox.antheia_plant_manager.util.measureStyle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -55,13 +56,14 @@ import kotlinx.coroutines.launch
 fun WelcomeScreen(
     navigateCreateAccount: () -> Unit,
     navigateHome: () -> Unit,
+    navigateAccountEdit: () -> Unit,
     welcomeText: String = "",
-    isReauthenticate: Boolean = false,
     modifier: Modifier = Modifier,
     viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val reauthenticateValue = viewModel.signInType
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -90,7 +92,10 @@ fun WelcomeScreen(
             isPasswordVisible = uiState.value.isPasswordVisible,
             updateIsPasswordVisible = { viewModel.updateIsPasswordVisible() },
             signIn = {
-                viewModel.signIn(isReauthenticate, navigateHome)
+                viewModel.signIn(
+                    navigateSuccess = navigateHome,
+                    navigateEditScreen = navigateAccountEdit
+                )
                 keyboardController?.hide()
             },
             anonymousSignIn = {
@@ -103,14 +108,18 @@ fun WelcomeScreen(
                             context = context,
                             request = viewModel.getGoogleSignInRequest()
                         )
-                        viewModel.googleSignIn(getResponse, isReauthenticate, navigateHome)
+                        viewModel.googleSignIn(
+                            googleResponse = getResponse,
+                            navigateSuccess = navigateHome,
+                            navigateEditScreen = navigateAccountEdit
+                        )
                     } catch (e: GetCredentialCancellationException) {
                         viewModel.updateErrorText(R.string.google_sign_in_cancelled)
                     }
                 }
             },
             navigateCreateAccount = navigateCreateAccount,
-            isReauthenticate = isReauthenticate
+            isReauthenticate = reauthenticateValue != ReauthenticateValue.REGULAR_SIGN_IN
         )
     }
 }
