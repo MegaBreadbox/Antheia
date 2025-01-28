@@ -1,6 +1,5 @@
 package com.mega_breadbox.antheia_plant_manager.screens.create_account
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -99,7 +98,6 @@ class CreateAccountViewModel @Inject constructor(
                     navigate()
                 }
             } catch (e: Exception) {
-                Log.d("CreateAccountViewModel", "googleSignIn: $e")
                 updateErrorText(R.string.error_occurred_while_signing_in)
             }
         }

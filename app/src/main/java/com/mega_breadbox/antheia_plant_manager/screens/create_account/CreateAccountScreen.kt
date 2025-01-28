@@ -1,5 +1,7 @@
 package com.mega_breadbox.antheia_plant_manager.screens.create_account
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -54,6 +57,9 @@ fun CreateAccountScreen(
     viewModel: CreateAccountViewModel = hiltViewModel<CreateAccountViewModel>()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val privacyPolicyIntent = Intent(Intent.ACTION_VIEW,
+        Uri.parse("https://raw.githubusercontent.com/MegaBreadbox/Antheia/refs/heads/master/PRIVACY_POLICY")
+    )
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -78,6 +84,7 @@ fun CreateAccountScreen(
             confirmPasswordText = viewModel.confirmPasswordText,
             isPasswordVisible = uiState.isPasswordVisible,
             errorText = uiState.errorText?.asString(),
+            onPrivacyPolicyClick = { context.startActivity(privacyPolicyIntent) },
             isLinkAccount = isLinkAccount,
             emailValueChange = { viewModel.updateEmailText(it) },
             passwordValueChange = { viewModel.updatePasswordText(it) },
@@ -111,6 +118,7 @@ fun CreateAccountForm(
     confirmPasswordText: String,
     isPasswordVisible: Boolean,
     errorText: String?,
+    onPrivacyPolicyClick: () -> Unit,
     emailValueChange: (String) -> Unit,
     passwordValueChange: (String) -> Unit,
     confirmPasswordValueChange: (String) -> Unit,
@@ -240,7 +248,12 @@ fun CreateAccountForm(
                         .width(dimensionResource(id = R.dimen.textfield_size_compact))
                 )
 
-                Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
+                TextButton(
+                    onClick = onPrivacyPolicyClick
+                ) {
+                    Text(stringResource(R.string.review_privacy_policy))
+                }
+
 
                 Button(
                     onClick = createAccount,
@@ -268,3 +281,4 @@ fun CreateAccountForm(
         }
     }
 }
+

@@ -100,4 +100,6 @@
     <string name="forgot_password">Forgot password?</string>
     <string name="repeat_how_often">Repeat how often?</string>
     <string name="enter_your_email">Enter your email</string>
+    <string name="review_privacy_policy">review privacy policy</string>
+    <string name="privacy_policy">Privacy policy</string>
 </resources>

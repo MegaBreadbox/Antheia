@@ -1,6 +1,8 @@
 package com.mega_breadbox.antheia_plant_manager.screens.account_settings
 
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -53,9 +56,15 @@ fun AccountSettingsScreen(
 ) {
     val dialogState by viewModel.dialogState.collectAsStateWithLifecycle()
     val currentUser by viewModel.userState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val privacyPolicyIntent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("https://raw.githubusercontent.com/MegaBreadbox/Antheia/refs/heads/master/PRIVACY_POLICY")
+    )
     AccountSettingsScreenCompact(
         dialogState = dialogState,
         userState = currentUser,
+        onPrivacyPolicyClick = { context.startActivity(privacyPolicyIntent) },
         signInProvider = viewModel.signInProvider(),
         isAnonymous = Firebase.auth.currentUser?.isAnonymous?: false,
         updateDialogState = { viewModel.updateDialogState(it) },
@@ -75,6 +84,7 @@ fun AccountSettingsScreenCompact(
     signInProvider: String?,
     isAnonymous: Boolean = false,
     userState: UserModel?,
+    onPrivacyPolicyClick: () -> Unit,
     updateDialogState: (DialogState) -> Unit,
     onSignOutClick: () -> Unit,
     onUserNameClick: (AccountDetail) -> Unit,
@@ -142,6 +152,11 @@ fun AccountSettingsScreenCompact(
                     )
                 }
             )
+            TextButton(
+                onClick = onPrivacyPolicyClick
+            ) {
+                Text(stringResource(R.string.privacy_policy))
+            }
         }
         Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
         Row(
@@ -388,6 +403,7 @@ fun AccountSettingsScreenCompactPreview() {
             onPasswordClick = { },
             onLinkAccountClick = { },
             onDeleteAccountClick = { },
+            onPrivacyPolicyClick = { }
         )
     }
 }

@@ -19,8 +19,8 @@ android {
         applicationId = "com.mega_breadbox.antheia_plant_manager"
         minSdk = 26
         targetSdk = 35
-        versionCode = 9
-        versionName = "1.8"
+        versionCode = 10
+        versionName = "1.9"
         ndkVersion = "27.2.12479018"
 
         testInstrumentationRunner = "com.mega_breadbox.antheia_plant_manager.junit_runner.CustomTestRunner"
@@ -36,6 +36,8 @@ android {
     }
 
     buildTypes {
+        debug {
+        }
         release {
             ndk {
                 debugSymbolLevel = "full"
@@ -47,7 +49,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
         }
     }
     compileOptions {
