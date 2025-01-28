@@ -5,6 +5,7 @@
     <dimen name="dialog_padding">16dp</dimen>
     <dimen name="dialog_confirm_padding">24dp</dimen>
     <dimen name="dialog_height">500dp</dimen>
+    <dimen name="dialog_height_small">350dp</dimen>
     <dimen name="dialog_divider_padding">16dp</dimen>
     <dimen name="small_padding">4dp</dimen>
     <dimen name="medium_padding">8dp</dimen>

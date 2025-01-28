@@ -97,4 +97,7 @@
     <string name="error_not_a_valid_email">Error! Not a valid email!</string>
     <string name="email_change_requested">Email change requested</string>
     <string name="email_change_text">Send a change email request? Email change will occur after logging out</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="repeat_how_often">Repeat how often?</string>
+    <string name="enter_your_email">Enter your email</string>
 </resources>

@@ -77,6 +77,10 @@ class AccountServiceImpl @Inject constructor(): AccountService {
         Firebase.auth.sendPasswordResetEmail(Firebase.auth.currentUser!!.email!!).await()
     }
 
+    override suspend fun sendPasswordReset(email: String) {
+        Firebase.auth.sendPasswordResetEmail(email).await()
+    }
+
     override suspend fun updateEmail(newEmail: String) {
         Firebase.auth.currentUser!!.verifyBeforeUpdateEmail(newEmail).await()
     }

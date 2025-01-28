@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.auth
 import com.mega_breadbox.antheia_plant_manager.nav_routes.Reauthenticate
+import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.DialogState
 import com.mega_breadbox.antheia_plant_manager.screens.sign_in.util.ReauthenticateValue
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,6 +52,12 @@ class WelcomeViewModel @Inject constructor(
             ReauthenticateValue.REGULAR_SIGN_IN
         }
 
+    private val _dialogState = MutableStateFlow(DialogState())
+    val dialogState = _dialogState.asStateFlow()
+
+    var dialogEmailText by mutableStateOf("")
+        private set
+
     var emailText by mutableStateOf("")
         private set
 
@@ -68,6 +75,10 @@ class WelcomeViewModel @Inject constructor(
         }
     }
 
+    fun updateDialogEmailText(input: String) {
+        dialogEmailText = input
+    }
+
     fun updateEmail(input: String) {
         emailText = input
     }
@@ -83,6 +94,63 @@ class WelcomeViewModel @Inject constructor(
                     textId = errorStringId
                 )
             )
+        }
+    }
+
+    private fun updateDialogErrorText(errorStringId: Int ) {
+        _uiState.update {
+            it.copy(
+                dialogErrorText = ComposeText(
+                    textId = errorStringId
+                )
+            )
+        }
+    }
+
+    fun updateDialogState(
+        dialogState: DialogState,
+    ) {
+        _dialogState.update {
+            it.copy(
+                iconResource = dialogState.iconResource,
+                title = dialogState.title,
+                text = dialogState.text,
+                dialogAction = dialogState.dialogAction,
+                isEnabled = dialogState.isEnabled,
+            )
+        }
+    }
+
+    fun dialogDismiss() {
+        _dialogState.update {
+            it.copy(
+                isEnabled = false,
+            )
+        }
+        updateDialogEmailText("")
+        _uiState.update {
+            it.copy(
+                dialogErrorText = null
+            )
+        }
+    }
+
+    fun resetPassword(dialogEmailText: String) {
+        if(dialogEmailText.isNotEmpty()) {
+            try {
+                viewModelScope.launch {
+                    accountService.sendPasswordReset(dialogEmailText)
+                    _dialogState.update {
+                        it.copy(
+                            isEnabled = false,
+                        )
+                    }
+                }
+            } catch(e: FirebaseAuthInvalidCredentialsException) {
+                updateDialogErrorText(R.string.create_account_invalid_email_error)
+            }
+        } else {
+            updateDialogErrorText(R.string.create_account_invalid_email_error)
         }
     }
 
@@ -175,5 +243,6 @@ class WelcomeViewModel @Inject constructor(
 data class WelcomeUiState(
     val processWelcomeText: String = "",
     val isPasswordVisible: Boolean = false,
-    val errorText: ComposeText? = null
+    val errorText: ComposeText? = null,
+    val dialogErrorText: ComposeText? = null
 )

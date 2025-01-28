@@ -52,6 +52,10 @@ class AccountServiceMock: AccountService {
         TODO("Not yet implemented")
     }
 
+    override suspend fun sendPasswordReset(email: String) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun updateEmail(newEmail: String) {
         TODO("Not yet implemented")
     }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -42,6 +43,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.window.Dialog
 import androidx.credentials.CredentialManager
 import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -62,6 +64,7 @@ fun WelcomeScreen(
     viewModel: WelcomeViewModel = hiltViewModel<WelcomeViewModel>(),
 ) {
     val uiState = viewModel.uiState.collectAsStateWithLifecycle()
+    val dialogState = viewModel.dialogState.collectAsStateWithLifecycle()
     val keyboardController = LocalSoftwareKeyboardController.current
     val reauthenticateValue = viewModel.signInType
     val scrollState = rememberScrollState()
@@ -75,6 +78,15 @@ fun WelcomeScreen(
             .verticalScroll(scrollState)
 
     ){
+        if(dialogState.value.isEnabled) {
+            ResetPasswordDialog(
+                dialogEmailText = viewModel.dialogEmailText,
+                dialogErrorText = uiState.value.dialogErrorText?.asString(),
+                onDismissClick = { viewModel.dialogDismiss() },
+                onConfirmClick = { viewModel.resetPassword(viewModel.dialogEmailText) },
+                onDialogEmailValueChange = { viewModel.updateDialogEmailText(it) },
+            )
+        }
         WelcomeTextCompact(
             processWelcomeText = uiState.value.processWelcomeText,
             updateWelcomeText = { viewModel.updateWelcomeText(it) },
@@ -88,6 +100,7 @@ fun WelcomeScreen(
             emailValueChange = { viewModel.updateEmail(it) },
             passwordText = viewModel.passwordText,
             errorText = uiState.value.errorText?.asString(),
+            forgetPasswordClick = { viewModel.updateDialogState(dialogState.value.copy(isEnabled = true)) },
             passwordValueChange = { viewModel.updatePassword(it) },
             isPasswordVisible = uiState.value.isPasswordVisible,
             updateIsPasswordVisible = { viewModel.updateIsPasswordVisible() },
@@ -155,6 +168,7 @@ fun WelcomeScreen(
     passwordText: String,
     isPasswordVisible: Boolean,
     errorText: String?,
+    forgetPasswordClick: () -> Unit,
     emailValueChange: (String) -> Unit,
     passwordValueChange: (String) -> Unit,
     updateIsPasswordVisible: () -> Unit,
@@ -261,7 +275,16 @@ fun WelcomeScreen(
                     modifier = modifier
                         .width(dimensionResource(id = R.dimen.textfield_size_compact))
                 )
-                Spacer(modifier = modifier.height(dimensionResource(id = R.dimen.large_padding)))
+
+                if(!isReauthenticate) {
+                    TextButton(
+                        onClick = forgetPasswordClick
+                    ) {
+                        Text(stringResource(R.string.forgot_password))
+                    }
+                }
+
+
 
                 Button(
                     onClick = signIn,
@@ -299,6 +322,92 @@ fun WelcomeScreen(
                     Text(stringResource(R.string.continue_without_an_account))
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ResetPasswordDialog(
+    dialogEmailText: String,
+    dialogErrorText: String?,
+    onDialogEmailValueChange: (String) -> Unit,
+    onDismissClick: () -> Unit,
+    onConfirmClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Dialog(
+        onDismissRequest = onDismissClick
+    ) {
+        Card(
+            modifier = modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(dimensionResource(id = R.dimen.dialog_shape)))
+                .height(dimensionResource(id = R.dimen.dialog_height_small))
+                .padding(dimensionResource(id = R.dimen.dialog_padding)),
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier
+                    .weight(1F)
+            ) {
+                Text(
+                    text = stringResource(R.string.enter_your_email),
+                    style = MaterialTheme.typography.displayLarge,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = modifier
+                        .padding(dimensionResource(id = R.dimen.big_padding))
+                )
+                TextField(
+                    value = dialogEmailText,
+                    onValueChange =  { email -> onDialogEmailValueChange(email) } ,
+                    placeholder = { Text(text = stringResource(R.string.email))},
+                    shape = RoundedCornerShape(dimensionResource(id = R.dimen.text_field_shape_radius)),
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        errorContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        errorIndicatorColor = Color.Transparent
+
+                    ),
+                    isError = dialogErrorText != null,
+                    supportingText = { Text(text = dialogErrorText ?: "") },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Next
+                    ),
+                    singleLine = true,
+                    modifier = modifier
+                        .width(dimensionResource(id = R.dimen.textfield_size_compact))
+                        .padding(horizontal = dimensionResource(id = R.dimen.big_padding))
+
+                )
+                Spacer(modifier = modifier.weight(1F))
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .padding(
+                            top = dimensionResource(id = R.dimen.dialog_padding),
+                            bottom = dimensionResource(id = R.dimen.dialog_padding),
+                            end = dimensionResource(id = R.dimen.dialog_confirm_padding)
+                        )
+                ) {
+                    TextButton(onClick = onDismissClick) {
+                        Text(stringResource(R.string.dismiss))
+                    }
+                    TextButton(
+                        onClick = {
+                            onConfirmClick()
+                        },
+                    ) {
+                        Text(stringResource(R.string.confirm))
+                    }
+                }
+            }
+
         }
     }
 }

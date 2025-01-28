@@ -565,7 +565,7 @@ fun FrequencyDialog(
                     .verticalScroll(scroll)
             ) {
                 Text(
-                    text = "Repeat how often?",
+                    text = stringResource(R.string.repeat_how_often),
                     style = MaterialTheme.typography.displayLarge,
                     textAlign = TextAlign.Center,
                     color = MaterialTheme.colorScheme.onSurface,
