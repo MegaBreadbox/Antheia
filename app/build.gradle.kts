@@ -100,6 +100,9 @@ dependencies {
     implementation(libs.androidx.hilt)
     implementation(libs.androidx.hilt.hilt.work)
 
+    //datastore
+    "demoImplementation"(libs.androidx.datastore)
+
     //room
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
