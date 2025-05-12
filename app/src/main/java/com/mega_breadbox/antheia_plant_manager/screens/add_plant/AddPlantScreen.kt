@@ -72,7 +72,7 @@ import com.mega_breadbox.antheia_plant_manager.util.ReminderFrequency
 import com.mega_breadbox.antheia_plant_manager.util.getReminderFrequency
 import com.mega_breadbox.antheia_plant_manager.util.outlinedDisabledColorToActive
 import com.mega_breadbox.antheia_plant_manager.util.outlinedTextFieldClickModifier
-import com.mega_breadbox.compose.AntheiaplantmanagerTheme
+import com.mega_breadbox.antheia_plant_manager.ui.theme.AntheiaplantmanagerTheme
 
 @Composable
 fun AddPlantScreen(

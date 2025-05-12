@@ -41,7 +41,8 @@ import com.mega_breadbox.antheia_plant_manager.model.service.firebase_auth.mock.
 import com.mega_breadbox.antheia_plant_manager.model.service.firestore.mock.CloudServiceMock
 import com.mega_breadbox.antheia_plant_manager.model.worker.mock.ReminderRepositoryImplMock
 import com.mega_breadbox.antheia_plant_manager.util.cardColor
-import com.mega_breadbox.compose.AntheiaplantmanagerTheme
+import com.mega_breadbox.antheia_plant_manager.ui.theme.AntheiaplantmanagerTheme
+import kotlinx.coroutines.Dispatchers
 
 @Composable
 fun HomeScreen(
@@ -189,7 +190,7 @@ fun PlantsScreenPreview() {
                 accountService = AccountServiceMock(),
                 cloudService = CloudServiceMock(),
                 reminderWorker = ReminderRepositoryImplMock(),
-                ioDispatcher = kotlinx.coroutines.Dispatchers.IO
+                ioDispatcher = Dispatchers.IO
             ),
             navigatePlantList = { },
             windowSize = WindowWidthSizeClass.Compact

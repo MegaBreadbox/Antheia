@@ -1,4 +1,4 @@
-package com.mega_breadbox.antheia_plant_manager.screens.sign_in.util
+package com.mega_breadbox.antheia_plant_manager.util
 
 enum class ReauthenticateValue {
     DELETE_ACCOUNT,

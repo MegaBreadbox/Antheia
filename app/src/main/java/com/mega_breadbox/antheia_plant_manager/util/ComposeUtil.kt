@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsTopHeight
@@ -19,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,11 +33,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.Paragraph
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mega_breadbox.antheia_plant_manager.R
+import kotlinx.coroutines.delay
 
 @Composable
 fun String.measureStyle(
@@ -116,4 +121,34 @@ fun Header(
             color = MaterialTheme.colorScheme.onBackground
         )
     }
+}
+
+/**
+ * Writes out a string defined by welcomeText using hoisted state with
+ * processWelcomeText and updateWelcomeText
+ */
+@Composable fun WelcomeTextCompact(
+    processWelcomeText: String,
+    updateWelcomeText: (Char) -> Unit,
+    modifier: Modifier = Modifier,
+    welcomeText: String,
+) {
+    LaunchedEffect(key1 = processWelcomeText) {
+        if(welcomeText.length != processWelcomeText.length) {
+            delay(100L)
+            updateWelcomeText(welcomeText[processWelcomeText.length])
+        }
+    }
+    Text(
+        text = processWelcomeText,
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.onSurface,
+        style = MaterialTheme.typography.displayLarge,
+        modifier = modifier
+            .padding(top = dimensionResource(id = R.dimen.large_padding))
+            .height(
+                welcomeText.measureStyle(style = MaterialTheme.typography.displayLarge)
+            )
+    )
+
 }

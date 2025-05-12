@@ -39,7 +39,7 @@ import com.mega_breadbox.antheia_plant_manager.util.PlantAlert
 import com.mega_breadbox.antheia_plant_manager.util.Reminder
 import com.mega_breadbox.antheia_plant_manager.util.daysSinceLastReminder
 import com.mega_breadbox.antheia_plant_manager.util.getLastReminderDate
-import com.mega_breadbox.compose.extendedColorScheme
+import com.mega_breadbox.antheia_plant_manager.ui.theme.extendedColorScheme
 
 
 @Composable

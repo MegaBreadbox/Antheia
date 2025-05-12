@@ -40,11 +40,11 @@ import com.mega_breadbox.antheia_plant_manager.R
 import com.mega_breadbox.antheia_plant_manager.model.service.firestore.UserModel
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.AccountDetail
 import com.mega_breadbox.antheia_plant_manager.util.Header
-import com.mega_breadbox.compose.AntheiaplantmanagerTheme
+import com.mega_breadbox.antheia_plant_manager.ui.theme.AntheiaplantmanagerTheme
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.DialogState
-import com.mega_breadbox.antheia_plant_manager.screens.sign_in.util.ReauthenticateValue
+import com.mega_breadbox.antheia_plant_manager.util.ReauthenticateValue
 
 @Composable
 fun AccountSettingsScreen(

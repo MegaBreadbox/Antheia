@@ -7,7 +7,7 @@ import androidx.compose.ui.test.performTextInput
 import com.mega_breadbox.antheia_plant_manager.HiltComponentActivity
 import com.mega_breadbox.antheia_plant_manager.R
 import com.mega_breadbox.antheia_plant_manager.screens.create_account.CreateAccountScreen
-import com.mega_breadbox.compose.AntheiaplantmanagerTheme
+import com.mega_breadbox.antheia_plant_manager.ui.theme.AntheiaplantmanagerTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before

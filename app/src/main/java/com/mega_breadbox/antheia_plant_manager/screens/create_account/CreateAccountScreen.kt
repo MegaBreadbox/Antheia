@@ -46,7 +46,7 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mega_breadbox.antheia_plant_manager.R
-import com.mega_breadbox.antheia_plant_manager.screens.sign_in.WelcomeTextCompact
+import com.mega_breadbox.antheia_plant_manager.util.WelcomeTextCompact
 import kotlinx.coroutines.launch
 
 @Composable

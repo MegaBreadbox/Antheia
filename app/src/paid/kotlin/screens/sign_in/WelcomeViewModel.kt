@@ -1,4 +1,4 @@
-package com.mega_breadbox.antheia_plant_manager.screens.sign_in
+package screens.sign_in
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.auth
 import com.mega_breadbox.antheia_plant_manager.nav_routes.Reauthenticate
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.DialogState
-import com.mega_breadbox.antheia_plant_manager.screens.sign_in.util.ReauthenticateValue
+import com.mega_breadbox.antheia_plant_manager.util.ReauthenticateValue
 import dagger.Lazy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

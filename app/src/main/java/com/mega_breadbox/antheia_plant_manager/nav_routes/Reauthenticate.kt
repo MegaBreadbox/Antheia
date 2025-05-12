@@ -5,8 +5,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.mega_breadbox.antheia_plant_manager.R
 import com.mega_breadbox.antheia_plant_manager.nav_routes.util.AnimationConstants
-import com.mega_breadbox.antheia_plant_manager.screens.sign_in.WelcomeScreen
-import com.mega_breadbox.antheia_plant_manager.screens.sign_in.util.ReauthenticateValue
+import com.mega_breadbox.antheia_plant_manager.util.ReauthenticateValue
+import screens.sign_in.WelcomeScreen
 import kotlinx.serialization.Serializable
 
 @Serializable

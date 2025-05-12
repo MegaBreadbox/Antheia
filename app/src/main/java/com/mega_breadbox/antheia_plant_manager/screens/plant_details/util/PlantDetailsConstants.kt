@@ -6,7 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.mega_breadbox.antheia_plant_manager.R
-import com.mega_breadbox.compose.extendedColorScheme
+import com.mega_breadbox.antheia_plant_manager.ui.theme.extendedColorScheme
 
 enum class TabList(val title: Int) {
     SUMMARY(R.string.summary),

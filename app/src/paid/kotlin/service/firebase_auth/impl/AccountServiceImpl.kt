@@ -1,4 +1,4 @@
-package com.mega_breadbox.antheia_plant_manager.model.service.firebase_auth.impl
+package service.firebase_auth.impl
 
 import com.mega_breadbox.antheia_plant_manager.model.service.firebase_auth.AccountService
 import com.google.firebase.Firebase

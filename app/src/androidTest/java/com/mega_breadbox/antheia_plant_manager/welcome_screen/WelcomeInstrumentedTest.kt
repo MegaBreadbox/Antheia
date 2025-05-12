@@ -8,8 +8,8 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.espresso.Espresso
 import com.mega_breadbox.antheia_plant_manager.R
 import com.mega_breadbox.antheia_plant_manager.HiltComponentActivity
-import com.mega_breadbox.antheia_plant_manager.screens.sign_in.WelcomeScreen
-import com.mega_breadbox.compose.AntheiaplantmanagerTheme
+import screens.sign_in.WelcomeScreen
+import com.mega_breadbox.antheia_plant_manager.ui.theme.AntheiaplantmanagerTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -55,6 +55,7 @@ class WelcomeInstrumentedTest {
                 WelcomeScreen(
                     navigateCreateAccount = { },
                     navigateHome = { },
+                    navigateAccountEdit = { },
                 )
             }
         }

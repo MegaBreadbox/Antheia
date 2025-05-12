@@ -1,3 +1,4 @@
+import com.google.gms.googleservices.GoogleServicesPlugin
 import java.util.Properties
 
 plugins {
@@ -19,8 +20,8 @@ android {
         applicationId = "com.mega_breadbox.antheia_plant_manager"
         minSdk = 26
         targetSdk = 35
-        versionCode = 10
-        versionName = "1.9"
+        versionCode = 11
+        versionName = "1.10"
         ndkVersion = "27.2.12479018"
 
         testInstrumentationRunner = "com.mega_breadbox.antheia_plant_manager.junit_runner.CustomTestRunner"
@@ -33,6 +34,18 @@ android {
         val webClientId = properties.getProperty("WEB_CLIENT_ID")?: ""
 
         buildConfigField("String", "WEB_CLIENT_ID", webClientId)
+    }
+
+    flavorDimensions += "storeOption"
+    productFlavors {
+        create("paid") {
+            dimension = "storeOption"
+        }
+        create("demo") {
+            dimension = "storeOption"
+            applicationIdSuffix = ".demo"
+        }
+
     }
 
     buildTypes {
@@ -94,10 +107,10 @@ dependencies {
 
 
     //firebase
-    implementation(libs.firebase.ui.auth)
+    "paidImplementation"(libs.firebase.ui.auth)
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.crashyltics)
-    implementation(libs.firebase.analytics)
+    "paidImplementation"(libs.firebase.crashyltics)
+    "paidImplementation"(libs.firebase.analytics)
     implementation(libs.firebase.authentication)
     implementation(libs.firebase.firestore)
 
@@ -109,6 +122,7 @@ dependencies {
     //Serialization
     implementation(libs.kotlin.serialization)
 
+    "demoImplementation"(libs.android.material)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

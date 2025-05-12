@@ -1,7 +1,7 @@
 package com.mega_breadbox.antheia_plant_manager.welcome_screen
 
 import com.mega_breadbox.antheia_plant_manager.model.service.firebase_auth.GoogleSignIn
-import com.mega_breadbox.antheia_plant_manager.screens.sign_in.WelcomeViewModel
+import screens.sign_in.WelcomeViewModel
 import com.mega_breadbox.antheia_plant_manager.mocks.AccountServiceMock
 import com.mega_breadbox.antheia_plant_manager.mocks.GoogleSignInMock
 import com.mega_breadbox.antheia_plant_manager.test_rules.MainDispatcherRule

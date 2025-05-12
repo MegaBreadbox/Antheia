@@ -26,7 +26,7 @@
 -keep class com.google.android.gms.** { *; }
 -keep class androidx.navigation.** { *; }
 -keep class com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.AccountDetail { *; }
--keep class com.mega_breadbox.antheia_plant_manager.screens.sign_in.util.ReauthenticateValue { *; }
+-keep class com.mega_breadbox.antheia_plant_manager.util.ReauthenticateValue { *; }
 -keep class * extends androidx.navigation.NavType { *; }
 -dontwarn com.google.android.gms.auth.api.credentials.Credential$Builder
 -dontwarn com.google.android.gms.auth.api.credentials.Credential

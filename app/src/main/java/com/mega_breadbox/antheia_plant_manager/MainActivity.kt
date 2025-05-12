@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
-import com.mega_breadbox.compose.AntheiaplantmanagerTheme
+import com.mega_breadbox.antheia_plant_manager.ui.theme.AntheiaplantmanagerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

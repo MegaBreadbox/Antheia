@@ -1,4 +1,4 @@
-package com.mega_breadbox.ui.theme
+package com.mega_breadbox.antheia_plant_manager.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily

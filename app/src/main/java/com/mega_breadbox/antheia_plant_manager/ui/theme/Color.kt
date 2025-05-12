@@ -1,4 +1,4 @@
-package com.mega_breadbox.compose
+package com.mega_breadbox.antheia_plant_manager.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF6D5E0F)

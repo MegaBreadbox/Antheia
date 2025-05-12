@@ -1,13 +1,13 @@
-package com.mega_breadbox.antheia_plant_manager.model.service.firestore.impl
+package service.firestore.impl
 
-import com.mega_breadbox.antheia_plant_manager.model.service.firestore.CloudService
-import com.mega_breadbox.antheia_plant_manager.model.service.firestore.PlantModel
-import com.mega_breadbox.antheia_plant_manager.model.service.firestore.UserModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
+import com.mega_breadbox.antheia_plant_manager.model.service.firestore.CloudService
+import com.mega_breadbox.antheia_plant_manager.model.service.firestore.PlantModel
+import com.mega_breadbox.antheia_plant_manager.model.service.firestore.UserModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow

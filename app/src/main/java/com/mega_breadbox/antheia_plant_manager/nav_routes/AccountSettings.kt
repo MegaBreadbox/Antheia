@@ -7,7 +7,7 @@ import com.mega_breadbox.antheia_plant_manager.nav_routes.util.AnimationConstant
 import com.mega_breadbox.antheia_plant_manager.nav_routes.util.AppScaffold
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.AccountSettingsScreen
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.AccountDetail
-import com.mega_breadbox.antheia_plant_manager.screens.sign_in.util.ReauthenticateValue
+import com.mega_breadbox.antheia_plant_manager.util.ReauthenticateValue
 import kotlinx.serialization.Serializable
 
 @Serializable

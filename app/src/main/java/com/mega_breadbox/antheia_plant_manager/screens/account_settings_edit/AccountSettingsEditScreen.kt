@@ -35,8 +35,8 @@ import com.mega_breadbox.antheia_plant_manager.R
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.ConfirmationDialog
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.AccountDetail
 import com.mega_breadbox.antheia_plant_manager.screens.account_settings.util.DialogState
-import com.mega_breadbox.antheia_plant_manager.screens.sign_in.WelcomeTextCompact
-import com.mega_breadbox.compose.AntheiaplantmanagerTheme
+import com.mega_breadbox.antheia_plant_manager.util.WelcomeTextCompact
+import com.mega_breadbox.antheia_plant_manager.ui.theme.AntheiaplantmanagerTheme
 
 @Composable
 fun AccountSettingsEditScreen(

@@ -1,4 +1,4 @@
-package com.mega_breadbox.antheia_plant_manager.screens.sign_in
+package screens.sign_in
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -27,7 +27,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,9 +48,8 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mega_breadbox.antheia_plant_manager.R
-import com.mega_breadbox.antheia_plant_manager.screens.sign_in.util.ReauthenticateValue
-import com.mega_breadbox.antheia_plant_manager.util.measureStyle
-import kotlinx.coroutines.delay
+import com.mega_breadbox.antheia_plant_manager.util.ReauthenticateValue
+import com.mega_breadbox.antheia_plant_manager.util.WelcomeTextCompact
 import kotlinx.coroutines.launch
 
 @Composable
@@ -137,31 +135,6 @@ fun WelcomeScreen(
     }
 }
 
-@Composable fun WelcomeTextCompact(
-    processWelcomeText: String,
-    updateWelcomeText: (Char) -> Unit,
-    modifier: Modifier = Modifier,
-    welcomeText: String,
-) {
-    LaunchedEffect(key1 = processWelcomeText) {
-        if(welcomeText.length != processWelcomeText.length) {
-            delay(100L)
-            updateWelcomeText(welcomeText[processWelcomeText.length])
-        }
-    }
-    Text(
-        text = processWelcomeText,
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.onSurface,
-        style = MaterialTheme.typography.displayLarge,
-        modifier = modifier
-            .padding(top = dimensionResource(id = R.dimen.large_padding))
-            .height(
-                welcomeText.measureStyle(style = MaterialTheme.typography.displayLarge)
-            )
-    )
-
-}
 
 @Composable fun TextInputFormCompact(
     emailText: String,
